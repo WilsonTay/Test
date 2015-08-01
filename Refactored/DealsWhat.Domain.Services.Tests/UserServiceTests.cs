@@ -85,8 +85,8 @@ namespace DealsWhat.Domain.Services.Tests
 
             var updateUserModel = new UpdateUserModel
             {
-                NewBillingAddress = newBillingAddress,
-                NewContactAddress = newContactAddress
+                BillingAddress = newBillingAddress,
+                ContactAddress = newContactAddress
             };
 
             service.UpdateUser(email, updateUserModel);

@@ -38,5 +38,10 @@ namespace DealsWhat.Domain.Test.Common
         {
             return userRepository;
         }
+
+        public IRepository<OrderModel> CreateOrderRepository()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

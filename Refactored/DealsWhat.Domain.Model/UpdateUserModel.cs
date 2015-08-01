@@ -8,8 +8,14 @@ namespace DealsWhat.Domain.Model
 {
     public class UpdateUserModel
     {
-        public AddressModel NewBillingAddress { get; set; }
-        public AddressModel NewContactAddress { get; set; }
-        
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public AddressModel BillingAddress { get; set; }
+
+        public AddressModel ContactAddress { get; set; }
     }
 }

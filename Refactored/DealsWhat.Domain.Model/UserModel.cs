@@ -12,6 +12,8 @@ namespace DealsWhat.Domain.Model
 
         ICollection<CartItemModel> CartItems { get; }
 
+        ICollection<OrderModel> Orders { get; } 
+
         void AddToCart(CartItemModel cartItem);
 
         void RemoveFromCart(CartItemModel cartItem);
@@ -30,6 +32,10 @@ namespace DealsWhat.Domain.Model
         void SetFirstName(string firstName);
 
         void SetLastName(string lastName);
+
+        void AddOrder(OrderModel order);
+
+        void ClearCart();
     }
 
     public class UserModel : IUserModel
@@ -39,6 +45,11 @@ namespace DealsWhat.Domain.Model
         public ICollection<CartItemModel> CartItems
         {
             get { return cartItems; }
+        }
+
+        public ICollection<OrderModel> Orders
+        {
+            get { throw new NotImplementedException(); }
         }
 
         private readonly IList<CartItemModel> cartItems;
@@ -105,6 +116,16 @@ namespace DealsWhat.Domain.Model
         public void SetLastName(string lastName)
         {
             LastName = lastName;
+        }
+
+        public void AddOrder(OrderModel order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearCart()
+        {
+            throw new NotImplementedException();
         }
 
         public void SetBillingAddress(AddressModel addressModel)

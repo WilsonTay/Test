@@ -1,0 +1,190 @@
+﻿@model DealsWhat.Models.RegisterModel
+@{
+    ViewBag.Title = "Order";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+    <h2>Manage my orders</h2>
+</hgroup>
+
+<div class="row row-wrap">
+    <div class="col-md-9">
+        <div class="order-panel panel-group" id="accordion">
+
+
+        </div>
+    </div>
+    <div class="col-md-3">
+        <aside class="sidebar-right">
+            <div class="box">
+                <h4>Order Information</h4>
+                <label>Delivery Address</label>
+                <div class="order-billing-address"></div>
+
+                <ul class="cart-total-list text-center mb0">
+                    <li>
+                        <span>Sub Total</span><span id="order-subtotal">RM 0.00</span>
+                    </li>
+                    <li>
+                        <span>Shipping</span><span>RM 0.00</span>
+                    </li>
+                    <li>
+                        <span>Taxes</span><span>RM 0.00</span>
+                    </li>
+                    <li>
+                        <span>Total</span><span id="order-total">RM 0.00</span>
+                    </li>
+                </ul>
+
+                <input id="btn-submit-payment" type="button" value="Pay Now" class="btn btn-primary"/>
+            </div>
+
+        </aside>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+        var orderData = {};
+
+        $(document).ready(function() {
+            loadCart();
+        });
+
+        $('.order-panel').on('click', '.order-panel-title', function(e) {
+            var orderId = $(this).attr('data-orderid');
+            var order = orderData[orderId];
+
+            loadOrderInformation(order);
+        });
+
+        function getOrderTotalSpecialPrice(orderlines) {
+            var price = 0.0;
+
+            $.each(orderlines, function (index, orderline) {
+                price += orderline.SpecialPrice;
+            });
+
+            return "RM " + price.toFixed(2);
+        }
+
+        function loadCart() {
+            $.ajax({
+                url: baseUrl + "api/order/",
+                method: 'get',
+                dataType: 'json',
+                cache: false,
+                success: function(orders) {
+
+                    var index = 0;
+                    $.each(orders, function(index, order) {
+
+                        if (index == 0) {
+                            loadOrderInformation(order);
+                        }
+
+                        buildOrderDom(order, index);
+
+                        orderData[order.Id] = order;
+
+                    });
+
+                    index++;
+
+                },
+                complete: function() {
+                }
+            });
+        }
+
+        function loadOrderInformation(order) {
+
+            var address = '';
+
+            $.each(order.AddressLines, function(index, line) {
+                address += line + ',<br/>';
+            });
+
+            $('.order-billing-address').html(address);
+
+            var total = getOrderTotalSpecialPrice(order.Orderlines);
+            $('#order-subtotal').text(total);
+            $('#order-total').text(total);
+        }
+
+        function buildOrderDom(order, index) {
+            var accordion = $('#accordion');
+
+            var collapsed = '';
+            if (index == 0) {
+                collapsed = 'in';
+            }
+
+            var orderStatusDom = buildOrderStatusDom(order.OrderStatus);
+
+            var dom = '';
+
+            dom += '<div class="panel panel-default">';
+            dom += '<div class="panel-heading"><h4 class="panel-title"><a class="order-panel-title" data-toggle="collapse" data-orderid="' + order.Id + '" data-parent="#accordion" href="#collapse-' + index + '"> Order ' + order.Id + '  ' + orderStatusDom + '</a></h4></div>';
+            dom += '<div class="panel-collapse collapse ' + collapsed + '" id="collapse-' + index + '">';
+            dom += '<div class="panel-body">';
+
+            //dom += '<div>Order Status:' + orderStatusDom + ' </div>' + 'a' + orderStatusDom;
+
+            var element = $(dom);
+            var panelBody = $(element).find('.panel-body')[0];
+
+            console.log(panelBody);
+
+            var orderLines = order.Orderlines;
+
+            dom += buildOrderlineDom(orderLines);
+
+            dom += '</div>';
+            dom += '</div>';
+            dom += '</div>';
+
+            accordion.append(dom);
+        }
+
+        function buildOrderlineDom(orderLines) {
+
+            var table = '<table class="table cart-table"><thead>' +
+                '<tr> <th>Item</th><th>Name</th><th>QTY</th><th>Price</th><th></th></tr></thead>' +
+                '<tbody class="cart-item-tbody"><tr><td>';
+
+
+            $.each(orderLines, function(index, orderLine) {
+                var dom = '<tr>' +
+                    '<td class="cart-item-image"><a href="' + '' + '"><img height="70px" width="70px" src="' + orderLine.DealThumbnailUrl + '"/></a></td>' +
+                    '<td><a href="' + '' + '">' + orderLine.DealOption + '</a></td>' +
+                    '<td class="cart-item-quantity">1</td>' +
+                    '<td>' + orderLine.SpecialPrice + '</td>' +
+                    '' +
+                    '</tr>';
+
+                table += dom;
+            });
+
+            table += '</td></tr></tbody></table>';
+
+            return table;
+        }
+
+        function buildOrderStatusDom(orderId) {
+            if (orderId == 0) {
+                return '<span class="label label-danger">Unpaid</span>';
+            } else if (orderId == 1) {
+                return '<span class="label label-success">Paid</span>';
+            } else if (orderId == 2) {
+                return '<span class="label label-info">Delivered</span>';
+            }
+
+            return 'Null';
+        }
+
+    </script>
+}

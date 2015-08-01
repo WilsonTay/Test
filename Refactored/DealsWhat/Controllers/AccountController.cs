@@ -15,6 +15,12 @@ namespace DealsWhat.Controllers
     //[InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        [AllowAnonymous]
+        public ActionResult Order()
+        {
+            return View();
+        }
+
         //
         // GET: /Account/Logina
         [AllowAnonymous]

@@ -14,6 +14,6 @@ namespace DealsWhat.Domain.Interfaces
 
         IUserRepository CreateUserRepository();
 
-
+        IRepository<OrderModel> CreateOrderRepository();
     }
 }

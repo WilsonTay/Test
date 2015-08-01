@@ -33,12 +33,22 @@ namespace DealsWhat.Controllers
             //    context.SaveChanges();
             //}
 
-            return RedirectToAction("View");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public ActionResult View()
+        public ActionResult Index()
         {
+            var cartAdded = Request.QueryString["cartAdded"];
+
+            if (!string.IsNullOrEmpty(cartAdded))
+            {
+                ViewBag.CartAdded = true;
+            }
+            else
+            {
+                ViewBag.CartAdded = false;
+            }
             //using (var context = new DealsContext())
             //{
             //    var emailAddress = User.Identity.Name;

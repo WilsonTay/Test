@@ -74,6 +74,7 @@
     <Compile Include="ApplicationUser.cs" />
     <Compile Include="EFDealCategoryRepository.cs" />
     <Compile Include="EFDealRepository.cs" />
+    <Compile Include="EFOrderRepository.cs" />
     <Compile Include="EFRepositoryFactory.cs" />
     <Compile Include="EFUserRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />

@@ -24,6 +24,27 @@ using DealsWhat.Infrastructure.DataAccess;
 
 namespace DealsWhat.Application.WebApi.Controllers
 {
+    public class UpdateUserViewModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+
+        public AddressViewModel DeliveryAddress { get; set; }
+    }
+
+    public class AddressViewModel
+    {
+        public string Line1 { get; set; }
+        public string Line2 { get; set; }
+
+        public string State { get; set; }
+
+        public string City { get; set; }
+
+        public string PostCode { get; set; }
+    }
+
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
@@ -35,6 +56,26 @@ namespace DealsWhat.Application.WebApi.Controllers
         public AccountController(IUserService userService)
         {
             this.userService = userService;
+
+            AutoMapper.Mapper.CreateMap<AddressModel, AddressViewModel>()
+               .ForMember(dest => dest.Line1, opt => opt.MapFrom(src => src.Line1.ToString()))
+               .ForMember(dest => dest.Line2, opt => opt.MapFrom(src => src.Line2.ToString()))
+               .ForMember(dest => dest.PostCode, opt => opt.MapFrom(src => src.PostCode.ToString()))
+               .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.ToString()))
+               .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()));
+
+            AutoMapper.Mapper.CreateMap<AddressViewModel, AddressModel>()
+                .ForMember(dest => dest.Line1, opt => opt.MapFrom(src => src.Line1.ToString()))
+                .ForMember(dest => dest.Line2, opt => opt.MapFrom(src => src.Line2.ToString()))
+                .ForMember(dest => dest.PostCode, opt => opt.MapFrom(src => src.PostCode.ToString()))
+                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.ToString()))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()));
+
+            AutoMapper.Mapper.CreateMap<UpdateUserViewModel, UpdateUserModel>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName.ToString()))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest => dest.BillingAddress, opt => opt.MapFrom(src => src.DeliveryAddress));
         }
 
         public AccountController(ApplicationUserManager userManager,
@@ -68,22 +109,28 @@ namespace DealsWhat.Application.WebApi.Controllers
 
             ApplicationUser user = userService.GetUserByEmail(User.Identity.GetUserName()) as ApplicationUser;
 
+            var addressViewModel = AutoMapper.Mapper.Map<AddressViewModel>(user.BillingAddress);
+
             return new UserInfoViewModel
             {
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null,
-                FirstName = user.PhoneNumber
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DeliveryAddress = addressViewModel
             };
         }
 
         [Route("UserInfo")]
         [HttpPost]
-        public void PostUserInfo(UpdateUserModel model)
+        public void PostUserInfo([FromBody]UpdateUserViewModel viewModel)
         {
             try
             {
                 var emailAddress = User.Identity.GetUserName();
+
+                var model = AutoMapper.Mapper.Map<UpdateUserModel>(viewModel);
                 userService.UpdateUser(emailAddress, model);
             }
             catch (Exception ex)

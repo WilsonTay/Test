@@ -15,6 +15,7 @@
     </table>
 </div>
 
+
 <div class="row">
     <div class="col-md-9">
 
@@ -143,7 +144,7 @@
                 var selectedValue = $(value).val();
 
                 var attribute = {};
-               // attribute.Name = selectedName;
+                // attribute.Name = selectedName;
                 //attribute.Value = selectedValue;
 
                 //selectedAttributes.push(attribute);
@@ -160,6 +161,9 @@
                 dataType: 'json',
                 cache: false,
                 success: function (deal) {
+
+                    var cartUrl = '/Cart?cartAdded=true';
+                    window.location.replace(cartUrl);
                 },
                 complete: function () {
                 }
@@ -171,6 +175,8 @@
             $('.deal-attribute-list').select2({
                 minimumResultsForSearch: Infinity
             });
+
+            $('.cart-successfully-added').hide();
         });
 
         function loadDealTimeLeft(deal) {
@@ -245,7 +251,6 @@
 
                     var tbody = $('#deal-options-table-body');
                     $.each(deal.DealOptions, function (index, option) {
-
                         buildDealOptionDom(option, tbody);
                     });
                 },

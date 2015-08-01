@@ -23,6 +23,11 @@ namespace DealsWhat.Infrastructure.DataAccess
             get { return cartItems; }
         }
 
+        public ICollection<OrderModel> Orders
+        {
+            get { return orders; }
+        }
+
         public void AddToCart(CartItemModel cartItem)
         {
             this.cartItems.Add(cartItem);
@@ -31,6 +36,16 @@ namespace DealsWhat.Infrastructure.DataAccess
         public void RemoveFromCart(CartItemModel cartItem)
         {
             this.cartItems.Remove(cartItem);
+        }
+
+        public void ClearCart()
+        {
+            this.cartItems.Clear();
+        }
+
+        public void AddOrder(OrderModel order)
+        {
+            this.orders.Add(order);
         }
 
         public AddressModel ContactAddress
@@ -53,12 +68,14 @@ namespace DealsWhat.Infrastructure.DataAccess
             get; private set;
         }
 
+        private readonly IList<OrderModel> orders;
         private readonly IList<CartItemModel> cartItems;
 
         public ApplicationUser()
         {
             Key = Guid.NewGuid().ToString();
             cartItems = new List<CartItemModel>();
+            orders = new List<OrderModel>();
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)

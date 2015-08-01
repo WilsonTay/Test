@@ -12,7 +12,7 @@
                     <a href="page-my-account-addresses.html">Address Book</a>
                 </li>
                 <li>
-                    <a href="page-my-account-orders.html">Orders History</a>
+                    <a href="@Url.Action("Order")">Orders History</a>
                 </li>
                 <li>
                     <a href="page-my-account-wishlist.html">Wishlist</a>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="form-group">
                         <label for="">Last Name</label>
-                        <input name="LastName" type="text" value="" class="form-control">
+                        <input id="last-name" name="LastName" type="text" value="" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="">E-mail</label>
@@ -38,7 +38,29 @@
                     </div>
                     <div class="form-group">
                         <label for="">Phone Number</label>
-                        <input name="PhoneNumber" type="text" value="" class="form-control">
+                        <input id="phone-number" name="PhoneNumber" type="text" value="" class="form-control">
+                    </div>
+
+                    <legend>Address</legend>
+                    <div class="form-group">
+                        <label for="">Line 1</label>
+                        <input id="line1" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Line 2</label>
+                        <input id="line2" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">City</label>
+                        <input id="city" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">ZIP/Postal Code</label>
+                        <input id="zip" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">State</label>
+                        <input id="state" type="text" class="form-control">
                     </div>
                     <input id="btn-save-profile" type="button" value="Save Changes" class="btn btn-primary">
                 </form>
@@ -50,11 +72,11 @@
 
 @section scripts {
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             loadProfile();
         });
 
-        $('#btn-save-profile').click(function () {
+        $('#btn-save-profile').click(function() {
             saveProfile();
         });
 
@@ -64,27 +86,43 @@
                 method: 'get',
                 dataType: 'json',
                 cache: false,
-                success: function (profile) {
+                success: function(profile) {
                     $('#first-name').val(profile.FirstName);
+                    $('#last-name').val(profile.LastName);
+                    $('#line1').val(profile.DeliveryAddress.Line1);
+                    $('#line2').val(profile.DeliveryAddress.Line2);
+                    $('#state').val(profile.DeliveryAddress.State);
+                    $('#city').val(profile.DeliveryAddress.City);
+                    $('#zip').val(profile.DeliveryAddress.PostCode);
                 },
-                complete: function () {
+                complete: function() {
                 }
             });
         }
 
         function saveProfile() {
+            var address = {};
+            address.Line1 = $('#line1').val();
+            address.Line2 = $('#line2').val();
+            address.City = $('#city').val();
+            address.PostCode = $('#zip').val();
+            address.State = $('#state').val();
+
             var data = {};
             data.FirstName = $('#first-name').val();
+            data.LastName = $('#last-name').val();
+            data.PhoneNumber = $('#phone-number').val();
+            data.DeliveryAddress = address;
 
             $.ajax({
                 url: baseUrl + "api/account/userinfo",
                 method: 'post',
-                dataType: 'json',
-                data: data,
+                data: JSON.stringify(data),
+                contentType: "application/json",
                 cache: false,
-                success: function () {
+                success: function() {
                 },
-                complete: function () {
+                complete: function() {
                 }
             });
         }

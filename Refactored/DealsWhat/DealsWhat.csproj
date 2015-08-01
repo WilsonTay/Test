@@ -297,8 +297,8 @@
     <Content Include="App_Data\SampleDescription.txt" />
     <Content Include="App_Data\SampleFinePrint.txt" />
     <Content Include="App_Data\SampleHighlight.txt" />
-    <Content Include="Content\css\boostrap.css" />
     <Content Include="Content\css\bootstrap-social.css" />
+    <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\font_awesome.css" />
     <Content Include="Content\css\ie.css" />
     <Content Include="Content\css\mystyles.css" />
@@ -667,13 +667,15 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Deal\Index.cshtml" />
     <Content Include="Views\Order\CheckOut.cshtml" />
-    <Content Include="Views\Cart\View.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\AboutUs\Index.cshtml" />
     <Content Include="Views\Faq\Index.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\PrivacyPolicy\Index.cshtml" />
     <Content Include="Views\ReturnPolicy\Index.cshtml" />
     <Content Include="Views\ContactUs\Index.cshtml" />
+    <Content Include="Views\Account\Order.cshtml" />
+    <Content Include="Views\Order\PaymentSuccess.cshtml" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

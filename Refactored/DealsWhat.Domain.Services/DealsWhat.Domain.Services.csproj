@@ -45,7 +45,9 @@
     <Compile Include="DealService.cs" />
     <Compile Include="ICartService.cs" />
     <Compile Include="IDealService.cs" />
+    <Compile Include="IOrderService.cs" />
     <Compile Include="IUserService.cs" />
+    <Compile Include="OrderService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleDealSearchQuery.cs" />
     <Compile Include="UserService.cs" />

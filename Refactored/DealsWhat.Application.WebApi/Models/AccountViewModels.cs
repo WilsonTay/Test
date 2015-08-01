@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DealsWhat.Application.WebApi.Controllers;
 
 namespace DealsWhat.Application.WebApi.Models
 {
@@ -34,6 +35,10 @@ namespace DealsWhat.Application.WebApi.Models
         public string LoginProvider { get; set; }
 
         public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public AddressViewModel DeliveryAddress { get; set; }
     }
 
     public class UserLoginInfoViewModel

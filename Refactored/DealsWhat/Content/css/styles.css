@@ -2585,7 +2585,7 @@ ul.pagination li.next a:before {
   margin-bottom: 5px;
 }
 .cart-total-list > li > span {
-  width: 35%;
+  width: 45%;
   display: inline-block;
 }
 .cart-total-list > li:last-child {

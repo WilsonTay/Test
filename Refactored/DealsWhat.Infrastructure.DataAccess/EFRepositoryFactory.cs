@@ -31,5 +31,10 @@ namespace DealsWhat.Infrastructure.DataAccess
         {
             return new EFUserRepository(this.dbContext);
         }
+
+        public IRepository<OrderModel> CreateOrderRepository()
+        {
+            return new EFOrderRepository(this.dbContext);
+        } 
     }
 }

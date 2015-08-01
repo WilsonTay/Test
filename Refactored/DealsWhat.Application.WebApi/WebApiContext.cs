@@ -40,6 +40,7 @@ namespace DealsWhat.Application.WebApi
             builder.RegisterType<DealService>().As<IDealService>();
             builder.RegisterType<CartService>().As<ICartService>();
             builder.RegisterType<UserService>().As<IUserService>();
+            builder.RegisterType<OrderService>().As<IOrderService>();
             builder.RegisterType<EFUserRepository>().As<IUserRepository>();
 
             var container = builder.Build();

@@ -27,7 +27,7 @@ namespace DealsWhat.Infrastructure.DataAccess
             base.OnModelCreating(modelBuilder);
 
             //modelBuilder.Entity<ApplicationUser>().Ignore(a => a.Id);
-       
+
             // modelBuilder.Entity<ApplicationUser>().Ignore(a => a.ContactAddress);
             // modelBuilder.Entity<ApplicationUser>().Ignore(a => a.Email);
 
@@ -39,6 +39,20 @@ namespace DealsWhat.Infrastructure.DataAccess
                 .HasMany<CartItemModel>(a => a.CartItems)
                 .WithOptional()
                 .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany<OrderModel>(a => a.Orders)
+                .WithRequired();
+
+            modelBuilder.Entity<OrderModel>().HasKey(a => a.Key)
+                .HasMany<OrderlineModel>(a => a.Orderlines)
+                .WithRequired();
+
+            modelBuilder.Entity<OrderModel>().HasOptional(a => a.BillingAddress);
+
+            modelBuilder.Entity<OrderlineModel>().HasKey(a => a.Key)
+                 .HasMany<DealAttributeModel>(a => a.AttributeValues)
+                 .WithMany(); ;
 
             modelBuilder.Entity<ApplicationUser>().HasKey(a => a.Key)
                 .HasOptional<AddressModel>(a => a.ContactAddress);
@@ -89,6 +103,10 @@ namespace DealsWhat.Infrastructure.DataAccess
         public DbSet<DealAttributeModel> DealAttributes { get; set; }
 
         public DbSet<AddressModel> Addresses { get; set; }
+
+        public DbSet<OrderModel> Orders { get; set; }
+
+        public DbSet<OrderlineModel> Orderlines { get; set; }
 
         public IDbSet<TEntity> Set<TEntity>() where TEntity : class
         {

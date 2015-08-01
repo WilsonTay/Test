@@ -54,6 +54,11 @@ namespace DealsWhat.Infrastructure.DataAccess
             var entity = this.unitOfWork.Set<ApplicationUser>()
                 .Include("CartItems.DealOption")
                 .Include("CartItems.AttributeValues")
+                .Include("Orders.Orderlines.AttributeValues")
+                .Include("Orders.Orderlines.Deal")
+                .Include("Orders.Orderlines.DealOption")
+                .Include("Orders.BillingAddress")
+                .Include("BillingAddress")
                 .FirstOrDefault(u => u.Email == emailAddress);
 
             return entity;
