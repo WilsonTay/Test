@@ -32,7 +32,6 @@
         </div>
     </div>
     <!-- END TOP AREA -->
-
     <!-- SEARCH AREA -->
     <form class="search-area form-group search-area-dark">
         <div class="container">
@@ -60,13 +59,9 @@
         <aside class="sidebar-left">
             <ul id="main-category-list" class="nav nav-tabs nav-stacked nav-coupon-category nav-coupon-category-left">
 
-                <li class="active"><a data-deal-category-id="-1" class="deal-category-single"><i class="fa fa-cutlery"></i>All</a>
+                <li class="active">
+                    <a data-deal-category-id="" class="deal-category-single"><i class="fa fa-cutlery"></i>All</a>
                 </li>
-                @foreach (var category in Model.Categories)
-                {
-                    <li><a data-deal-category-id="@category.Id" class="deal-category-single"><i class="fa @category.Icon"></i>@category.Name</a>
-                    </li>
-                }
             </ul>
         </aside>
     </div>
@@ -87,6 +82,7 @@
             hideItemListLoader();
             showItemList();
 
+            loadCategories();
             loadDeals("", "");
             setMenuActive("#nav-home");
         });
@@ -130,7 +126,7 @@
         });
 
         function setupDealCategoryEventHandler() {
-            $('.deal-category-single').click(function () {
+            $('#main-category-list').on('click', '.deal-category-single', function () {
                 var categoryId = $(this).attr('data-deal-category-id');
 
                 loadDeals("categoryid", categoryId);
@@ -177,6 +173,30 @@
                     initializeCountDown();
                 }
             });
+        }
+
+
+        function loadCategories() {
+            $.ajax({
+                url: baseUrl + "api/categories",
+                dataType: 'json',
+
+                cache: false,
+                success: function (categories) {
+
+                    $.each(categories, function (index, category) {
+                        buildCategoryDom(category);
+                    });
+                }
+            });
+        }
+
+        function buildCategoryDom(category) {
+            var mainCategoryElement = $('#main-category-list');
+
+            var dom = '<li><a data-deal-category-id="' + category.Id + '" class="deal-category-single"><i class="fa ' + category.Icon + '"></i>' + category.Name + '</a></li>';
+
+            mainCategoryElement.append(dom);
         }
 
         function clearMasonry() {
@@ -242,5 +262,4 @@
             });
         }
     </script>
-
 }

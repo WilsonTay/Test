@@ -12,5 +12,6 @@ namespace DealsWhat.Domain.Services
         IEnumerable<DealModel> SearchDeals(DealSearchQuery query);
 
         DealModel SearchSingleDeal(SingleDealSearchQuery query);
+        IEnumerable<DealCategoryModel> GetAllCategories();
     }
 }

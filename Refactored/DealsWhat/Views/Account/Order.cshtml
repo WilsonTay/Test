@@ -3,10 +3,8 @@
     ViewBag.Title = "Order";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title</h1>
-    <h2>Manage my orders</h2>
-</hgroup>
+<div class="gap-medium"></div>
+<h3>My Orders</h3>
 
 <div class="row row-wrap">
     <div class="col-md-9">
@@ -36,8 +34,12 @@
                         <span>Total</span><span id="order-total">RM 0.00</span>
                     </li>
                 </ul>
+          
+                <form method="post" action="@Url.Action("CheckOutPost", "Order")">
+                    <input id="order-id" name="OrderId" type="hidden" />
+                    <input id="btn-submit-payment" type="submit" value="Pay Now" class="btn btn-primary" />
+                </form>
 
-                <input id="btn-submit-payment" type="button" value="Pay Now" class="btn btn-primary"/>
             </div>
 
         </aside>
@@ -50,11 +52,11 @@
     <script>
         var orderData = {};
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             loadCart();
         });
 
-        $('.order-panel').on('click', '.order-panel-title', function(e) {
+        $('.order-panel').on('click', '.order-panel-title', function (e) {
             var orderId = $(this).attr('data-orderid');
             var order = orderData[orderId];
 
@@ -77,10 +79,10 @@
                 method: 'get',
                 dataType: 'json',
                 cache: false,
-                success: function(orders) {
+                success: function (orders) {
 
                     var index = 0;
-                    $.each(orders, function(index, order) {
+                    $.each(orders, function (index, order) {
 
                         if (index == 0) {
                             loadOrderInformation(order);
@@ -95,7 +97,7 @@
                     index++;
 
                 },
-                complete: function() {
+                complete: function () {
                 }
             });
         }
@@ -104,7 +106,7 @@
 
             var address = '';
 
-            $.each(order.AddressLines, function(index, line) {
+            $.each(order.AddressLines, function (index, line) {
                 address += line + ',<br/>';
             });
 
@@ -113,6 +115,14 @@
             var total = getOrderTotalSpecialPrice(order.Orderlines);
             $('#order-subtotal').text(total);
             $('#order-total').text(total);
+            $('#order-id').val(order.Id);
+
+            if (order.OrderStatus == 0) {
+                $('#btn-submit-payment').attr('disabled', false);
+            } else {
+                $('#btn-submit-payment').attr('disabled', 'disabled');
+
+            }
         }
 
         function buildOrderDom(order, index) {
@@ -153,16 +163,16 @@
         function buildOrderlineDom(orderLines) {
 
             var table = '<table class="table cart-table"><thead>' +
-                '<tr> <th>Item</th><th>Name</th><th>QTY</th><th>Price</th><th></th></tr></thead>' +
+                '<tr> <th>Item</th><th>Name</th><th style="width:100px">QTY</th><th style="width:100px">Price</th></tr></thead>' +
                 '<tbody class="cart-item-tbody"><tr><td>';
 
 
-            $.each(orderLines, function(index, orderLine) {
+            $.each(orderLines, function (index, orderLine) {
                 var dom = '<tr>' +
                     '<td class="cart-item-image"><a href="' + '' + '"><img height="70px" width="70px" src="' + orderLine.DealThumbnailUrl + '"/></a></td>' +
                     '<td><a href="' + '' + '">' + orderLine.DealOption + '</a></td>' +
                     '<td class="cart-item-quantity">1</td>' +
-                    '<td>' + orderLine.SpecialPrice + '</td>' +
+                    '<td> RM ' + orderLine.SpecialPrice.toFixed(2) + '</td>' +
                     '' +
                     '</tr>';
 

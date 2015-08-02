@@ -127,7 +127,7 @@
         var baseUrl = '@ConfigurationManager.AppSettings["WebserviceBaseUrl"]';
         var dealId;
 
-        $('#deal-options-table-body').on('click', '.purchase-deal-option-button', function () {
+        $('#deal-options-table-body').on('click', '.purchase-deal-option-button', function() {
 
             var form = $(this).closest('form');
             var selects = form.find('select');
@@ -139,7 +139,7 @@
 
             var selectedAttributes = [];
 
-            $.each(selects, function (index, value) {
+            $.each(selects, function(index, value) {
                 var selectedName = $(value).attr('name');
                 var selectedValue = $(value).val();
 
@@ -160,17 +160,17 @@
                 method: 'post',
                 dataType: 'json',
                 cache: false,
-                success: function (deal) {
+                success: function(deal) {
 
                     var cartUrl = '/Cart?cartAdded=true';
                     window.location.replace(cartUrl);
                 },
-                complete: function () {
+                complete: function() {
                 }
             });
         });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             loadDealInformation();
             $('.deal-attribute-list').select2({
                 minimumResultsForSearch: Infinity
@@ -212,12 +212,13 @@
             });
         }
 
+
         function loadDealInformation() {
             $.ajax({
                 url: baseUrl + "api/deal?url=" + "@Request.Url.Segments.Last()",
                 dataType: 'json',
                 cache: false,
-                success: function (deal) {
+                success: function(deal) {
                     dealId = deal.Id;
                     $('#deal-highlight').html(deal.Highlight);
                     $('#deal-fineprint').html(deal.Fineprint);
@@ -236,7 +237,7 @@
                     $('#deal-discount-percentage').html(percentage + "%");
 
                     var imageData = [];
-                    $.each(deal.ImageUrls, function (index, img) {
+                    $.each(deal.ImageUrls, function(index, img) {
                         var data = {};
                         data.img = img;
 
@@ -250,11 +251,11 @@
                     loadDealTimeLeft(deal);
 
                     var tbody = $('#deal-options-table-body');
-                    $.each(deal.DealOptions, function (index, option) {
+                    $.each(deal.DealOptions, function(index, option) {
                         buildDealOptionDom(option, tbody);
                     });
                 },
-                complete: function () {
+                complete: function() {
                 }
             });
         }
@@ -263,7 +264,7 @@
             var attr = dealOption.DealAttributes;
             var attrNames = [];
 
-            var groupedAttr = _.groupBy(attr, function (attr) {
+            var groupedAttr = _.groupBy(attr, function(attr) {
                 var attrName = attr.Name;
 
                 if (attrNames.indexOf(attrName) == -1) {
@@ -274,7 +275,7 @@
             });
 
             var table = '<table width="100%">';
-            $.each(attrNames, function (i, attrName) {
+            $.each(attrNames, function(i, attrName) {
                 table += buildDealAttributesDom(attrName, groupedAttr[attrName]);
             });
 
@@ -300,7 +301,7 @@
             var dom = '<tr><td>' + attributeKey + '</td><td>' +
                 '<select style="width: 100%" name="' + attributeKey + '" class="deal-attribute-list">';
 
-            $.each(attributeValues, function (index, attr) {
+            $.each(attributeValues, function(index, attr) {
                 var id = attr.Id;
                 var value = attr.Value;
                 dom += '<option value="' + id + '">' + value + '</option>';

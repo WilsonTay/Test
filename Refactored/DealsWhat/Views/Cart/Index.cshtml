@@ -47,7 +47,7 @@
                 <span>Total</span><span id="cart-total"></span>
             </li>
         </ul>
-        <a id="btn-checkout-cart" href="@Url.Action("CheckOut", "Order")" class="btn btn-primary btn-lg">Checkout</a>
+        <button id="btn-checkout-cart" class="btn btn-primary btn-lg">Checkout</button>
     </div>
 </div>
 
@@ -59,6 +59,10 @@
             loadCart();
         });
 
+        $('#btn-checkout-cart').click(function(e) {
+            window.location.href = '@Url.Action("CheckOut", "Order")';
+        });
+
         function setDefaultCartView() {
             var tbody = $('#cart-item-tbody');
 
@@ -66,8 +70,8 @@
 
             tbody.append(dom);
 
-            $('#btn-update-cart').attr('disabled', true);
-            $('#btn-checkout-cart').attr('disabled', true);
+            $('#btn-update-cart').attr('disabled', 'disabled');
+            $('#btn-checkout-cart').attr('disabled', 'disabled');
         }
 
         function setHasItemCartView() {

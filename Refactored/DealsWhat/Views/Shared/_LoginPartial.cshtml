@@ -23,7 +23,7 @@
                 </div>*@
         </li>
         <li>
-            <a href="@Url.Action("Manage", "Account")"><i class="fa fa-user"></i>Hi, @User.Identity.Name</a>
+            <a href="@Url.Action("Manage", "Account")"><i class="fa fa-user"></i>Hi, <span id="header-username"></span></a>
         </li>
         <li>
             <a onClick="logout()"><i class="fa fa-sign-out"></i>Log Out</a>
@@ -153,15 +153,42 @@
 
     $(document).ready(function () {
         var token = $.cookie('token');
-
+        setupAjaxToUseToken();
         if (token != null && token != "") {
             $('#header-logged-in').show();
             $('#header-not-logged-in').hide();
+
+            var email = $.cookie('email');
+
+            if (email == null || email == '') {
+                loadEmailAddress();
+                email = $.cookie('email');
+            }
+
+            $('#header-username').text(email);
         } else {
             $('#header-logged-in').hide();
             $('#header-not-logged-in').show();
         }
     });
+
+    function loadEmailAddress() {
+        $.ajax({
+            url: baseUrl + "api/account/userinfo",
+            method: 'get',
+            dataType: 'json',
+            cache: false,
+            success: function (profile) {
+
+                console.log(profile);
+                var email = profile.Email;
+
+                $.cookie('email', email, { path: '/' });
+            },
+            complete: function () {
+            }
+        });
+    }
 
     function logout() {
         $.removeCookie('token', { path: '/' });

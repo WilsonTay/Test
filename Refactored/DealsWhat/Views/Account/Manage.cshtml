@@ -1,4 +1,4 @@
-﻿<div class="gap"></div>
+﻿<div class="gap-medium"></div>
 
 <h3>Account Settings</h3>
 <div class="row">
@@ -6,16 +6,10 @@
         <aside class="sidebar-left">
             <ul class="nav nav-pills nav-stacked nav-arrow">
                 <li class="active">
-                    <a href="page-my-account-settings.html">Settings</a>
-                </li>
-                <li>
-                    <a href="page-my-account-addresses.html">Address Book</a>
+                    <a href="@Url.Action("Manage")">Settings</a>
                 </li>
                 <li>
                     <a href="@Url.Action("Order")">Orders History</a>
-                </li>
-                <li>
-                    <a href="page-my-account-wishlist.html">Wishlist</a>
                 </li>
             </ul>
         </aside>
@@ -23,7 +17,14 @@
     <div class="col-md-9">
         <div class="row">
             <div class="col-md-6">
+
+                <div class="alert alert-success profile-successfully-changed">Your profile has successfully been updated.</div>
+
                 <form>
+                    <div class="form-group">
+                        <label for="">E-mail</label><br />
+                        <label id="email" name="Email"></label>
+                    </div>
                     <div class="form-group">
                         <label for="">First Name</label>
                         <input id="first-name" name="FirstName" type="text" value="" class="form-control">
@@ -32,14 +33,7 @@
                         <label for="">Last Name</label>
                         <input id="last-name" name="LastName" type="text" value="" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="">E-mail</label>
-                        <input name="Email" type="text" value="" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Phone Number</label>
-                        <input id="phone-number" name="PhoneNumber" type="text" value="" class="form-control">
-                    </div>
+
 
                     <legend>Address</legend>
                     <div class="form-group">
@@ -72,9 +66,22 @@
 
 @section scripts {
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            loadDefaultView();
             loadProfile();
         });
+
+        function loadDefaultView() {
+            showUpdateProfileSuccessful(false);
+        }
+
+        function showUpdateProfileSuccessful(successful) {
+            if (successful) {
+                $('.profile-successfully-changed').show();
+            } else {
+                $('.profile-successfully-changed').hide();
+            }
+        }
 
         $('#btn-save-profile').click(function() {
             saveProfile();
@@ -94,6 +101,7 @@
                     $('#state').val(profile.DeliveryAddress.State);
                     $('#city').val(profile.DeliveryAddress.City);
                     $('#zip').val(profile.DeliveryAddress.PostCode);
+                    $('#email').text(profile.Email);
                 },
                 complete: function() {
                 }
@@ -120,7 +128,8 @@
                 data: JSON.stringify(data),
                 contentType: "application/json",
                 cache: false,
-                success: function() {
+                success: function () {
+                    showUpdateProfileSuccessful(true);
                 },
                 complete: function() {
                 }

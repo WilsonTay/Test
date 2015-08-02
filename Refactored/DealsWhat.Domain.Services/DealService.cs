@@ -84,5 +84,12 @@ namespace DealsWhat.Domain.Services
 
             return null;
         }
+
+        public IEnumerable<DealCategoryModel> GetAllCategories()
+        {
+            var repository = this.repositoryFactory.CreateDealCategoryRepository();
+
+            return repository.GetAll();
+        }
     }
 }

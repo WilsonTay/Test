@@ -3,8 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Text;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.UI;
 using DealsWhat.Models;
@@ -47,7 +49,7 @@ namespace DealsWhat.Controllers
             return View("");
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult PaymentResponseUrl()
         {
             var merchantCode = Request["MerchantCode"];
@@ -86,76 +88,35 @@ namespace DealsWhat.Controllers
             }
         }
 
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
         public ActionResult PaymentSuccess()
         {
             return View();
         }
 
-        [HttpPost]
-        public ActionResult ProcessPayment(NewPaymentViewModel newPayment)
-        {
-            var amount = 20;
-            var productDescription = "Order " + orderId;
-            var username = "a@a.com";
-            var email = username;
-            var phoneNumber = "0162223322";
-            var signature = "sig";
-
-            var request = WebRequest.Create(paymentUrl);
-
-            var postData = "MerchantCode=" + merchantCode;
-            postData += "&PaymentId=";
-            postData += "&RefNo=" + orderId;
-            postData += "&Amount=" + amount;
-            postData += "&Currency=" + currency;
-            postData += "&ProdDesc=" + productDescription;
-            postData += "&UserName=" + username;
-            postData += "&UserEmail=" + email;
-            postData += "&UserContact=" + phoneNumber;
-            postData += "&Remark=";
-            postData += "&Lang=";
-            postData += "&Signature=" + signature;
-            postData += "&ResponseURL=" + "http://localhost:1441/Order/PaymentResponseUrl";
-            postData += "&BackendURL" + "http://localhost:1441/Order/PaymentResponseUrl";
-
-            var data = Encoding.ASCII.GetBytes(postData);
-
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = data.Length;
-
-            using (var stream = request.GetRequestStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
-
-            var response = request.GetResponse();
-            var responseStream = response.GetResponseStream();
-
-            return File(responseStream, response.ContentType);
-        }
-
-        [HttpPost]
-        public ActionResult CheckOutPost()
+        [System.Web.Mvc.HttpPost]
+        public ActionResult CheckOutPost(NewPaymentViewModel formData)
         {
             var token =
                 "kjXTyfBMDI-Op2TjNwnaVzJT7cGQxxNhZo9Jm0bUGkdHc6S--AD32ZLkdj3P18g8xUM6ZIZYmyW1r5ehg4ZXPlYx782l5ylVyD6bR-JiTsZoeP3HoYA4nrfSPjlYoimvWGy7Me2XyJGd4uDw2ooO5ljPxaKByN91xXQ1L5B2Qhm2gmvnsvnIFTvhaEgpLYppKOTIuR1tNFkVs_aVv3H_gAPSJBG-rZJUFeDPq49790GZqTggu_kn3eheo6zrD5ISFr46ErqCP-hYtOsLGCEW_1UenImG9ukJ6fQXjtP4GwHd6kEj_hEVkfV4CoIJut0RUlABGnu1w3B9JSURFnhBUxj7Urr6kCU-KLVyc2uCMJoeuq88cPk1UX5dw2cIbvnDqDA_pgPF8FXjXKzCItyxF94nvAfKwxZLgShn55bclamWAFkBItVNENbwTPCMVFnsS2K3PcCEySUM1RwwWZyXh7SCYUW2Rz4OJGUFSfdLiqjDtTVxXuH10emklveiul0A";
-            var orderId = string.Empty;
+            var orderId = formData.OrderId;
 
-            var orderRequest = WebRequest.Create(newOrderUrl);
-            orderRequest.Headers.Add("Authorization", "Bearer " + token);
-            orderRequest.Method = "post";
-            orderRequest.ContentLength = 0;
-            var newOrderResponse = (HttpWebResponse)orderRequest.GetResponse();
-
-            if (newOrderResponse.StatusCode == HttpStatusCode.Created)
+            if (string.IsNullOrWhiteSpace(orderId))
             {
-                using (var reader = new StreamReader(newOrderResponse.GetResponseStream()))
+                var orderRequest = WebRequest.Create(newOrderUrl);
+                orderRequest.Headers.Add("Authorization", "Bearer " + token);
+                orderRequest.Method = "post";
+                orderRequest.ContentLength = 0;
+                var newOrderResponse = (HttpWebResponse)orderRequest.GetResponse();
+
+                if (newOrderResponse.StatusCode == HttpStatusCode.Created)
                 {
-                    var json = reader.ReadToEnd();
-                    var order = JsonConvert.DeserializeObject<OrderViewModel>(json);
-                    orderId = order.Id;
+                    using (var reader = new StreamReader(newOrderResponse.GetResponseStream()))
+                    {
+                        var json = reader.ReadToEnd();
+                        var order = JsonConvert.DeserializeObject<OrderViewModel>(json);
+                        orderId = order.Id;
+                    }
                 }
             }
 

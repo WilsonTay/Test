@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using AutoMapper;
 using DealsWhat.Application.WebApi.Models;
 using DealsWhat.Domain.Interfaces;
 using DealsWhat.Domain.Interfaces.Helpers;
@@ -13,6 +14,13 @@ using DealsWhat.Domain.Services;
 
 namespace DealsWhat.Application.WebApi.Controllers
 {
+    public class FrontEndCategory
+    {
+        public string Name { get; set; }
+        public string Icon { get; set; }
+        public string Id { get; set; }
+    }
+
     //[Authorize]
     public class FrontEndDealsController : ApiController
     {
@@ -47,6 +55,10 @@ namespace DealsWhat.Application.WebApi.Controllers
                         src.DealAttributes.Add(converted);
                     }
                 });
+
+            AutoMapper.Mapper.CreateMap<DealCategoryModel, FrontEndCategory>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Key.ToString()))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.ToString()));
 
             AutoMapper.Mapper.CreateMap<DealModel, FrontEndSpecificDeal>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Key.ToString()))
@@ -140,6 +152,18 @@ namespace DealsWhat.Application.WebApi.Controllers
             return convertedSearchResult;
         }
 
+
+        [HttpGet]
+        [Route("api/categories")]
+        public IEnumerable<FrontEndCategory> GetCategories()
+        {
+            var categories = this.dealService.GetAllCategories();
+
+            var frontEndCategories = categories.Select(a => Mapper.Map<FrontEndCategory>(a)).ToList();
+
+            return frontEndCategories;
+        }
+
         private static bool KeyHasValue(KeyValuePair<string, string> kvp)
         {
             if (!kvp.Equals(default(KeyValuePair<string, string>)) && !string.IsNullOrEmpty(kvp.Value))
@@ -154,6 +178,14 @@ namespace DealsWhat.Application.WebApi.Controllers
         [HttpOptions]
         [Route("api/deal/")]
         public HttpResponseMessage Options()
+        {
+            return new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
+        }
+
+        [AllowAnonymous]
+        [HttpOptions]
+        [Route("api/categories/")]
+        public HttpResponseMessage CategoriesOptions()
         {
             return new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
         }

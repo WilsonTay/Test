@@ -56,6 +56,7 @@ namespace DealsWhat.Infrastructure.DataAccess
                 .Include("CartItems.AttributeValues")
                 .Include("Orders.Orderlines.AttributeValues")
                 .Include("Orders.Orderlines.Deal")
+                .Include("Orders.Orderlines.Deal.Images")
                 .Include("Orders.Orderlines.DealOption")
                 .Include("Orders.BillingAddress")
                 .Include("BillingAddress")
