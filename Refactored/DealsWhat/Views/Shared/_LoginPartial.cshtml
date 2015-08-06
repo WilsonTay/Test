@@ -40,10 +40,10 @@
     <ul class="login-register">
 
         <li>
-            <a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top"><i class="fa fa-sign-in"></i>Sign in</a>
+            <a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top"><i class="fa fa-sign-in"></i>Login</a>
         </li>
         <li>
-            <a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top"><i class="fa fa-edit"></i>Sign up</a>
+            <a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top"><i class="fa fa-edit"></i>Register</a>
         </li>
         <li>
             @using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }))
@@ -51,7 +51,7 @@
                 @Html.AntiForgeryToken()
                 <button name="provider" type="submit" value="facebook" class="btn-bootstrap btn-block btn-social btn-facebook" style="width: 200px">
                     <i class="fa fa-facebook"></i>
-                    <div align="right">Sign in with Facebook</div>
+                    <div align="right">Login with Facebook</div>
                 </button>
             }
         </li>

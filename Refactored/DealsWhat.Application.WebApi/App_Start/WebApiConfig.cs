@@ -4,12 +4,14 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using Autofac;
 using Autofac.Integration.WebApi;
 using DealsWhat.Application.WebApi.Controllers;
 using DealsWhat.Application.WebApi.Models;
 using DealsWhat.Domain.Interfaces;
 using DealsWhat.Infrastructure.DataAccess;
+using log4net;
 using Microsoft.Owin.Security.OAuth;
 
 
@@ -58,5 +60,7 @@ namespace DealsWhat.Application.WebApi
             );
 
         }
+
+
     }
 }

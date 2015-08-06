@@ -54,6 +54,7 @@
     <Compile Include="DealStatus.cs" />
     <Compile Include="IAggregateRoot.cs" />
     <Compile Include="IEntity.cs" />
+    <Compile Include="MerchantModel.cs" />
     <Compile Include="NewCartItemModel.cs" />
     <Compile Include="OrderlineModel.cs" />
     <Compile Include="OrderModel.cs" />

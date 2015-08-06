@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -33,6 +34,14 @@ namespace DealsWhat.Controllers
         private string paymentUrl = "http://localhost:13251/api/payment";
         private string newOrderUrl = "http://localhost:39874/api/order/new";
         private string orderPaidUrl = "http://localhost:39874/api/order/paid";
+
+        public OrderController()
+        {
+            var webserviceBaseUrl = ConfigurationManager.AppSettings["WebserviceBaseUrl"];
+            newOrderUrl = webserviceBaseUrl + "api/order/new";
+            orderPaidUrl = webserviceBaseUrl + "api/order/paid";
+            paymentUrl = ConfigurationManager.AppSettings["PaymentUrl"];
+        }
 
         public ActionResult CheckOut()
         {

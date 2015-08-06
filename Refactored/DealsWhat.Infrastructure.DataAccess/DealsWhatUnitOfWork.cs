@@ -63,6 +63,8 @@ namespace DealsWhat.Infrastructure.DataAccess
             modelBuilder.Entity<DealCategoryModel>().HasKey(a => a.Key)
                 .HasMany<DealModel>(a => a.Deals).WithRequired();
 
+            modelBuilder.Entity<MerchantModel>().HasKey(a => a.Key)
+          .HasMany<DealModel>(a => a.Deals).WithRequired();
 
             modelBuilder.Entity<DealModel>().HasKey(a => a.Key)
                 .HasMany<DealOptionModel>(a => a.Options).WithRequired();
@@ -106,6 +108,7 @@ namespace DealsWhat.Infrastructure.DataAccess
 
         public DbSet<OrderModel> Orders { get; set; }
 
+        public DbSet<MerchantModel> Merchants { get; set; } 
         public DbSet<OrderlineModel> Orderlines { get; set; }
 
         public IDbSet<TEntity> Set<TEntity>() where TEntity : class

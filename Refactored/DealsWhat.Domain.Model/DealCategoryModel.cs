@@ -12,6 +12,8 @@ namespace DealsWhat.Domain.Model
 
         public string Name { get; private set; }
 
+        public string Icon { get; private set; }
+
         public IList<DealModel> Deals { get; }
 
         private DealCategoryModel()
@@ -28,6 +30,11 @@ namespace DealsWhat.Domain.Model
             };
         }
 
+        public void SetIcon(string icon)
+        {
+            Icon = icon;
+        }
+
         public void AddDeal(DealModel deal)
         {
             if (Deals.Contains(deal))
@@ -36,6 +43,16 @@ namespace DealsWhat.Domain.Model
             }
 
             Deals.Add(deal);
+        }
+
+        public void RemoveDeal(DealModel deal)
+        {
+            Deals.Remove(deal);
+        }
+
+        public void SetName(string name)
+        {
+            Name = name;
         }
     }
 }

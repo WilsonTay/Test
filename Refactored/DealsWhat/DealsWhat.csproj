@@ -250,6 +250,7 @@
     <Compile Include="Controllers\DealApiController.cs" />
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
+    <Compile Include="Controllers\GeneralTermsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrdersApiController.cs" />
@@ -320,6 +321,7 @@
     <Content Include="Content\css\schemes\violet-red.css" />
     <Content Include="Content\css\schemes\violet.css" />
     <Content Include="Content\css\styles.css" />
+    <Content Include="Content\favicon.ico" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\img\100x100.png" />
     <Content Include="Content\img\1024x747.png" />
@@ -388,6 +390,7 @@
     <Content Include="Content\img\deals\9.jpg" />
     <Content Include="Content\img\deals\9_thumb.jpg" />
     <Content Include="Content\img\dw-logo.png" />
+    <Content Include="Content\img\ipay88.png" />
     <Content Include="Content\img\logo-small-dark.png" />
     <Content Include="Content\img\logo-small.png" />
     <Content Include="Content\img\logo.png" />
@@ -676,6 +679,7 @@
     <Content Include="Views\ContactUs\Index.cshtml" />
     <Content Include="Views\Account\Order.cshtml" />
     <Content Include="Views\Order\PaymentSuccess.cshtml" />
+    <Content Include="Views\GeneralTerms\Index.cshtml" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

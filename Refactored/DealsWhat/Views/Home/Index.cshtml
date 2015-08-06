@@ -73,6 +73,7 @@
 </div>
 
 @section scripts {
+    <script src="~/Content/js/moment.js"></script>
     <script>
         var baseUrl = '@ConfigurationManager.AppSettings["WebserviceBaseUrl"]';
         var currentUrl = '@Url.Content("~")';
@@ -212,11 +213,14 @@
                 coverPageUrl = sortedImages[0];
             }
 
+            var endTime = moment(deal.EndTime, moment.ISO_8601).format();
+            console.log(endTime);
+
             var dom = '<a class="col-md-4 col-masonry popup-text view-deal-link" href="' + currentUrl + 'deal/index/' + deal.CanonicalUrl + '" data-deal-id="' + deal.Id + '" data-effect="mfp-move-from-top">' +
                 '<div class="product-thumb"><header class="product-header"><img height="197" src="' + coverPageUrl + '?width=190&height=126" />' +
                 '<div class="product-quick-view"><span class="fa fa-eye"></span></div></header>' +
                 '<div class="product-inner"><table height="70" align="center"><tr><td valign="top"><h5 class="product-title">' + deal.ShortTitle + '</h5></td></tr></table><div class="product-desciption">' + deal.ShortDescription + '</div><div class="product-meta">' +
-                '<span class="product-time"><span data-countdown="' + deal.EndTime + '" class="countdown countdown-inline"></span></span><ul class="product-price-list">' +
+                '<span class="product-time"><span data-countdown="' + endTime + '" class="countdown countdown-inline"></span></span><ul class="product-price-list">' +
                 '<li><span class="product-price">RM ' + deal.SpecialPrice.toFixed(2) + '</span><span class="product-old-price">RM ' + deal.RegularPrice.toFixed(2) + '</span>' +
                 '</li></ul></div><p class="product-location"><i class="fa fa-map-marker"></i>&nbsp;Selangor</p></div></div></a>';
 

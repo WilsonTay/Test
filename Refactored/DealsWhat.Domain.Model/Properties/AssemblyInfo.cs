@@ -37,3 +37,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("DealsWhat.Domain.Services.Tests")]
 [assembly: InternalsVisibleTo("DealsWhat.Domain.Models.Tests")]
 [assembly: InternalsVisibleTo("DealsWhat.Domain.Test.Common")]
+[assembly: InternalsVisibleTo("DealsWhat Admin")]

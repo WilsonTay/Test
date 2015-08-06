@@ -8,7 +8,7 @@ namespace DealsWhat.Domain.Model
 {
     public sealed class DealImageModel
     {
-        public string Key { get; private set; }
+        public string Key { get; internal set; }
         public string RelativeUrl { get; private set; }
         public int Order { get; private set; }
 
@@ -25,6 +25,11 @@ namespace DealsWhat.Domain.Model
                 Order = order,
                 Key = Guid.NewGuid().ToString()
             };
+        }
+
+        public void SetOrder(int order)
+        {
+            Order = order;
         }
     }
 }

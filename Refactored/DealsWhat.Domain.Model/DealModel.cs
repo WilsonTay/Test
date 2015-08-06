@@ -11,18 +11,18 @@ namespace DealsWhat.Domain.Model
         private readonly IList<DealOptionModel> options;
         private readonly IList<DealImageModel> images;
 
-        public string ShortTitle { get; private set; }
-        public string LongTitle { get; private set; }
-        public string ShortDescription { get; private set; }
-        public string LongDescription { get; private set; }
+        public string ShortTitle { get; internal set; }
+        public string LongTitle { get; internal set; }
+        public string ShortDescription { get; internal set; }
+        public string LongDescription { get; internal set; }
         public double RegularPrice { get; private set; }
         public double SpecialPrice { get; private set; }
         public string SKU { get; private set; }
         public DateTime DateAdded { get; private set; }
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
-        public string FinePrint { get; private set; }
-        public string Highlight { get; private set; }
+        public string FinePrint { get; internal set; }
+        public string Highlight { get; internal set; }
         public bool IsFeatured { get; private set; }
         public DealStatus Status { get; private set; }
 
@@ -78,10 +78,21 @@ namespace DealsWhat.Domain.Model
             return deal;
         }
 
+        public void SetStartAndEndTime(DateTime startTime, DateTime endTime)
+        {
+            StartTime = startTime;
+            EndTime = endTime;
+        }
+
         public void SetPrice(double regularPrice, double specialPrice)
         {
             RegularPrice = regularPrice;
             SpecialPrice = specialPrice;
+        }
+
+        public void SetStatus(DealStatus status)
+        {
+            Status = status;
         }
 
         private static string GenerateSKU(DealModel deal)

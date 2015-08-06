@@ -58,6 +58,7 @@ namespace DealsWhat.Application.WebApi.Controllers
 
             AutoMapper.Mapper.CreateMap<DealCategoryModel, FrontEndCategory>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Key.ToString()))
+                 .ForMember(dest => dest.Icon, opt => opt.MapFrom(src => src.Icon.ToString()))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.ToString()));
 
             AutoMapper.Mapper.CreateMap<DealModel, FrontEndSpecificDeal>()

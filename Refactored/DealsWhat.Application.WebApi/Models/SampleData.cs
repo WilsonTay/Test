@@ -14,8 +14,8 @@ namespace DealsWhat.Application.WebApi.Models
         {
 
             var categories = CreateDealCategories(context);
-            //var merchants = CreateMerchants(context);
-            var deals = CreateDeals(context, categories);
+            var merchants = CreateMerchants(context);
+            var deals = CreateDeals(context, merchants, categories);
             var users = CreateUsers(context);
             CreateDealOptions(context, deals);
             // CreateDealComments(context, deals, users);
@@ -156,30 +156,30 @@ namespace DealsWhat.Application.WebApi.Models
             }
         }
 
-        //private static IList<Merchant> CreateMerchants(DealsWhatUnitOfWork context)
-        //{
-        //    var merchants = new List<Merchant>();
+        private static IList<MerchantModel> CreateMerchants(DealsWhatUnitOfWork context)
+        {
+            var merchants = new List<MerchantModel>();
 
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        var merchant = new Merchant
-        //        {
-        //            BusinessRegNumber = "RegNumber",
-        //            EmailAddress = "email@email.com",
-        //            Id = Guid.NewGuid(),
-        //            Website = "http://www.website.com",
-        //            PhoneNumber = "010-20318122",
-        //            Name = string.Format("Merchant {0}", i),
-        //            About = "About merchant",
-        //            Address = "address"
-        //        };
+            for (int i = 0; i < 10; i++)
+            {
+                var merchant = new MerchantModel
+                {
+                    BusinessRegNumber = "RegNumber",
+                    EmailAddress = "email@email.com",
+                    Key = Guid.NewGuid().ToString(),
+                    Website = "http://www.website.com",
+                    PhoneNumber = "010-20318122",
+                    Name = string.Format("Merchant {0}", i),
+                    About = "About merchant",
+                    Address = "address"
+                };
 
-        //        merchants.Add(merchant);
-        //        context.Merchants.Add(merchant);
-        //    }
+                merchants.Add(merchant);
+                context.Merchants.Add(merchant);
+            }
 
-        //    return merchants;
-        //}
+            return merchants;
+        }
 
         private static IList<DealCategoryModel> CreateDealCategories(DealsWhatUnitOfWork context)
         {
@@ -225,7 +225,7 @@ namespace DealsWhat.Application.WebApi.Models
 
         }
 
-        private static List<DealModel> CreateDeals(DealsWhatUnitOfWork context, IList<DealCategoryModel> categories)
+        private static List<DealModel> CreateDeals(DealsWhatUnitOfWork context, IList<MerchantModel> merchants, IList<DealCategoryModel> categories)
         {
             var description = GetDescription();
             var fineprint = GetFinePrint();
@@ -245,7 +245,7 @@ namespace DealsWhat.Application.WebApi.Models
                 }
 
                 var randomCategory = categories[random.Next(0, categories.Count)];
-                // var randomMerchant = merchants[random.Next(0, merchants.Count)];
+                 var randomMerchant = merchants[random.Next(0, merchants.Count)];
 
                 var shortTitle = string.Format("Sukiyaki Buffet Lunch at IOI Mall Puchong {0}{1}", randomCategory.Name,
                     i.ToString());
@@ -278,6 +278,7 @@ namespace DealsWhat.Application.WebApi.Models
                 //};
 
                 randomCategory.AddDeal(deal);
+                randomMerchant.Deals.Add(deal);
 
                 deals.Add(deal);
                 context.Deals.Add(deal);

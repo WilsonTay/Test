@@ -7,12 +7,20 @@
     <h3 style="margin-bottom: 0px">Choose your deal</h3>
     <table class="table table-condensed">
         <thead>
-            <tr>
-                <th width="100%"></th>
-            </tr>
+        <tr>
+            <th width="100%"></th>
+        </tr>
         </thead>
         <tbody id="deal-options-table-body"></tbody>
     </table>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger not-logged-in-purchased">You need to be logged in to make purchase.
+                <a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top">Click here to Login</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -127,7 +135,24 @@
         var baseUrl = '@ConfigurationManager.AppSettings["WebserviceBaseUrl"]';
         var dealId;
 
+        $(document).ready(function () {
+            loadDealInformation();
+            $('.deal-attribute-list').select2({
+                minimumResultsForSearch: Infinity
+            });
+
+            $('.cart-successfully-added').hide();
+            $('.not-logged-in-purchased').hide();
+        });
+
+
         $('#deal-options-table-body').on('click', '.purchase-deal-option-button', function() {
+
+            if (!isLoggedIn()) {
+                $('.not-logged-in-purchased').show();
+            } else {
+                $('.not-logged-in-purchased').hide();
+            }
 
             var form = $(this).closest('form');
             var selects = form.find('select');
@@ -170,21 +195,10 @@
             });
         });
 
-        $(document).ready(function() {
-            loadDealInformation();
-            $('.deal-attribute-list').select2({
-                minimumResultsForSearch: Infinity
-            });
-
-            $('.cart-successfully-added').hide();
-        });
 
         function loadDealTimeLeft(deal) {
             var dateStarted = deal.StartTime;
             var dateEnded = deal.EndTime;
-
-            console.log(dateStarted);
-            console.log(dateEnded);
 
             var element = $('#deal-time-left');
             if (dateStarted > dateEnded) {
@@ -202,11 +216,11 @@
 
         function handleDealNotEnded(deal, element) {
 
-            var endTime = moment(deal.EndTime, 'M/d/yyyy hh:mm:ss tt');
+            var endTime = moment(deal.EndTime, moment.ISO_8601);
             var temp = $('<div id="deal-countdown" data-countdown="' + endTime + '" class="countdown countdown-inline"></div>');
 
             element.append(temp);
-
+       
             $('#deal-countdown').countdown({
                 unixFormat: true
             });

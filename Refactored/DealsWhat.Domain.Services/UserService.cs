@@ -32,7 +32,7 @@ namespace DealsWhat.Domain.Services
         {
             var user = GetUserByEmail(emailAddress);
 
-            if (updateUserModel.BillingAddress!=null && IsNewAddress(updateUserModel.BillingAddress))
+            if (updateUserModel.BillingAddress != null && IsNewAddress(updateUserModel.BillingAddress))
             {
                 user.SetBillingAddress(updateUserModel.BillingAddress);
             }

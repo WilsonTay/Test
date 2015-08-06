@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -13,6 +14,7 @@ using DealsWhat.Application.WebApi.Models;
 using DealsWhat.Application.WebApi.Providers;
 using DealsWhat.Domain.Interfaces;
 using DealsWhat.Infrastructure.DataAccess;
+using log4net.Config;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -32,6 +34,8 @@ namespace DealsWhat.Application.WebApi
 
             HttpConfiguration config = new HttpConfiguration();
 
+            XmlConfigurator.Configure();
+            config.Services.Add(typeof(IExceptionLogger), new WebApiContext.GlobalExceptionLogger());
             config.DependencyResolver = WebApiContext.DefaultResolver;
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(

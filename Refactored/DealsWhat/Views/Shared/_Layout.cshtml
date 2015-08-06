@@ -29,6 +29,7 @@
     <![endif]-->
     <!-- Your custom styles (blank file) -->
     <link rel="stylesheet" href="~/content/css/mystyles.css">
+    <link rel="icon" href="@Url.Content("~/content/favicon.ico")"/>
 
     @RenderSection("styles", required: false)
 
@@ -139,6 +140,7 @@
                             <a href="@Url.Action("Index", "Home")">
                                 <img src="~/content/img/dw-logo.png" alt="logo" title="logo" class="" width="90px">
                             </a>
+                     
                             <p>&nbsp;</p>
                             @*                            <ul class="list list-social">
                                     <li>
@@ -158,6 +160,8 @@
                                     </li>
                                 </ul>*@
                             <p>Discover easy and pleasing shopping experience with DealsWhat. With our great mix of big name stores and offerings, you'll be spoilt for choice.</p>
+                            <div class="gap-small"></div>
+                            <img src="/Content/img/ipay88.png" style="width:90px">
                         </div>
                         <div class="col-md-3">
                             <h4>Sign Up To Our Newsletters</h4>
@@ -264,6 +268,12 @@
         setupAjaxToUseToken();
     });
 
+    function isLoggedIn() {
+        var token = $.cookie('token');
+
+        return (token != null && token != "");
+    }
+
     function setupAjaxToUseToken() {
         var token = $.cookie('token');
 
@@ -277,34 +287,36 @@
     }
 
     $('#btn-register').click(function () {
+        var username = $('#register-email').val();
+        var password = $('#register-password').val();
+        var confirmpassword = $('#register-confirm-password').val();
 
         var payload = {};
-        payload.email = $('#register-email').val();
-        payload.password = $('#register-password').val();
-        payload.confirmpassword = $('#register-confirm-password').val();
+        payload.email = username;
+        payload.password = password;
+        payload.confirmpassword = confirmpassword;
 
         $.ajax({
             type: "POST",
             url: baseUrl + "api/account/register/",
             data: payload,
-            dataType: 'json',
             cache: false,
-            success: function (deal) {
-                // TODO: If fail?
-                location.reload();
+            success: function () {
+
+                performLogin(username, password);
             },
             error: function() {
-                alert('a');
+                alert('Failed to register.');
             },
             complete: function () {
             }
         });
     });
 
-    $('#btn-login').click(function () {
+    function performLogin(username, password) {
         var payload = {};
-        payload.username = $('#login-email').val();
-        payload.password = $('#login-password').val();
+        payload.username = username;
+        payload.password = password;
         payload.grant_type = 'password';
 
         var json = JSON.stringify(payload);
@@ -316,18 +328,27 @@
             cache: false,
             success: function (result) {
                 // TODO: If fail?
-                alert(result);
+
                 var token = result.access_token;
 
                 $.cookie('token', token, { path: '/' });
 
-          
+
 
                 location.reload();
+            },
+            error: function () {
+                alert('Failed to login. Your credentials may be incorrect.');
             },
             complete: function () {
             }
         });
+    }
+
+    $('#btn-login').click(function () {
+       var username = $('#login-email').val();
+       var password = $('#login-password').val();
+        performLogin(username, password);
     });
 
 

@@ -54,7 +54,7 @@ namespace DealsWhat.Domain.Services
                     .ToList();
             }
 
-            return deals;
+            return deals.Where(d => d.Status == DealStatus.Published);
         }
 
         private static bool ContainsIgnoreCase(string compared, string searchTerm)
