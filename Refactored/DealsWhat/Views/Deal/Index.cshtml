@@ -96,8 +96,25 @@
 
                 </li>
                 <li>
-                    <span class="product-page-meta-title">0 bought</span>
+                    <span id="deal-order-count" class="product-page-meta-title">0 bought</span>
                 </li>
+                <li>
+                    <span class="product-page-meta-title">Share this deal</span>
+                    <!-- COUNTDOWN -->
+                    <ul class="list list-social">
+                        <li>
+                            <a class="fa fa-facebook box-icon" href="https://www.facebook.com/sharer/sharer.php?u=@Request.Url" data-toggle="tooltip" title="" data-original-title="Facebook"></a>
+                        </li>
+                        <li>
+                            <a class="fa fa-twitter box-icon" href="https://twitter.com/intent/tweet?url=@Request.Url" data-toggle="tooltip" title="" data-original-title="Twitter"></a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="product-page-meta-title">Need Help? <a href="@Url.Action("Index", "Faq")">Read our FAQ</a></span>
+                    <span class="product-page-meta-title"><a href="mailto:support@dealswhat.com">Contact Us Online</a></span>
+                </li>
+             
             </ul>
         </div>
         @*@Html.Partial("_Sidebar", Model.PopularDeals)*@
@@ -249,6 +266,7 @@
 
                     $('#deal-total-savings').html("RM " + totalSavings.toFixed(2));
                     $('#deal-discount-percentage').html(percentage + "%");
+                    $('#deal-order-count').text(deal.OrderCount + ' bought');
 
                     var imageData = [];
                     $.each(deal.ImageUrls, function(index, img) {

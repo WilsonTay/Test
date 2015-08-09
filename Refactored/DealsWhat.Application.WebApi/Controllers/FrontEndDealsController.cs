@@ -25,10 +25,12 @@ namespace DealsWhat.Application.WebApi.Controllers
     public class FrontEndDealsController : ApiController
     {
         private readonly IDealService dealService;
+        private readonly IOrderService orderService;
 
-        public FrontEndDealsController(IDealService dealService)
+        public FrontEndDealsController(IDealService dealService, IOrderService orderService)
         {
             this.dealService = dealService;
+            this.orderService = orderService;
 
             AutoMapper.Mapper.CreateMap<DealModel, FrontEndDeal>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Key.ToString()))
@@ -149,6 +151,9 @@ namespace DealsWhat.Application.WebApi.Controllers
                 convertedSearchResult.ImageUrls[i] =
                     PathHelper.ConvertRelativeToAbsoluteDealImagePath(convertedSearchResult.ImageUrls[i]);
             }
+
+            var orderCount = this.orderService.GetOrderCount(convertedSearchResult.Id);
+            convertedSearchResult.OrderCount = orderCount;
 
             return convertedSearchResult;
         }

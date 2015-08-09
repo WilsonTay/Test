@@ -45,8 +45,9 @@ namespace DealsWhat.Infrastructure.DataAccess
         public IEnumerable<OrderModel> GetAll()
         {
             return this.dbContext.Set<OrderModel>()
-                .Include("User")
+                //.Include("User")
                 .Include("Orderlines")
+                .Include("Orderlines.Deal")
                 .ToList();
         }
 

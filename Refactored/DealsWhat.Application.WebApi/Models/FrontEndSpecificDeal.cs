@@ -22,6 +22,8 @@ namespace DealsWhat.Application.WebApi.Models
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
 
+        public int OrderCount { get; set; }
+
         // TODO: Deal Options.
         public IList<FrontDealSpecificDealOption> DealOptions { get; set; }
 
