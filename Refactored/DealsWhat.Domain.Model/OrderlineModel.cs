@@ -8,6 +8,8 @@ namespace DealsWhat.Domain.Model
 {
     public class OrderlineModel : IEntity
     {
+        public int Quantity { get; private set; }
+
         public double SpecialPrice { get; private set; }
 
         public double RegularPrice { get; private set; }
@@ -47,8 +49,9 @@ namespace DealsWhat.Domain.Model
             }
 
             orderLine.Key = Guid.NewGuid().ToString();
-            orderLine.SpecialPrice = cartItem.DealOption.SpecialPrice;
-            orderLine.RegularPrice = cartItem.DealOption.RegularPrice;
+            orderLine.SpecialPrice = cartItem.DealOption.SpecialPrice * cartItem.Quantity;
+            orderLine.RegularPrice = cartItem.DealOption.RegularPrice * cartItem.Quantity;
+            orderLine.Quantity = cartItem.Quantity;
 
             return orderLine;
         }

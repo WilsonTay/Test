@@ -25,7 +25,7 @@ namespace DealsWhat.Domain.Services.Tests
         {
             fixture = new Fixture().Customize(new AutoMoqCustomization());
 
-            fixture.Register<IRepositoryFactory>(() => fixture.Create<FakeRepositoryFactory>());
+            fixture.Register<IUnitOfWork>(() => fixture.Create<FakeUnitOfWork>());
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace DealsWhat.Domain.Services.Tests
 
             mockedRepository.Setup(a => a.FindByEmailAddress(email)).Returns(sampleUser);
 
-            var service = new UserService(new FakeRepositoryFactory(userRepository: mockedRepository.Object));
+            var service = new UserService(new FakeUnitOfWorkFactory(userRepository: mockedRepository.Object));
             var actualUser = service.GetUserByEmail(email);
 
             actualUser.Key.ShouldBeEquivalentTo(key);
@@ -57,7 +57,7 @@ namespace DealsWhat.Domain.Services.Tests
 
             mockedRepository.Setup(a => a.FindByEmailAddress(email)).Returns(sampleUser);
 
-            var service = new UserService(new FakeRepositoryFactory(userRepository: mockedRepository.Object));
+            var service = new UserService(new FakeUnitOfWorkFactory(userRepository: mockedRepository.Object));
             var actualUser = service.GetUserByEmail(email);
 
             actualUser.Key.ShouldBeEquivalentTo(key);
@@ -108,8 +108,8 @@ namespace DealsWhat.Domain.Services.Tests
 
             fixture.Register<IUserRepository>(() => userRepository);
 
-            var fakeRepositoryFactory = fixture.Create<FakeRepositoryFactory>();
-            fixture.Register<IRepositoryFactory>(() => fakeRepositoryFactory);
+            var fakeRepositoryFactory = fixture.Create<FakeUnitOfWork>();
+            fixture.Register<IUnitOfWork>(() => fakeRepositoryFactory);
 
             var userService = fixture.Create<UserService>();
 

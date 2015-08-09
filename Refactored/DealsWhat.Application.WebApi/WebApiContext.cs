@@ -37,7 +37,7 @@ namespace DealsWhat.Application.WebApi
         private static IDependencyResolver CreateResolver()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterInstance<IRepositoryFactory>(new EFRepositoryFactory(new DealsWhatUnitOfWork()));
+            builder.RegisterInstance<IUnitOfWork>(new EFUnitOfWork(new DealsWhatDbContext()));
             builder.RegisterApiControllers(typeof(FrontEndDealsController).Assembly);
 
             builder.RegisterType<DealService>().As<IDealService>();
@@ -45,7 +45,7 @@ namespace DealsWhat.Application.WebApi
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<OrderService>().As<IOrderService>();
             builder.RegisterType<EFUserRepository>().As<IUserRepository>();
-          
+            builder.RegisterInstance<IUnitOfWorkFactory>(new EFUnitOfWorkFactory());
 
             var container = builder.Build();
 

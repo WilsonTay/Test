@@ -26,9 +26,7 @@
                     <th>Remove</th>
                 </tr>
             </thead>
-            <tbody id="cart-item-tbody">
-
-            </tbody>
+            <tbody id="cart-item-tbody"></tbody>
         </table>
         <a id="btn-update-cart" href="#" class="btn btn-primary">Update the cart</a>
     </div>
@@ -109,7 +107,7 @@
             var price = 0.0;
 
             $.each(carts, function(index, cart) {
-                price += cart.SpecialPrice;
+                price += cart.SpecialPrice * cart.Quantity;
             });
 
             return "RM " + price.toFixed(2);
@@ -135,16 +133,80 @@
             var dom = '';
             $.each(carts, function(index, cart) {
 
-                dom += '<tr>' +
+                var name = cart.ShortName;
+
+                $.each(cart.Attributes, function (index, attr) {
+                    name += '<br/><span class="product-desciption">' + attr.Name + ' (' + attr.Value + ')</span>';
+                });
+
+                dom += '<tr data-cart-item-id=' + cart.Id + '>' +
                     '<td class="cart-item-image"><a href="' + cart.DealUrl + '"><img height="70px" width="70px" src="' + cart.DealThumbnailUrl + '"/></a></td>' +
-                    '<td><a href="' + cart.DealUrl + '">' + cart.ShortName + '</a></td>' +
-                    '<td class="cart-item-quantity"><i class="fa fa-minus cart-item-minus"></i><input type="text" name="cart-quantity" class="cart-quantity" value="1" /><i class="fa fa-plus cart-item-plus"></i></td>' +
-                    '<td>' + cart.SpecialPrice + '</td>' +
+                    '<td><a href="' + cart.DealUrl + '">' + name + '</a></td>' +
+                    '<td class="cart-item-quantity"><i class="fa fa-minus cart-item-minus"></i><input type="text" name="cart-quantity" class="cart-quantity" value="' + cart.Quantity + '" /><i class="fa fa-plus cart-item-plus"></i></td>' +
+                    '<td> RM ' + (cart.Quantity * cart.SpecialPrice).toFixed(2) + '</td>' +
                     '<td class="cart-item-remove"><a class="fa fa-times"  onClick="removeCartItem(\'' + cart.Id + '\')"></a></td>' +
                     '</tr>';
             });
 
             tbody.append(dom);
+        }
+
+        $('#cart-item-tbody').on('click', '.cart-item-minus', function() {
+            var cartQuantityElement = $(this).parent().find('.cart-quantity');
+            var cartQuantity = cartQuantityElement.val();
+
+            cartQuantity--;
+
+            if (cartQuantity > 0) {
+                cartQuantityElement.val(cartQuantity);
+            }
+        });
+
+        $('#cart-item-tbody').on('click', '.cart-item-plus', function() {
+            var cartQuantityElement = $(this).parent().find('.cart-quantity');
+            var cartQuantity = cartQuantityElement.val();
+
+            cartQuantity++;
+
+            cartQuantityElement.val(cartQuantity);
+        });
+
+        $('#btn-update-cart').click(function() {
+            var tbody = $('#cart-item-tbody');
+            var cartItems = tbody.find('tr');
+            var models = [];
+
+            $.each(cartItems, function(index, cartRow) {
+                var cartId = $(cartRow).attr('data-cart-item-id');
+                var cartQuantityElement = $(cartRow).find('.cart-quantity');
+                var cartQuantity = cartQuantityElement.val();
+
+                console.log(cartId + " : " + cartQuantity);
+
+                var model = {};
+                model.CartId = cartId;
+                model.Quantity = cartQuantity;
+
+                models.push(model);
+            });
+
+            updateCartItems(models);
+        });
+
+        function updateCartItems(model) {
+            $.ajax({
+                url: baseUrl + "api/cart/",
+                method: 'put',
+                contentType: 'application/json',
+                data: JSON.stringify(model),
+                cache: false,
+                success: function(carts) {
+                    // Reload carts.
+                    location.reload();
+                },
+                complete: function() {
+                }
+            });
         }
     </script>
 }

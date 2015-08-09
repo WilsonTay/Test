@@ -8,5 +8,7 @@ namespace DealsWhat.Domain.Services
         void AddCartItem(string emailAddress, NewCartItemModel model);
         IEnumerable<CartItemModel> GetCartItems(string emailAddress);
         void RemoveCartItem(string emailAddress, string cartItemId);
+
+        void UpdateCartItem(string emailAddress, UpdateCartItemModel cartItemModel);
     }
 }

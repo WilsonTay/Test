@@ -5,6 +5,8 @@ namespace DealsWhat.Domain.Model
 {
     public class CartItemModel : IEntity
     {
+        public int Quantity { get; set; }
+
         public DealModel Deal { get; private set; }
 
         public DealOptionModel DealOption { get; private set; }
@@ -24,16 +26,21 @@ namespace DealsWhat.Domain.Model
             attributeValues = new List<DealAttributeModel>();
         }
 
+        public void SetQuantity(int quantity)
+        {
+            Quantity = quantity;
+        }
 
         public static CartItemModel Create(
-            DealModel deal, 
-            DealOptionModel dealOption, 
+            DealModel deal,
+            DealOptionModel dealOption,
             List<DealAttributeModel> selectedAttributeValues)
         {
             var cartItemModel = new CartItemModel
             {
                 Deal = deal,
-                DealOption = dealOption
+                DealOption = dealOption,
+                Quantity = 1
             };
 
             foreach (var attr in selectedAttributeValues)

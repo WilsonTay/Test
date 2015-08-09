@@ -78,7 +78,8 @@ namespace DealsWhat.Application.WebApi.Providers
             {
                 Uri expectedRootUri = new Uri(context.Request.Uri, "/");
 
-                if (expectedRootUri.AbsoluteUri == context.RedirectUri)
+                // TODO: SECURITY FLAW.
+                // if (expectedRootUri.AbsoluteUri == context.RedirectUri)
                 {
                     context.Validated();
                 }

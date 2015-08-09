@@ -11,11 +11,11 @@ namespace DealsWhat.Infrastructure.DataAccess
 {
     public class EFOrderRepository : IRepository<OrderModel>
     {
-        private DealsWhatUnitOfWork unitOfWork;
+        private DealsWhatDbContext dbContext;
 
-        public EFOrderRepository(DealsWhatUnitOfWork unitOfWork)
+        public EFOrderRepository(DealsWhatDbContext dbContext)
         {
-            this.unitOfWork = unitOfWork;
+            this.dbContext = dbContext;
         }
         public void Create(OrderModel model)
         {
@@ -24,15 +24,27 @@ namespace DealsWhat.Infrastructure.DataAccess
 
         public OrderModel FindByKey(string key)
         {
-            return this.unitOfWork.Set<OrderModel>()
-                .Include("User")
-                .Include("Orderlines")
-                .FirstOrDefault(a => a.Key == key);
+            try
+            {
+                //Removed user because it cannot be found when placing order.
+                var entity = this.dbContext.Set<OrderModel>()
+                    //.Include("User")
+                    .Include("Orderlines")
+                    .FirstOrDefault(a => a.Key == key);
+
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return null;
         }
 
         public IEnumerable<OrderModel> GetAll()
         {
-            return this.unitOfWork.Set<OrderModel>()
+            return this.dbContext.Set<OrderModel>()
                 .Include("User")
                 .Include("Orderlines")
                 .ToList();
@@ -40,7 +52,7 @@ namespace DealsWhat.Infrastructure.DataAccess
 
         public void Save()
         {
-            throw new NotImplementedException();
+            this.dbContext.SaveChanges();
         }
 
         public void Update(OrderModel model)

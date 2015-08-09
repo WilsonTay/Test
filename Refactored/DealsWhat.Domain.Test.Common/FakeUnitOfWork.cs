@@ -8,13 +8,13 @@ using DealsWhat.Domain.Model;
 
 namespace DealsWhat.Domain.Test.Common
 {
-    public class FakeRepositoryFactory : IRepositoryFactory
+    public class FakeUnitOfWork : IUnitOfWork
     {
         private readonly IRepository<DealModel> dealRepository;
         private readonly IRepository<DealCategoryModel> dealCategoryRepository;
         private readonly IUserRepository userRepository;  
 
-        public FakeRepositoryFactory(
+        public FakeUnitOfWork(
             IRepository<DealModel> dealRepository = null,
             IRepository<DealCategoryModel> dealCategoryRepository = null,
             IUserRepository userRepository = null)
@@ -34,7 +34,7 @@ namespace DealsWhat.Domain.Test.Common
             return dealCategoryRepository;
         }
 
-        IUserRepository IRepositoryFactory.CreateUserRepository()
+        IUserRepository IUnitOfWork.CreateUserRepository()
         {
             return userRepository;
         }

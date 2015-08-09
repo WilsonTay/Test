@@ -10,16 +10,17 @@ namespace DealsWhat.Domain.Services
 {
     public class UserService : IUserService
     {
-        private IRepositoryFactory repositoryFactory;
+        private IUnitOfWorkFactory unitOfWorkFactory;
 
-        public UserService(IRepositoryFactory repositoryFactory)
+        public UserService(IUnitOfWorkFactory unitOfWorkFactory)
         {
-            this.repositoryFactory = repositoryFactory;
+            this.unitOfWorkFactory = unitOfWorkFactory;
         }
 
         public IUserModel GetUserByEmail(string emailAddress)
         {
-            var user = this.repositoryFactory
+            var unitOfWork = this.unitOfWorkFactory.CreateUnitOfWork();
+            var user = unitOfWork
                 .CreateUserRepository()
                 .FindByEmailAddress(emailAddress);
 
@@ -30,7 +31,9 @@ namespace DealsWhat.Domain.Services
             string emailAddress,
             UpdateUserModel updateUserModel)
         {
-            var user = GetUserByEmail(emailAddress);
+            var unitOfWork = this.unitOfWorkFactory.CreateUnitOfWork();
+            var repository = unitOfWork.CreateUserRepository();
+            var user = repository.FindByEmailAddress(emailAddress);
 
             if (updateUserModel.BillingAddress != null && IsNewAddress(updateUserModel.BillingAddress))
             {
@@ -52,9 +55,7 @@ namespace DealsWhat.Domain.Services
                 user.SetLastName(updateUserModel.LastName);
             }
 
-            this.repositoryFactory
-                 .CreateUserRepository()
-                 .Save();
+            repository.Save();
         }
 
         private static bool IsNewAddress(AddressModel address)

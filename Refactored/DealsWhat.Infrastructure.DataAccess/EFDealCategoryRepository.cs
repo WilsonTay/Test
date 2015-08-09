@@ -11,16 +11,16 @@ namespace DealsWhat.Infrastructure.DataAccess
 {
     public class EFDealCategoryRepository : IRepository<DealCategoryModel>
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IDbContext dbContext;
 
-        public EFDealCategoryRepository(IUnitOfWork unitOfWork)
+        public EFDealCategoryRepository(IDbContext dbContext)
         {
-            this.unitOfWork = unitOfWork;
+            this.dbContext = dbContext;
         }
 
         public IEnumerable<DealCategoryModel> GetAll()
         {
-            foreach (var category in this.unitOfWork.Set<DealCategoryModel>())
+            foreach (var category in this.dbContext.Set<DealCategoryModel>())
             {
                 yield return category;
             }

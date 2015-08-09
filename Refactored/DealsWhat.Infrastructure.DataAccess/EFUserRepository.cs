@@ -12,17 +12,17 @@ namespace DealsWhat.Infrastructure.DataAccess
 {
     public class EFUserRepository : IUserRepository
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IDbContext dbContext;
 
-        public EFUserRepository(IUnitOfWork unitOfWork)
+        public EFUserRepository(IDbContext dbContext)
         {
-            this.unitOfWork = unitOfWork;
+            this.dbContext = dbContext;
         }
 
 
         public IEnumerable<IUserModel> GetAll()
         {
-            foreach (var user in this.unitOfWork.Set<ApplicationUser>())
+            foreach (var user in this.dbContext.Set<ApplicationUser>())
             {
                 yield return user;
             }
@@ -30,7 +30,7 @@ namespace DealsWhat.Infrastructure.DataAccess
 
         public void Update(IUserModel model)
         {
-            this.unitOfWork.Update(model);
+            this.dbContext.Update(model);
         }
 
         public void Create(IUserModel model)
@@ -45,13 +45,15 @@ namespace DealsWhat.Infrastructure.DataAccess
 
         public void Save()
         {
-            this.unitOfWork.Commit();
+            this.dbContext.Commit();
         }
 
         public IUserModel FindByEmailAddress(string emailAddress)
         {
             // TODO: Null cart.
-            var entity = this.unitOfWork.Set<ApplicationUser>()
+            var entity = this.dbContext.Set<ApplicationUser>()
+                .Include("CartItems.Deal")
+                .Include("CartItems.Deal.Images")
                 .Include("CartItems.DealOption")
                 .Include("CartItems.AttributeValues")
                 .Include("Orders.Orderlines.AttributeValues")

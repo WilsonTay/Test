@@ -34,6 +34,7 @@ namespace DealsWhat.Controllers
         private string paymentUrl = "http://localhost:13251/api/payment";
         private string newOrderUrl = "http://localhost:39874/api/order/new";
         private string orderPaidUrl = "http://localhost:39874/api/order/paid";
+        private string baseUrl = "";
 
         public OrderController()
         {
@@ -41,6 +42,7 @@ namespace DealsWhat.Controllers
             newOrderUrl = webserviceBaseUrl + "api/order/new";
             orderPaidUrl = webserviceBaseUrl + "api/order/paid";
             paymentUrl = ConfigurationManager.AppSettings["PaymentUrl"];
+            baseUrl = ConfigurationManager.AppSettings["BaseUrl"];
         }
 
         public ActionResult CheckOut()
@@ -78,8 +80,7 @@ namespace DealsWhat.Controllers
 
             if (status.Equals("1"))
             {
-                var token =
-             "kjXTyfBMDI-Op2TjNwnaVzJT7cGQxxNhZo9Jm0bUGkdHc6S--AD32ZLkdj3P18g8xUM6ZIZYmyW1r5ehg4ZXPlYx782l5ylVyD6bR-JiTsZoeP3HoYA4nrfSPjlYoimvWGy7Me2XyJGd4uDw2ooO5ljPxaKByN91xXQ1L5B2Qhm2gmvnsvnIFTvhaEgpLYppKOTIuR1tNFkVs_aVv3H_gAPSJBG-rZJUFeDPq49790GZqTggu_kn3eheo6zrD5ISFr46ErqCP-hYtOsLGCEW_1UenImG9ukJ6fQXjtP4GwHd6kEj_hEVkfV4CoIJut0RUlABGnu1w3B9JSURFnhBUxj7Urr6kCU-KLVyc2uCMJoeuq88cPk1UX5dw2cIbvnDqDA_pgPF8FXjXKzCItyxF94nvAfKwxZLgShn55bclamWAFkBItVNENbwTPCMVFnsS2K3PcCEySUM1RwwWZyXh7SCYUW2Rz4OJGUFSfdLiqjDtTVxXuH10emklveiul0A";
+                var token = "";
                 var orderId = refNo;
 
                 var orderRequest = WebRequest.Create(orderPaidUrl + "?id=" + orderId);
@@ -106,26 +107,36 @@ namespace DealsWhat.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult CheckOutPost(NewPaymentViewModel formData)
         {
-            var token =
-                "kjXTyfBMDI-Op2TjNwnaVzJT7cGQxxNhZo9Jm0bUGkdHc6S--AD32ZLkdj3P18g8xUM6ZIZYmyW1r5ehg4ZXPlYx782l5ylVyD6bR-JiTsZoeP3HoYA4nrfSPjlYoimvWGy7Me2XyJGd4uDw2ooO5ljPxaKByN91xXQ1L5B2Qhm2gmvnsvnIFTvhaEgpLYppKOTIuR1tNFkVs_aVv3H_gAPSJBG-rZJUFeDPq49790GZqTggu_kn3eheo6zrD5ISFr46ErqCP-hYtOsLGCEW_1UenImG9ukJ6fQXjtP4GwHd6kEj_hEVkfV4CoIJut0RUlABGnu1w3B9JSURFnhBUxj7Urr6kCU-KLVyc2uCMJoeuq88cPk1UX5dw2cIbvnDqDA_pgPF8FXjXKzCItyxF94nvAfKwxZLgShn55bclamWAFkBItVNENbwTPCMVFnsS2K3PcCEySUM1RwwWZyXh7SCYUW2Rz4OJGUFSfdLiqjDtTVxXuH10emklveiul0A";
+            var token = Request.Cookies["token"].Value;
+
             var orderId = formData.OrderId;
 
             if (string.IsNullOrWhiteSpace(orderId))
             {
-                var orderRequest = WebRequest.Create(newOrderUrl);
-                orderRequest.Headers.Add("Authorization", "Bearer " + token);
-                orderRequest.Method = "post";
-                orderRequest.ContentLength = 0;
-                var newOrderResponse = (HttpWebResponse)orderRequest.GetResponse();
-
-                if (newOrderResponse.StatusCode == HttpStatusCode.Created)
+                try
                 {
-                    using (var reader = new StreamReader(newOrderResponse.GetResponseStream()))
+                    var orderRequest = WebRequest.Create(newOrderUrl);
+                    orderRequest.Headers.Add("Authorization", "Bearer " + token);
+                    orderRequest.Method = "post";
+                    orderRequest.ContentLength = 0;
+
+                    var orderResponse = orderRequest.GetResponse();
+                    var newOrderResponse = (HttpWebResponse)orderResponse;
+
+                    if (newOrderResponse.StatusCode == HttpStatusCode.Created)
                     {
-                        var json = reader.ReadToEnd();
-                        var order = JsonConvert.DeserializeObject<OrderViewModel>(json);
-                        orderId = order.Id;
+                        using (var reader = new StreamReader(newOrderResponse.GetResponseStream()))
+                        {
+                            var json = reader.ReadToEnd();
+                            var order = JsonConvert.DeserializeObject<OrderViewModel>(json);
+                            orderId = order.Id;
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.NoBillingAddress = true;
+                    return View("CheckOut");
                 }
             }
 
@@ -150,8 +161,8 @@ namespace DealsWhat.Controllers
             postData += "&Remark=";
             postData += "&Lang=";
             postData += "&Signature=" + signature;
-            postData += "&ResponseURL=" + "http://localhost:1441/Order/PaymentResponseUrl";
-            postData += "&BackendURL" + "http://localhost:1441/Order/PaymentResponseUrl";
+            postData += "&ResponseURL=" + baseUrl + Url.Action("PaymentResponseUrl");
+            postData += "&BackendURL=" + baseUrl + Url.Action("PaymentResponseUrl");
 
             var data = Encoding.ASCII.GetBytes(postData);
 

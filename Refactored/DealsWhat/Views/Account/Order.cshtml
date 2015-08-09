@@ -168,9 +168,15 @@
 
 
             $.each(orderLines, function (index, orderLine) {
+                var name = orderLine.DealOption;
+
+                $.each(orderLine.DealAttributes, function (attrName, attrValue) {
+                    name += '<br/><span class="product-desciption">' + attrName + ' (' + attrValue + ')</span>';
+                });
+
                 var dom = '<tr>' +
                     '<td class="cart-item-image"><a href="' + '' + '"><img height="70px" width="70px" src="' + orderLine.DealThumbnailUrl + '"/></a></td>' +
-                    '<td><a href="' + '' + '">' + orderLine.DealOption + '</a></td>' +
+                    '<td><a href="' + '' + '">' + name + '</a></td>' +
                     '<td class="cart-item-quantity">1</td>' +
                     '<td> RM ' + orderLine.SpecialPrice.toFixed(2) + '</td>' +
                     '' +

@@ -8,11 +8,11 @@ using DealsWhat.Domain.Model;
 
 namespace DealsWhat.Infrastructure.DataAccess
 {
-    public class EFRepositoryFactory : IRepositoryFactory
+    public class EFUnitOfWork : IUnitOfWork
     {
-        private readonly DealsWhatUnitOfWork dbContext;
+        private readonly DealsWhatDbContext dbContext;
 
-        public EFRepositoryFactory(DealsWhatUnitOfWork dbContext)
+        public EFUnitOfWork(DealsWhatDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -27,7 +27,7 @@ namespace DealsWhat.Infrastructure.DataAccess
             return new EFDealCategoryRepository(this.dbContext);
         }
 
-        IUserRepository IRepositoryFactory.CreateUserRepository()
+        IUserRepository IUnitOfWork.CreateUserRepository()
         {
             return new EFUserRepository(this.dbContext);
         }

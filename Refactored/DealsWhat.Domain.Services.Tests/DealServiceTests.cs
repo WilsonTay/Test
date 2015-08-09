@@ -24,7 +24,7 @@ namespace DealsWhat.Domain.Services.Tests
         {
             fixture = new Fixture().Customize(new AutoMoqCustomization());
 
-            fixture.Register<IRepositoryFactory>(() => fixture.Create<FakeRepositoryFactory>());
+            fixture.Register<IUnitOfWork>(() => fixture.Create<FakeUnitOfWork>());
         }
 
         [TestMethod]
@@ -235,8 +235,8 @@ namespace DealsWhat.Domain.Services.Tests
             var fakeRepository = new FakeDealCategoryRepository(dealCategories);
             fixture.Register<IRepository<DealCategoryModel>>(() => fakeRepository);
 
-            var fakeRepositoryFactory = fixture.Create<FakeRepositoryFactory>();
-            fixture.Register<IRepositoryFactory>(() => fakeRepositoryFactory);
+            var fakeRepositoryFactory = fixture.Create<FakeUnitOfWork>();
+            fixture.Register<IUnitOfWork>(() => fakeRepositoryFactory);
 
             var dealService = fixture.Create<DealService>();
 
@@ -322,8 +322,8 @@ namespace DealsWhat.Domain.Services.Tests
             var fakeRepository = new FakeDealRepository(deals);
             fixture.Register<IRepository<DealModel>>(() => fakeRepository);
 
-            var fakeRepositoryFactory = fixture.Create<FakeRepositoryFactory>();
-            fixture.Register<IRepositoryFactory>(() => fakeRepositoryFactory);
+            var fakeRepositoryFactory = fixture.Create<FakeUnitOfWork>();
+            fixture.Register<IUnitOfWork>(() => fakeRepositoryFactory);
 
             var dealService = fixture.Create<DealService>();
             return dealService;

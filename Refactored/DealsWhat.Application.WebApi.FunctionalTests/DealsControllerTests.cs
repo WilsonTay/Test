@@ -403,7 +403,7 @@ namespace DealsWhat.Application.WebApi.FunctionalTests
 
             var builder = new ContainerBuilder();
 
-            builder.RegisterInstance<IRepositoryFactory>(new FakeRepositoryFactory(dealRepository, dealCategoryRepository));
+            builder.RegisterInstance<IUnitOfWork>(new FakeUnitOfWork(dealRepository, dealCategoryRepository));
             builder.RegisterApiControllers(typeof(FrontEndDealsController).Assembly);
 
             builder.RegisterType<DealService>().As<IDealService>();

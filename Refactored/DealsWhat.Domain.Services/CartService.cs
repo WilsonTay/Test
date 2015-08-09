@@ -10,17 +10,18 @@ namespace DealsWhat.Domain.Services
 {
     public class CartService : ICartService
     {
-        private readonly IRepositoryFactory repositoryFactory;
+        private readonly IUnitOfWorkFactory unitOfWorkFactory;
 
-        public CartService(IRepositoryFactory repositoryFactory)
+        public CartService(IUnitOfWorkFactory unitOfWorkFactory)
         {
-            this.repositoryFactory = repositoryFactory;
+            this.unitOfWorkFactory = unitOfWorkFactory;
         }
 
         public void AddCartItem(string emailAddress, NewCartItemModel model)
         {
-            var repository = this.repositoryFactory.CreateUserRepository();
-            var dealRepository = this.repositoryFactory.CreateDealRepository();
+            var unitOfWork = this.unitOfWorkFactory.CreateUnitOfWork();
+            var repository = unitOfWork.CreateUserRepository();
+            var dealRepository = unitOfWork.CreateDealRepository();
 
             var user = repository.FindByEmailAddress(emailAddress);
             var deal = dealRepository.FindByKey(model.DealId);
@@ -37,16 +38,31 @@ namespace DealsWhat.Domain.Services
 
         public IEnumerable<CartItemModel> GetCartItems(string emailAddress)
         {
-            var repository = this.repositoryFactory.CreateUserRepository();
+            var unitOfWork = this.unitOfWorkFactory.CreateUnitOfWork();
+            var repository = unitOfWork.CreateUserRepository();
 
             var user = repository.FindByEmailAddress(emailAddress);
 
             return user.CartItems.ToList();
         }
 
+        public void UpdateCartItem(string emailAddress, UpdateCartItemModel cartItemModel)
+        {
+            var unitOfWork = this.unitOfWorkFactory.CreateUnitOfWork();
+            var repository = unitOfWork.CreateUserRepository();
+
+            var user = repository.FindByEmailAddress(emailAddress);
+            var cartItem = user.CartItems.FirstOrDefault(c => c.Key == cartItemModel.Key);
+
+            cartItem.SetQuantity(cartItemModel.Quantity);
+
+            repository.Save();
+        }
+
         public void RemoveCartItem(string emailAddress, string cartItemId)
         {
-            var repository = this.repositoryFactory.CreateUserRepository();
+            var unitOfWork = this.unitOfWorkFactory.CreateUnitOfWork();
+            var repository = unitOfWork.CreateUserRepository();
 
             var user = repository.FindByEmailAddress(emailAddress);
             var toRemove = user.CartItems.FirstOrDefault(c => c.Key.ToString().Equals(cartItemId));

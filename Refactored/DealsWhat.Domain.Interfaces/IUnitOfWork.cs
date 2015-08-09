@@ -7,7 +7,7 @@ using DealsWhat.Domain.Model;
 
 namespace DealsWhat.Domain.Interfaces
 {
-    public interface IRepositoryFactory
+    public interface IUnitOfWork
     {
         IRepository<DealModel> CreateDealRepository();
         IRepository<DealCategoryModel> CreateDealCategoryRepository();

@@ -13,17 +13,17 @@ namespace DealsWhat.Infrastructure.DataAccess
 {
     public class EFDealRepository : IRepository<DealModel>
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IDbContext dbContext;
 
-        public EFDealRepository(IUnitOfWork unitOfWork)
+        public EFDealRepository(IDbContext dbContext)
         {
-            this.unitOfWork = unitOfWork;
+            this.dbContext = dbContext;
         }
 
 
         public IEnumerable<DealModel> GetAll()
         {
-            foreach (var deal in this.unitOfWork.Set<DealModel>().Include("Options.Attributes").Include("Images"))
+            foreach (var deal in this.dbContext.Set<DealModel>().Include("Options.Attributes").Include("Images"))
             {
                 yield return deal;
             }
@@ -42,7 +42,9 @@ namespace DealsWhat.Infrastructure.DataAccess
         public DealModel FindByKey(string key)
         {
             // HACK: Optimize this.
-            var entity = this.unitOfWork.Set<DealModel>()
+            var entity = this.dbContext.Set<DealModel>()
+                .Include("Options.Attributes")
+                .Include("Images")
                 .ToList()
                 .FirstOrDefault(u => u.Key == key);
 

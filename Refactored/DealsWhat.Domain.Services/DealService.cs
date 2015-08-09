@@ -11,22 +11,24 @@ namespace DealsWhat.Domain.Services
 {
     public class DealService : IDealService
     {
-        private readonly IRepositoryFactory repositoryFactory;
+        private readonly IUnitOfWorkFactory unitOfWorkFactory;
 
-        public DealService(IRepositoryFactory repositoryFactory)
+        public DealService(IUnitOfWorkFactory unitOfWorkFactory)
         {
 
-            this.repositoryFactory = repositoryFactory;
+            this.unitOfWorkFactory = unitOfWorkFactory;
         }
 
         public IEnumerable<DealModel> SearchDeals(DealSearchQuery query)
         {
+            var unitOfWork = this.unitOfWorkFactory.CreateUnitOfWork();
+
             IEnumerable<DealModel> deals;
 
             if (query.CategoryId != null)
             {
                 var category =
-                    this.repositoryFactory.CreateDealCategoryRepository()
+                         unitOfWork.CreateDealCategoryRepository()
                         .GetAll()
                         .FirstOrDefault(c => c.Key.ToString().Equals(query.CategoryId));
 
@@ -39,7 +41,7 @@ namespace DealsWhat.Domain.Services
             }
             else
             {
-                deals = this.repositoryFactory.CreateDealRepository().GetAll();
+                deals = unitOfWork.CreateDealRepository().GetAll();
             }
 
             if (!string.IsNullOrEmpty(query.SearchTerm))
@@ -70,7 +72,8 @@ namespace DealsWhat.Domain.Services
         /// <returns></returns>
         public DealModel SearchSingleDeal(SingleDealSearchQuery query)
         {
-            var repository = this.repositoryFactory.CreateDealRepository();
+            var unitOfWork = this.unitOfWorkFactory.CreateUnitOfWork();
+            var repository = unitOfWork.CreateDealRepository();
 
             if (!string.IsNullOrEmpty(query.Id))
             {
@@ -87,7 +90,8 @@ namespace DealsWhat.Domain.Services
 
         public IEnumerable<DealCategoryModel> GetAllCategories()
         {
-            var repository = this.repositoryFactory.CreateDealCategoryRepository();
+            var unitOfWork = this.unitOfWorkFactory.CreateUnitOfWork();
+            var repository = unitOfWork.CreateDealCategoryRepository();
 
             return repository.GetAll();
         }

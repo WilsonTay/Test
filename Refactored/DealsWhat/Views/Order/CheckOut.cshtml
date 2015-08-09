@@ -3,6 +3,14 @@
 <div class="gap-medium"></div>
 <h3>Check Out</h3>
 
+@if (ViewBag.NoBillingAddress != null && ViewBag.NoBillingAddress)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">You must fill in your delivery address to place an order. <a href="@Url.Action("Manage","Account")">Update Delivery Address</a></div>
+        </div>
+    </div>
+}
 <div class="row">
     <div class="col-md-4">
         <aside class="sidebar-left">
@@ -49,23 +57,26 @@
                 <h3>Delivery Address</h3>
                 <div class="form-group">
                     <label for="">Line 1</label><br>
-                    <label id="address-line1">test@test.com</label>
+                    <span class="product-desciption" id="address-line1">Empty</span>
                 </div>
                 <div class="form-group">
                     <label for="">Line 2</label><br>
-                    <label id="address-line2">test@test.com</label>
+                    <span class="product-desciption" id="address-line2">Empty</span>
                 </div>
                 <div class="form-group">
                     <label for="">City</label><br>
-                    <label id="address-city">test@test.com</label>
+                    <span class="product-desciption" id="address-city">Empty</span>
                 </div>
                 <div class="form-group">
                     <label for="">State</label><br>
-                    <label id="address-state">test@test.com</label>
+                    <span class="product-desciption" id="address-state">Empty</span>
                 </div>
                 <div class="form-group">
                     <label for="">Country</label><br>
-                    <label id="address-country">test@test.com</label>
+                    <span class="product-desciption" id="address-country">Empty</span>
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-primary" href="@Url.Action("Manage","Account")">Update Delivery Address</a>
                 </div>
             </div>
             <div class="col-md-5 col-md-offset-1">
@@ -74,6 +85,7 @@
 
                 <form method="post" action="@Url.Action("CheckOutPost")">
                     <input type="hidden" name="OrderId" value="" />
+
                     <input type="submit" id="btn-submit-payment" class="btn btn-primary" value="Checkout via Paypal">
                 </form>
             </div>
@@ -83,14 +95,14 @@
 
 @section scripts {
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             loadCart();
             loadDeliveryAddress();
         });
 
-        $('#btn-submit-payment').click(function(e) {
-            placeOrder();
-        });
+        //$('#btn-submit-payment').click(function(e) {
+        //    placeOrder();
+        //});
 
         function loadDeliveryAddress() {
             $.ajax({
@@ -98,7 +110,7 @@
                 method: 'get',
                 dataType: 'json',
                 cache: false,
-                success: function(profile) {
+                success: function (profile) {
 
                     var address = profile.DeliveryAddress;
 
@@ -108,7 +120,7 @@
                     $('#address-state').text(address.State);
                     $('#address-country').text('Malaysia');
                 },
-                complete: function() {
+                complete: function () {
                 }
             });
         }
@@ -116,8 +128,8 @@
         function getCartTotalSpecialPrice(carts) {
             var price = 0.0;
 
-            $.each(carts, function(index, cart) {
-                price += cart.SpecialPrice;
+            $.each(carts, function (index, cart) {
+                price += cart.Quantity * cart.SpecialPrice;
             });
 
             return "RM " + price.toFixed(2);
@@ -129,14 +141,14 @@
                 method: 'get',
                 dataType: 'json',
                 cache: false,
-                success: function(carts) {
+                success: function (carts) {
                     buildCartDom(carts);
 
                     var total = getCartTotalSpecialPrice(carts);
                     $('#cart-total').text(total);
                     $('#cart-subtotal').text(total);
                 },
-                complete: function() {
+                complete: function () {
                 }
             });
         }
@@ -146,10 +158,10 @@
                 url: baseUrl + "api/order/new",
                 method: 'post',
                 cache: false,
-                success: function(carts) {
+                success: function (carts) {
 
                 },
-                complete: function() {
+                complete: function () {
                 }
             });
         }
@@ -158,10 +170,14 @@
             var tbody = $('#order-cart-items-tbody');
 
             var dom = '';
-            $.each(carts, function(index, cart) {
+            $.each(carts, function (index, cart) {
+                var name = cart.ShortName;
 
+                $.each(cart.Attributes, function (index, attr) {
+                    name += '<br/><span class="product-desciption">' + attr.Name + ' (' + attr.Value + ')</span>';
+                });
 
-                dom += '<tr><td>' + cart.ShortName + '</td><td>' + '1' + '</td><td> RM ' + cart.SpecialPrice.toFixed(2) + '</td></tr>';
+                dom += '<tr><td>' + name + '</td><td>' + cart.Quantity + '</td><td> RM ' + (cart.Quantity * cart.SpecialPrice).toFixed(2) + '</td></tr>';
             });
 
             tbody.append(dom);

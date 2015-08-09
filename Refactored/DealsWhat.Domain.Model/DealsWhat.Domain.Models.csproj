@@ -59,6 +59,7 @@
     <Compile Include="OrderlineModel.cs" />
     <Compile Include="OrderModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpdateCartItemModel.cs" />
     <Compile Include="UpdateUserModel.cs" />
     <Compile Include="UserModel.cs" />
   </ItemGroup>

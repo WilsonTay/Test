@@ -22,12 +22,12 @@ namespace DealsWhat.Application.WebApi
         public static void Register(HttpConfiguration config)
         {
             var builder = new ContainerBuilder();
-            builder.RegisterInstance<IRepositoryFactory>(new EFRepositoryFactory(new DealsWhatUnitOfWork()));
+            builder.RegisterInstance<IUnitOfWorkFactory>(new EFUnitOfWorkFactory());
             builder.RegisterApiControllers(typeof(FrontEndDealsController).Assembly);
 
             var container = builder.Build();
 
-            using (var context = new DealsWhatUnitOfWork())
+            using (var context = new DealsWhatDbContext())
             {
                 if (!context.Database.Exists())
                 {

@@ -19,7 +19,7 @@ namespace DealsWhat.Application.WebApi
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<DealsWhatUnitOfWork>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<DealsWhatDbContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {

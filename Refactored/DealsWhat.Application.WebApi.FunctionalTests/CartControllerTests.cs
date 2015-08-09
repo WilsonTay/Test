@@ -50,7 +50,7 @@ namespace DealsWhat.Application.WebApi.FunctionalTests
             var mockedUserRepository = new Mock<IUserRepository>();
             mockedUserRepository.Setup(m => m.FindByEmailAddress(email)).Returns(user);
 
-            var repositoryFactory = new FakeRepositoryFactory(userRepository: mockedUserRepository.Object);
+            var repositoryFactory = new FakeUnitOfWorkFactory(userRepository: mockedUserRepository.Object);
             var cartService = new CartService(repositoryFactory);
             var controller = new CartController(cartService);
             controller.User = new GenericPrincipal(new GenericIdentity(email), new string[] { });
@@ -212,7 +212,7 @@ namespace DealsWhat.Application.WebApi.FunctionalTests
             var dealAttributes = dealOption.Attributes.Select(a => a.Key.ToString()).ToList();
             var dealRepository = new FakeDealRepository(new List<DealModel>() { deal });
 
-            var repositoryFactory = new FakeRepositoryFactory(userRepository: mockedUserRepository.Object, dealRepository: dealRepository);
+            var repositoryFactory = new FakeUnitOfWorkFactory(userRepository: mockedUserRepository.Object, dealRepository: dealRepository);
             var cartService = new CartService(repositoryFactory);
             var controller = new CartController(cartService);
             controller.User = new GenericPrincipal(new GenericIdentity(email), new string[] { });
@@ -239,7 +239,7 @@ namespace DealsWhat.Application.WebApi.FunctionalTests
             var dealAttributes = dealOption.Attributes.Select(a => a.Key.ToString()).ToList();
             var dealRepository = new FakeDealRepository(new List<DealModel>() { deal });
 
-            var repositoryFactory = new FakeRepositoryFactory(userRepository: mockedUserRepository.Object, dealRepository: dealRepository);
+            var repositoryFactory = new FakeUnitOfWorkFactory(userRepository: mockedUserRepository.Object, dealRepository: dealRepository);
             var cartService = new CartService(repositoryFactory);
             var controller = new CartController(cartService);
             controller.User = new GenericPrincipal(new GenericIdentity(email), new string[] { });
@@ -290,7 +290,7 @@ namespace DealsWhat.Application.WebApi.FunctionalTests
         private static CartController CreateCartController(List<UserModel> users, List<DealModel> deals = null)
         {
             var userRepository = new FakeUserRepository(users);
-            var repositoryFactory = new FakeRepositoryFactory(
+            var repositoryFactory = new FakeUnitOfWorkFactory(
                 userRepository: userRepository,
                 dealRepository: deals != null ? new FakeDealRepository(deals) : null);
 
@@ -320,11 +320,11 @@ namespace DealsWhat.Application.WebApi.FunctionalTests
             return response;
         }
 
-        private static IRepositoryFactory GetFakeUserRepositoryFactory(IList<UserModel> users)
+        private static IUnitOfWork GetFakeUserRepositoryFactory(IList<UserModel> users)
         {
             var userRepository = new FakeUserRepository(users);
 
-            return new FakeRepositoryFactory(userRepository: userRepository);
+            return new FakeUnitOfWork(userRepository: userRepository);
         }
 
         private static IDisposable CreateWebApiService(
@@ -334,7 +334,7 @@ namespace DealsWhat.Application.WebApi.FunctionalTests
 
             var builder = new ContainerBuilder();
 
-            builder.RegisterInstance<IRepositoryFactory>(new FakeRepositoryFactory(userRepository: userRepository));
+            builder.RegisterInstance<IUnitOfWork>(new FakeUnitOfWork(userRepository: userRepository));
             builder.RegisterApiControllers(typeof(CartController).Assembly);
 
             builder.RegisterType<CartService>().As<ICartService>();

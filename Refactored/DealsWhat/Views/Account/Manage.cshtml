@@ -93,7 +93,8 @@
                 method: 'get',
                 dataType: 'json',
                 cache: false,
-                success: function(profile) {
+                success: function (profile) {
+                    $('#email').text(profile.Email);
                     $('#first-name').val(profile.FirstName);
                     $('#last-name').val(profile.LastName);
                     $('#line1').val(profile.DeliveryAddress.Line1);
@@ -101,7 +102,7 @@
                     $('#state').val(profile.DeliveryAddress.State);
                     $('#city').val(profile.DeliveryAddress.City);
                     $('#zip').val(profile.DeliveryAddress.PostCode);
-                    $('#email').text(profile.Email);
+                 
                 },
                 complete: function() {
                 }

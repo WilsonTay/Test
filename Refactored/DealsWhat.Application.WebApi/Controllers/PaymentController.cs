@@ -13,21 +13,21 @@ namespace DealsWhat.Application.WebApi.Controllers
 {
     public class PaymentController : ApiController
     {
-        private readonly IRepositoryFactory repositoryFactory;
+        private readonly IUnitOfWork unitOfWork;
         private string merchantCode = "M07850";
         private string merchantKey = "X13J179r2K";
         private string currency = "MYR";
 
-        public PaymentController(IRepositoryFactory repositoryFactory)
+        public PaymentController(IUnitOfWork unitOfWork)
         {
-            this.repositoryFactory = repositoryFactory;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         [Route("api/payment/")]
         public HttpResponseMessage Get(string id)
         {
-            var orderRepository = repositoryFactory.CreateOrderRepository();
+            var orderRepository = unitOfWork.CreateOrderRepository();
             var order = orderRepository.FindByKey(id);
 
             order.SetOrderPaid();
@@ -39,7 +39,7 @@ namespace DealsWhat.Application.WebApi.Controllers
         [Route("api/payment/complete")]
         public HttpResponseMessage PaymentComplete(string orderId)
         {
-            var orderRepository = repositoryFactory.CreateOrderRepository();
+            var orderRepository = unitOfWork.CreateOrderRepository();
             var order = orderRepository.FindByKey(orderId);
 
             return Request.CreateResponse();

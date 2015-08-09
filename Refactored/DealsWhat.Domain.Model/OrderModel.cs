@@ -40,6 +40,11 @@ namespace DealsWhat.Domain.Model
 
         public static OrderModel Create(IUserModel userModel, IEnumerable<CartItemModel> cartItems)
         {
+            if (userModel.BillingAddress == null)
+            {
+                throw new ArgumentException("Billing address cannot be empty.");
+            }
+
             var order = new OrderModel
             {
                 BillingAddress = userModel.BillingAddress,

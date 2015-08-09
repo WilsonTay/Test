@@ -7,7 +7,7 @@ namespace DealsWhat.Infrastructure.DataAccess
     using System.Data.Entity;
     using System.Linq;
 
-    public class DealsWhatUnitOfWork : IdentityDbContext<ApplicationUser>, IUnitOfWork
+    public class DealsWhatDbContext : IdentityDbContext<ApplicationUser>, IDbContext
     {
         // Your context has been configured to use a 'Model1' connection string from your application's 
         // configuration file (App.config or Web.config). By default, this connection string targets the 
@@ -15,10 +15,10 @@ namespace DealsWhat.Infrastructure.DataAccess
         // 
         // If you wish to target a different database and/or database provider, modify the 'Model1' 
         // connection string in the application configuration file.
-        public DealsWhatUnitOfWork()
+        public DealsWhatDbContext()
             : base("name=Model1", false)
         {
-            Database.SetInitializer<DealsWhatUnitOfWork>(new CreateDatabaseIfNotExists<DealsWhatUnitOfWork>());
+            Database.SetInitializer<DealsWhatDbContext>(new CreateDatabaseIfNotExists<DealsWhatDbContext>());
 
         }
 
@@ -123,9 +123,9 @@ namespace DealsWhat.Infrastructure.DataAccess
             base.Set<TEntity>().Attach(entity);
 
         }
-        public static DealsWhatUnitOfWork Create()
+        public static DealsWhatDbContext Create()
         {
-            return new DealsWhatUnitOfWork();
+            return new DealsWhatDbContext();
         }
 
         public void Commit()

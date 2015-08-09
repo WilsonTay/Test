@@ -24,6 +24,9 @@ namespace DealsWhat.Application.WebApi.Controllers
         {
             this.cartService = cartService;
 
+            AutoMapper.Mapper.CreateMap<SingleUpdateCartItemViewModel, UpdateCartItemModel>()
+                  .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.CartId.ToString()));
+
             AutoMapper.Mapper.CreateMap<NewCartItemViewModel, NewCartItemModel>()
                 .AfterMap((dest, src) =>
                 {
@@ -32,9 +35,12 @@ namespace DealsWhat.Application.WebApi.Controllers
                         return;
                     }
 
-                    foreach (var attr in dest.SelectedAttributes)
+                    if (dest.SelectedAttributes != null)
                     {
-                        src.AddSelectedAttributeId(attr);
+                        foreach (var attr in dest.SelectedAttributes)
+                        {
+                            src.AddSelectedAttributeId(attr);
+                        }
                     }
                 });
 
@@ -92,9 +98,16 @@ namespace DealsWhat.Application.WebApi.Controllers
             cartService.AddCartItem(emailAddress, newCartModel);
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public void Put([FromBody] IEnumerable<SingleUpdateCartItemViewModel> updateCartItems)
         {
+            var emailAddress = User.Identity.Name;
+
+            foreach (var cartItem in updateCartItems)
+            {
+                var updateCartItemModel = AutoMapper.Mapper.Map<UpdateCartItemModel>(cartItem);
+
+                cartService.UpdateCartItem(emailAddress, updateCartItemModel);
+            }
         }
 
         // DELETE api/<controller>/5

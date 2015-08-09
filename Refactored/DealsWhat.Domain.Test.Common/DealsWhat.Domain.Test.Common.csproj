@@ -52,11 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FakeUnitOfWorkFactory.cs" />
     <Compile Include="FakeUserRepository.cs" />
     <Compile Include="TestModelFactory.cs" />
     <Compile Include="FakeDealCategoryRepository.cs" />
     <Compile Include="FakeDealRepository.cs" />
-    <Compile Include="FakeRepositoryFactory.cs" />
+    <Compile Include="FakeUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

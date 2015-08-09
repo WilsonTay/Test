@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DealsWhat.Infrastructure.DataAccess
 {
-    public interface IUnitOfWork
+    public interface IDbContext
     {
         IDbSet<TEntity> Set<TEntity>()
             where TEntity : class;

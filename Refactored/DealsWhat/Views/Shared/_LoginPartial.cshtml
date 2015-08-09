@@ -46,7 +46,8 @@
             <a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top"><i class="fa fa-edit"></i>Register</a>
         </li>
         <li>
-            @using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }))
+@*<button id="facebook-login">Facebook Login</button>*@
+            @using (Html.BeginForm("ExternalLogin", "Account", new {ReturnUrl = ViewBag.ReturnUrl}))
             {
                 @Html.AntiForgeryToken()
                 <button name="provider" type="submit" value="facebook" class="btn-bootstrap btn-block btn-social btn-facebook" style="width: 200px">
@@ -150,6 +151,31 @@
 <script src="~/content/js/jquery.js"></script>
 <script src="~/Content/js/jquery.cookie.js"></script>
 <script>
+
+    $('#facebook-login').click(function() {
+        $.ajax({
+            url: baseUrl + "api/Account/ExternalLogins?returnUrl=http%3A%2F%2Flocalhost%3A1441%2F&generateState=true",
+            method: 'get',
+            dataType: 'json',
+            cache: false,
+            success: function (providers) {
+
+                console.log(providers);
+                var facebookProvider = providers[0];
+                var state = facebookProvider.State;
+
+                var url = baseUrl + 'api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=self&redirect_uri=' +
+                    'http%3A%2F%2Flocalhost%3A1441%2F&state=' + state;
+                //var url = facebookProvider.Url;
+
+                //var url = 'http://localhost:39874/api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=self&redirect_uri=http%3A%2F%2Flocalhost%3A1441%2F&state=' + state;
+                window.location.href = url;
+            },
+            complete: function () {
+            }
+        });
+
+    });
 
     $(document).ready(function () {
         var token = $.cookie('token');

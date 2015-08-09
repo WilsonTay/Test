@@ -25,7 +25,7 @@ namespace DealsWhat.Domain.Services.Tests
         {
             fixture = new Fixture().Customize(new AutoMoqCustomization());
 
-            fixture.Register<IRepositoryFactory>(() => fixture.Create<FakeRepositoryFactory>());
+            fixture.Register<IUnitOfWork>(() => fixture.Create<FakeUnitOfWork>());
         }
 
 
@@ -248,8 +248,8 @@ namespace DealsWhat.Domain.Services.Tests
             fixture.Register<IUserRepository>(() => userRepository);
             fixture.Register<IRepository<DealModel>>(() => dealRepository);
 
-            var fakeRepositoryFactory = fixture.Create<FakeRepositoryFactory>();
-            fixture.Register<IRepositoryFactory>(() => fakeRepositoryFactory);
+            var fakeRepositoryFactory = fixture.Create<FakeUnitOfWork>();
+            fixture.Register<IUnitOfWork>(() => fakeRepositoryFactory);
 
             var cartService = fixture.Create<CartService>();
 

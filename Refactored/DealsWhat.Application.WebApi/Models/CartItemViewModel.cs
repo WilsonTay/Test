@@ -15,6 +15,8 @@ namespace DealsWhat.Application.WebApi.Models
 
         public string DealUrl { get; set; }
 
+        public int Quantity { get; set; }
+
         public CartItemViewModel()
         {
             Attributes = new List<CartItemAttribute>();

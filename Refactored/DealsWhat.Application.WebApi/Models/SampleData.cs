@@ -10,7 +10,7 @@ namespace DealsWhat.Application.WebApi.Models
 {
     public class SampleData
     {
-        public static void Seed(DealsWhatUnitOfWork context)
+        public static void Seed(DealsWhatDbContext context)
         {
 
             var categories = CreateDealCategories(context);
@@ -24,7 +24,7 @@ namespace DealsWhat.Application.WebApi.Models
             context.SaveChanges();
         }
 
-        private static void CreateDealOptions(DealsWhatUnitOfWork context, List<DealModel> deals)
+        private static void CreateDealOptions(DealsWhatDbContext context, List<DealModel> deals)
         {
             var random = new Random();
             var randomNumber = random.Next(0, 5);
@@ -60,7 +60,7 @@ namespace DealsWhat.Application.WebApi.Models
             }
         }
 
-        private static IList<ApplicationUser> CreateUsers(DealsWhatUnitOfWork context)
+        private static IList<ApplicationUser> CreateUsers(DealsWhatDbContext context)
         {
             var users = new List<ApplicationUser>();
 
@@ -129,7 +129,7 @@ namespace DealsWhat.Application.WebApi.Models
         //    }
         //}
 
-        private static void CreateDealImages(DealsWhatUnitOfWork context, IList<DealModel> deals)
+        private static void CreateDealImages(DealsWhatDbContext context, IList<DealModel> deals)
         {
             var random = new Random();
 
@@ -156,7 +156,7 @@ namespace DealsWhat.Application.WebApi.Models
             }
         }
 
-        private static IList<MerchantModel> CreateMerchants(DealsWhatUnitOfWork context)
+        private static IList<MerchantModel> CreateMerchants(DealsWhatDbContext context)
         {
             var merchants = new List<MerchantModel>();
 
@@ -181,7 +181,7 @@ namespace DealsWhat.Application.WebApi.Models
             return merchants;
         }
 
-        private static IList<DealCategoryModel> CreateDealCategories(DealsWhatUnitOfWork context)
+        private static IList<DealCategoryModel> CreateDealCategories(DealsWhatDbContext context)
         {
             var categories = new string[] { "Food & Drink", "Beauty & Wellness", "Travel", "Goods", "Shopping" };
             var dealCategories = new List<DealCategoryModel>();
@@ -225,7 +225,7 @@ namespace DealsWhat.Application.WebApi.Models
 
         }
 
-        private static List<DealModel> CreateDeals(DealsWhatUnitOfWork context, IList<MerchantModel> merchants, IList<DealCategoryModel> categories)
+        private static List<DealModel> CreateDeals(DealsWhatDbContext context, IList<MerchantModel> merchants, IList<DealCategoryModel> categories)
         {
             var description = GetDescription();
             var fineprint = GetFinePrint();
@@ -255,7 +255,7 @@ namespace DealsWhat.Application.WebApi.Models
 
                 var deal = DealModel.Create(shortTitle, shortDescription, longTitle, description, fineprint, highlight);
                 deal.SetPrice(10, 5.5);
-
+                deal.SetStatus(DealStatus.Published);
                 //var deal = new DealModel
                 //{
                 //    Id = Guid.NewGuid(),
