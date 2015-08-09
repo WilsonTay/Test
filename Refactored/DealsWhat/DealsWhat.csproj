@@ -303,6 +303,7 @@
     <Content Include="Content\css\font_awesome.css" />
     <Content Include="Content\css\ie.css" />
     <Content Include="Content\css\mystyles.css" />
+    <Content Include="Content\css\pace.css" />
     <Content Include="Content\css\schemes\apple.css" />
     <Content Include="Content\css\schemes\atlantis.css" />
     <Content Include="Content\css\schemes\blaze-orange.css" />
@@ -545,6 +546,7 @@
     <Content Include="Content\js\moment.js" />
     <Content Include="Content\js\nicescroll.js" />
     <Content Include="Content\js\owl-carousel.js" />
+    <Content Include="Content\js\pace.min.js" />
     <Content Include="Content\js\tweet.js" />
     <Content Include="Content\js\tweet.min.js" />
     <Content Include="Content\js\underscore-min.js" />

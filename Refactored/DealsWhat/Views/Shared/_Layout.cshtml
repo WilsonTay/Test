@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="~/content/css/styles.css">
 
     <link rel="stylesheet" href="~/content/css/schemes/blaze-orange.css">
+    <link href="~/Content/css/pace.css" rel="stylesheet" />
     <!-- IE 8 Fallback -->
     <!--[if lt IE 9]>
         <link rel="stylesheet" type="text/css" href="~/content/css/ie.css" />
@@ -57,10 +58,8 @@
 </head>
 
 <body>
-
-
     <div class="global-wrap">
-
+        <div class="pace-overlay"></div>
 
         <!-- //////////////////////////////////
         //////////////MAIN HEADER/////////////
@@ -259,7 +258,7 @@
 <script src="~/Content/js/facebook.js"></script>
 <script src="~/Content/js/jquery.cookie.js"></script>
 <script src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
-
+<script src="~/Content/js/pace.min.js"></script>
 <!-- Custom scripts -->
 <script src="~/content/js/custom.js"></script>
 <script>
@@ -287,7 +286,13 @@
         }
     }
 
+    Pace.on('start', function () {
+        $('.pace-overlay').show();
+    });
 
+    Pace.on('done', function () {
+        $('.pace-overlay').hide();
+    });
 
 </script>
 

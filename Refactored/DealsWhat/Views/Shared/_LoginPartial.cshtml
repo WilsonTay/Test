@@ -252,7 +252,7 @@
 
     function logout() {
         $.removeCookie('token', { path: '/' });
-        location.reload();
+        window.location.href = '@Url.Action("Index","Home")';
     }
 
     $('#btn-register').click(function () {
