@@ -20,41 +20,41 @@
 
                 <div class="alert alert-success profile-successfully-changed">Your profile has successfully been updated.</div>
 
-                <form>
+                <form id="address-form" method="post">
                     <div class="form-group">
                         <label for="">E-mail</label><br />
                         <label id="email" name="Email"></label>
                     </div>
                     <div class="form-group">
                         <label for="">First Name</label>
-                        <input id="first-name" name="FirstName" type="text" value="" class="form-control">
+                        <input id="first-name" name="first-name" type="text" value="" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="">Last Name</label>
-                        <input id="last-name" name="LastName" type="text" value="" class="form-control">
+                        <input id="last-name" name="last-name" type="text" value="" class="form-control">
                     </div>
 
 
                     <legend>Address</legend>
                     <div class="form-group">
                         <label for="">Line 1</label>
-                        <input id="line1" type="text" class="form-control">
+                        <input id="line1" name="line1" type="text" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="">Line 2</label>
-                        <input id="line2" type="text" class="form-control">
+                        <input id="line2" name="line2" type="text" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="">City</label>
-                        <input id="city" type="text" class="form-control">
+                        <input id="city" name="city" type="text" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="">ZIP/Postal Code</label>
-                        <input id="zip" type="text" class="form-control">
+                        <input id="zip" name="zip" type="text" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="">State</label>
-                        <input id="state" type="text" class="form-control">
+                        <input id="state" name="state" type="text" class="form-control">
                     </div>
                     <input id="btn-save-profile" type="button" value="Save Changes" class="btn btn-primary">
                 </form>
@@ -69,6 +69,32 @@
         $(document).ready(function () {
             loadDefaultView();
             loadProfile();
+
+            $("#address-form").validate({
+                rules: {
+                    "first-name": {
+                        required: true
+                    },
+                    "last-name": {
+                        required: true
+                    },
+                    "line1": {
+                        required: true
+                    },
+                    "line2": {
+                        required: true
+                    },
+                    "city": {
+                        required: true
+                    },
+                    "zip": {
+                        required: true
+                    },
+                    "state": {
+                        required: true
+                    }
+                }
+            });
         });
 
         function loadDefaultView() {
@@ -110,6 +136,10 @@
         }
 
         function saveProfile() {
+            if (!$('#address-form').valid()) {
+                return;
+            }
+
             var address = {};
             address.Line1 = $('#line1').val();
             address.Line2 = $('#line2').val();

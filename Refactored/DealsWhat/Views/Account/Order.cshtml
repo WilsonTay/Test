@@ -51,6 +51,7 @@
 
     <script>
         var orderData = {};
+        var dealBaseUrl = '@Url.Action("Index","Deal")/';
 
         $(document).ready(function () {
             loadCart();
@@ -174,10 +175,12 @@
                     name += '<br/><span class="product-desciption">' + attrName + ' (' + attrValue + ')</span>';
                 });
 
+                var dealUrl = dealBaseUrl + orderLine.DealUrl;
+
                 var dom = '<tr>' +
-                    '<td class="cart-item-image"><a href="' + '' + '"><img height="70px" width="70px" src="' + orderLine.DealThumbnailUrl + '"/></a></td>' +
-                    '<td><a href="' + '' + '">' + name + '</a></td>' +
-                    '<td class="cart-item-quantity">1</td>' +
+                    '<td class="cart-item-image"><a href="' + dealUrl + '"><img height="70px" width="70px" src="' + orderLine.DealThumbnailUrl + '"/></a></td>' +
+                    '<td><a href="' + dealUrl + '">' + name + '</a></td>' +
+                    '<td class="cart-item-quantity">' + orderLine.Quantity + '</td>' +
                     '<td> RM ' + orderLine.SpecialPrice.toFixed(2) + '</td>' +
                     '' +
                     '</tr>';

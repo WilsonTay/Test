@@ -14,23 +14,7 @@ namespace DealsWhat.Controllers
         // GET: /Deal/
         public ActionResult Index()
         {
-            using (var context = new DealsContext())
-            {
-                //var deal = context.Deals.First(d => d.CanonicalUrl == id);
-                //var popularDeals = DealsAggregator.SuggestPopularDeals(Request.RequestContext.HttpContext, context, 10).ToList();
-
-                //foreach (var image in popularDeals.SelectMany(a => a.Pictures))
-                //{
-                //    image.RelativeUrl =
-                //       VirtualPathUtility.ToAbsolute(PathHelper.ConvertRelativeToAbsoluteDealImagePath(image.RelativeUrl));
-                //}
-
-
-                //var viewModel = new DealSpecificProductViewModel(deal, popularDeals);
-
-                return View("");
-            }
-
+            return View("");
         }
 
     }

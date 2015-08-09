@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,9 @@ namespace DealsWhat.Infrastructure.DataAccess
 
         public IEnumerable<DealCategoryModel> GetAll()
         {
-            foreach (var category in this.dbContext.Set<DealCategoryModel>())
+            foreach (var category in this.dbContext.Set<DealCategoryModel>()
+                .Include("Deals")
+                .Include("Deals.Images"))
             {
                 yield return category;
             }

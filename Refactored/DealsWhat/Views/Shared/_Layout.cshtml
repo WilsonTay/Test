@@ -258,6 +258,7 @@
 <script src="~/content/js/nicescroll.js"></script>
 <script src="~/Content/js/facebook.js"></script>
 <script src="~/Content/js/jquery.cookie.js"></script>
+<script src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
 
 <!-- Custom scripts -->
 <script src="~/content/js/custom.js"></script>
@@ -286,70 +287,6 @@
         }
     }
 
-    $('#btn-register').click(function () {
-        var username = $('#register-email').val();
-        var password = $('#register-password').val();
-        var confirmpassword = $('#register-confirm-password').val();
-
-        var payload = {};
-        payload.email = username;
-        payload.password = password;
-        payload.confirmpassword = confirmpassword;
-
-        $.ajax({
-            type: "POST",
-            url: baseUrl + "api/account/register/",
-            data: payload,
-            cache: false,
-            success: function () {
-
-                performLogin(username, password);
-            },
-            error: function() {
-                alert('Failed to register.');
-            },
-            complete: function () {
-            }
-        });
-    });
-
-    function performLogin(username, password) {
-        var payload = {};
-        payload.username = username;
-        payload.password = password;
-        payload.grant_type = 'password';
-
-        var json = JSON.stringify(payload);
-
-        $.ajax({
-            type: "POST",
-            url: baseUrl + "token",
-            data: payload,
-            cache: false,
-            success: function (result) {
-                // TODO: If fail?
-
-                var token = result.access_token;
-
-                $.cookie('token', token, { path: '/' });
-
-
-
-                location.reload();
-            },
-            error: function () {
-                alert('Failed to login. Your credentials may be incorrect.');
-            },
-            complete: function () {
-            }
-        });
-    }
-
-    $('#btn-login').click(function () {
-       var username = $('#login-email').val();
-       var password = $('#login-password').val();
-        performLogin(username, password);
-    });
 
 
 </script>

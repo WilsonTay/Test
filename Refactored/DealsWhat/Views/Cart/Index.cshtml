@@ -52,6 +52,8 @@
 
 @section scripts {
     <script>
+        var dealBaseUrl = '@Url.Action("Index","Deal")/';
+
         $(document).ready(function() {
             setDefaultCartView();
             loadCart();
@@ -140,8 +142,8 @@
                 });
 
                 dom += '<tr data-cart-item-id=' + cart.Id + '>' +
-                    '<td class="cart-item-image"><a href="' + cart.DealUrl + '"><img height="70px" width="70px" src="' + cart.DealThumbnailUrl + '"/></a></td>' +
-                    '<td><a href="' + cart.DealUrl + '">' + name + '</a></td>' +
+                    '<td class="cart-item-image"><a href="' + dealBaseUrl + cart.DealUrl + '"><img height="70px" width="70px" src="' + cart.DealThumbnailUrl + '"/></a></td>' +
+                    '<td><a href="' + dealBaseUrl + cart.DealUrl + '">' + name + '</a></td>' +
                     '<td class="cart-item-quantity"><i class="fa fa-minus cart-item-minus"></i><input type="text" name="cart-quantity" class="cart-quantity" value="' + cart.Quantity + '" /><i class="fa fa-plus cart-item-plus"></i></td>' +
                     '<td> RM ' + (cart.Quantity * cart.SpecialPrice).toFixed(2) + '</td>' +
                     '<td class="cart-item-remove"><a class="fa fa-times"  onClick="removeCartItem(\'' + cart.Id + '\')"></a></td>' +

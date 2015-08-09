@@ -65,14 +65,14 @@
     <i class="fa fa-sign-in dialog-icon"></i>
     <h3>Member Login</h3>
     <h5>Welcome back, friend. Login to get started</h5>
-    <form class="login-form" method="post">
+    <form id="login-form" name="login-form" class="login-form" method="post">
         <div class="form-group">
             <label>E-mail</label>
-            <input id="login-email" type="text" name="UserName" placeholder="email@domain.com" class="form-control">
+            <input id="login-email" type="text" name="login-username" placeholder="email@domain.com" class="form-control">
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input id="login-password" type="password" name="Password" placeholder="My secret password" class="form-control">
+            <input id="login-password" type="password" name="login-password" placeholder="My secret password" class="form-control">
         </div>
         <div class="checkbox">
             <label>
@@ -80,7 +80,9 @@
 
             </label>
         </div>
+        <div class="alert alert-danger login-error login-error-wrong-credentials" role="alert">Your login credential is incorrect.</div>
         <input id="btn-login" type="button" value="Sign in" class="btn btn-primary">
+    
     </form>
 
     <section>
@@ -107,18 +109,18 @@
     <i class="fa fa-edit dialog-icon"></i>
     <h3>Member Register</h3>
     <h5>Ready to get best offers? Let's get started!</h5>
-    <form class="register-form" method="post">
+    <form id="register-form" class="register-form" method="post">
         <div class="form-group">
             <label>E-mail</label>
-            <input id="register-email" name="UserName" type="text" placeholder="email@domain.com" class="form-control">
+            <input id="register-email" name="register-email" type="text" placeholder="email@domain.com" class="form-control">
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input id="register-password" name="Password" type="password" placeholder="My secret password" class="form-control">
+            <input id="register-password" name="register-password" type="password" placeholder="My secret password" class="form-control">
         </div>
         <div class="form-group">
             <label>Repeat Password</label>
-            <input id="register-confirm-password" name="ConfirmPassword" type="password" placeholder="Type your password again" class="form-control">
+            <input id="register-confirm-password" name="register-confirm-password" type="password" placeholder="Type your password again" class="form-control">
         </div>
         <div class="checkbox">
             <label>
@@ -126,6 +128,7 @@
 
             </label>
         </div>
+        <div class="alert alert-danger register-error register-error-username-taken" role="alert">Your email address is already registered. <a href="">Forgotten Your Password?</a></div>
         <input id="btn-register" type="button" value="Sign up" class="btn btn-primary">
     </form>
     <ul class="dialog-alt-links">
@@ -150,8 +153,8 @@
 
 <script src="~/content/js/jquery.js"></script>
 <script src="~/Content/js/jquery.cookie.js"></script>
+<script src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
 <script>
-
     $('#facebook-login').click(function() {
         $.ajax({
             url: baseUrl + "api/Account/ExternalLogins?returnUrl=http%3A%2F%2Flocalhost%3A1441%2F&generateState=true",
@@ -178,6 +181,9 @@
     });
 
     $(document).ready(function () {
+        $('.login-error').hide();
+        $('.register-error').hide();
+
         var token = $.cookie('token');
         setupAjaxToUseToken();
         if (token != null && token != "") {
@@ -196,6 +202,34 @@
             $('#header-logged-in').hide();
             $('#header-not-logged-in').show();
         }
+
+        $("#register-form").validate({
+            rules: {
+                "register-email": {
+                    required: true,
+                    email: true
+                },
+                "register-password": {
+                    required: true
+                },
+                "register-confirm-password": {
+                    required: true,
+                    equalTo:"#register-password"
+                }
+            }
+        });
+
+        $("#login-form").validate({
+            rules: {
+                "login-username": {
+                    required: true,
+                    email: true
+                },
+                "login-password": {
+                    required: true
+                }
+            }
+        });
     });
 
     function loadEmailAddress() {
@@ -220,6 +254,81 @@
         $.removeCookie('token', { path: '/' });
         location.reload();
     }
+
+    $('#btn-register').click(function () {
+
+        if (!$('#register-form').valid()) {
+            return;
+        }
+
+        var username = $('#register-email').val();
+        var password = $('#register-password').val();
+        var confirmpassword = $('#register-confirm-password').val();
+
+        var payload = {};
+        payload.email = username;
+        payload.password = password;
+        payload.confirmpassword = confirmpassword;
+
+        $.ajax({
+            type: "POST",
+            url: baseUrl + "api/account/register/",
+            data: payload,
+            cache: false,
+            success: function () {
+                $('register-error').hide();
+                performLogin(username, password);         
+            },
+            error: function () {
+                $('.register-error-username-taken').show();
+            },
+            complete: function () {
+            }
+        });
+    });
+
+    function performLogin(username, password) {
+        var payload = {};
+        payload.username = username;
+        payload.password = password;
+        payload.grant_type = 'password';
+
+        var json = JSON.stringify(payload);
+
+        $.ajax({
+            type: "POST",
+            url: baseUrl + "token",
+            data: payload,
+            cache: false,
+            success: function (result) {
+                $('.login-error').hide();
+
+                // TODO: If fail?
+                var token = result.access_token;
+
+                $.cookie('token', token, { path: '/' });
+
+                location.reload();
+            },
+            error: function () {
+                $('.login-error-wrong-credentials').show();
+            },
+            complete: function () {
+            }
+        });
+    }
+
+    $('#btn-login').click(function () {
+
+        if (!$('#login-form').valid()) {
+            return;
+        }
+
+        var username = $('#login-email').val();
+        var password = $('#login-password').val();
+        performLogin(username, password);
+    });
+
 </script>
 
 
