@@ -233,6 +233,14 @@
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="zxing, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.14.0.1\lib\net40\zxing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.14.0.1\lib\net40\zxing.presentation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AttributeRoutingHttpConfig.cs" />
@@ -255,12 +263,14 @@
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrdersApiController.cs" />
     <Compile Include="Controllers\PrivacyPolicyController.cs" />
+    <Compile Include="Controllers\RedemptionApiController.cs" />
     <Compile Include="Controllers\ReturnPolicyController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\PathHelper.cs" />
+    <Compile Include="Helpers\QrCodeHelper.cs" />
     <Compile Include="Models\CachedDbConfiguration.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\Deal.cs" />
@@ -352,6 +362,8 @@
     <Content Include="Content\img\backgrounds\taxi.jpg" />
     <Content Include="Content\img\backgrounds\wood.jpg" />
     <Content Include="Content\img\banner1.jpg" />
+    <Content Include="Content\img\contact-us-background.jpg" />
+    <Content Include="Content\img\contact-us2.jpg" />
     <Content Include="Content\img\deals\0.jpg" />
     <Content Include="Content\img\deals\0_thumb.jpg" />
     <Content Include="Content\img\deals\1.jpg" />
@@ -671,7 +683,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Deal\Index.cshtml" />
-    <Content Include="Views\Order\CheckOut.cshtml" />
+    <Content Include="Views\Order\CheckOutPayment.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\AboutUs\Index.cshtml" />
     <Content Include="Views\Faq\Index.cshtml" />
@@ -682,6 +694,7 @@
     <Content Include="Views\Account\Order.cshtml" />
     <Content Include="Views\Order\PaymentSuccess.cshtml" />
     <Content Include="Views\GeneralTerms\Index.cshtml" />
+    <Content Include="Views\Order\CheckOut.cshtml" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

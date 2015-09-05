@@ -51,7 +51,7 @@ namespace DealsWhat.Application.WebApi.Controllers
                         return;
                     }
 
-                    foreach (var attr in dest.Attributes)
+                    foreach (var attr in dest.Attributes.OrderBy(a => a.Order))
                     {
                         var converted = AutoMapper.Mapper.Map<FrontEndSpecificDealAttribute>(attr);
                         src.DealAttributes.Add(converted);

@@ -7,16 +7,17 @@
     <h3 style="margin-bottom: 0px">Choose your deal</h3>
     <table class="table table-condensed">
         <thead>
-        <tr>
-            <th width="100%"></th>
-        </tr>
+            <tr>
+                <th width="100%"></th>
+            </tr>
         </thead>
         <tbody id="deal-options-table-body"></tbody>
     </table>
 
     <div class="row">
         <div class="col-md-12">
-            <div class="alert alert-danger not-logged-in-purchased">You need to be logged in to make purchase.
+            <div class="alert alert-danger not-logged-in-purchased">
+                You need to be logged in to make purchase.
                 <a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top">Click here to Login</a>
             </div>
         </div>
@@ -71,7 +72,7 @@
         <div class="product-page-meta box sidebar-box">
             <h4 id="deal-long-title"></h4>
             <p>@*@Model.ShortDescription*@<div id="deal-short-description"></div></p>
-            <a class="popup-text btn btn-primary btn-lg btn-block" href="#purchase-dialog" data-effect="mfp-move-from-top"><span id="deal-special-price"></span> @*@Model.DiscountedPrice.ToString("0.00")*@ Buy Now</a>
+            <a id="btn-purchase" class="popup-text btn btn-primary btn-lg btn-block" href="#purchase-dialog" data-effect="mfp-move-from-top"><span id="deal-special-price"></span> @*@Model.DiscountedPrice.ToString("0.00")*@ Buy Now</a>
 
             <ul class="list product-page-meta-info">
                 <li>
@@ -114,7 +115,7 @@
                     <span class="product-page-meta-title">Need Help? <a href="@Url.Action("Index", "Faq")">Read our FAQ</a></span>
                     <span class="product-page-meta-title"><a href="mailto:support@dealswhat.com">Contact Us Online</a></span>
                 </li>
-             
+
             </ul>
         </div>
         @*@Html.Partial("_Sidebar", Model.PopularDeals)*@
@@ -163,7 +164,7 @@
         });
 
 
-        $('#deal-options-table-body').on('click', '.purchase-deal-option-button', function() {
+        $('#deal-options-table-body').on('click', '.purchase-deal-option-button', function () {
 
             if (!isLoggedIn()) {
                 $('.not-logged-in-purchased').show();
@@ -181,7 +182,7 @@
 
             var selectedAttributes = [];
 
-            $.each(selects, function(index, value) {
+            $.each(selects, function (index, value) {
                 var selectedName = $(value).attr('name');
                 var selectedValue = $(value).val();
 
@@ -202,12 +203,12 @@
                 method: 'post',
                 dataType: 'json',
                 cache: false,
-                success: function(deal) {
+                success: function (deal) {
 
                     var cartUrl = '/Cart?cartAdded=true';
                     window.location.replace(cartUrl);
                 },
-                complete: function() {
+                complete: function () {
                 }
             });
         });
@@ -218,7 +219,9 @@
             var dateEnded = deal.EndTime;
 
             var element = $('#deal-time-left');
-            if (dateStarted > dateEnded) {
+            var endTime = moment(deal.EndTime, moment.ISO_8601);
+            var now = new Date().getTime();
+            if (now > endTime) {
                 handleDealEnded(element);
             } else {
                 handleDealNotEnded(deal, element);
@@ -226,9 +229,12 @@
         }
 
         function handleDealEnded(element) {
-            var temp = $('<strong class="text-color">Sorry. The Deal Has Ended.</strong>');
+            var temp = $('<div class="countdown countdown-inline"><div><span class="title">Deal Ended</span></div></div>');
 
             element.append(temp);
+
+            $('#btn-purchase').attr('disabled', 'disabled');
+            $('#btn-purchase').attr('href', '');
         }
 
         function handleDealNotEnded(deal, element) {
@@ -237,7 +243,7 @@
             var temp = $('<div id="deal-countdown" data-countdown="' + endTime + '" class="countdown countdown-inline"></div>');
 
             element.append(temp);
-       
+
             $('#deal-countdown').countdown({
                 unixFormat: true
             });
@@ -249,7 +255,7 @@
                 url: baseUrl + "api/deal?url=" + "@Request.Url.Segments.Last()",
                 dataType: 'json',
                 cache: false,
-                success: function(deal) {
+                success: function (deal) {
                     dealId = deal.Id;
                     $('#deal-highlight').html(deal.Highlight);
                     $('#deal-fineprint').html(deal.Fineprint);
@@ -269,7 +275,7 @@
                     $('#deal-order-count').text(deal.OrderCount + ' bought');
 
                     var imageData = [];
-                    $.each(deal.ImageUrls, function(index, img) {
+                    $.each(deal.ImageUrls, function (index, img) {
                         var data = {};
                         data.img = img;
 
@@ -283,11 +289,11 @@
                     loadDealTimeLeft(deal);
 
                     var tbody = $('#deal-options-table-body');
-                    $.each(deal.DealOptions, function(index, option) {
+                    $.each(deal.DealOptions, function (index, option) {
                         buildDealOptionDom(option, tbody);
                     });
                 },
-                complete: function() {
+                complete: function () {
                 }
             });
         }
@@ -296,7 +302,7 @@
             var attr = dealOption.DealAttributes;
             var attrNames = [];
 
-            var groupedAttr = _.groupBy(attr, function(attr) {
+            var groupedAttr = _.groupBy(attr, function (attr) {
                 var attrName = attr.Name;
 
                 if (attrNames.indexOf(attrName) == -1) {
@@ -307,7 +313,7 @@
             });
 
             var table = '<table width="100%">';
-            $.each(attrNames, function(i, attrName) {
+            $.each(attrNames, function (i, attrName) {
                 table += buildDealAttributesDom(attrName, groupedAttr[attrName]);
             });
 
@@ -333,7 +339,7 @@
             var dom = '<tr><td>' + attributeKey + '</td><td>' +
                 '<select style="width: 100%" name="' + attributeKey + '" class="deal-attribute-list">';
 
-            $.each(attributeValues, function(index, attr) {
+            $.each(attributeValues, function (index, attr) {
                 var id = attr.Id;
                 var value = attr.Value;
                 dom += '<option value="' + id + '">' + value + '</option>';

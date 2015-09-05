@@ -44,6 +44,7 @@ namespace DealsWhat.Application.WebApi
             builder.RegisterType<CartService>().As<ICartService>();
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<OrderService>().As<IOrderService>();
+            builder.RegisterType<MerchantService>().As<IMerchantService>();
             builder.RegisterType<EFUserRepository>().As<IUserRepository>();
             builder.RegisterInstance<IUnitOfWorkFactory>(new EFUnitOfWorkFactory());
 

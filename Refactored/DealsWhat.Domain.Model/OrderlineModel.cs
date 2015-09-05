@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DealsWhat.Domain.Model
 {
-    public class OrderlineModel : IEntity
+    public class OrderlineModel : IEntity, IAggregateRoot
     {
         public int Quantity { get; private set; }
 
@@ -17,6 +17,8 @@ namespace DealsWhat.Domain.Model
         public DealModel Deal { get; private set; }
 
         public DealOptionModel DealOption { get; private set; }
+
+        public IEnumerable<CouponModel> Coupons { get; private set; }
 
         public ICollection<DealAttributeModel> AttributeValues
         {
@@ -31,8 +33,13 @@ namespace DealsWhat.Domain.Model
         private OrderlineModel()
         {
             attributeValues = new List<DealAttributeModel>();
+            Coupons = new List<CouponModel>();
         }
 
+        public void AddCoupon(CouponModel coupon)
+        {
+          
+        }
 
         public static OrderlineModel Create(
             CartItemModel cartItem)

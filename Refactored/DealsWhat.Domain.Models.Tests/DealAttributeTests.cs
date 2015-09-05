@@ -27,7 +27,7 @@ namespace DealsWhat.Domain.Models.Tests
             var name = "Size";
             var value = "M";
 
-            var attribute = DealAttributeModel.Create(name, value);
+            var attribute = DealAttributeModel.Create(name, value, 0);
 
             attribute.Key.Should().NotBeNull();
             attribute.Key.Should().NotBe(string.Empty);

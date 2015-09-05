@@ -35,6 +35,13 @@ namespace DealsWhat.Infrastructure.DataAccess
         public IRepository<OrderModel> CreateOrderRepository()
         {
             return new EFOrderRepository(this.dbContext);
-        } 
+        }
+
+        public IOrderlineRepository CreateOrderlineRepository()
+        {
+            return new EFOrderlineRepository(this.dbContext);
+        }
+
+  
     }
 }

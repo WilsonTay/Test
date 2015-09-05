@@ -41,12 +41,12 @@ namespace DealsWhat.Application.WebApi.Models
                     var dealOption = DealOptionModel.Create(shortTitle, regularPrice, specialPrice);
 
                     // dealOption.Attributes = new List<DealAttribute>();
-                    var dealAttribute1 = DealAttributeModel.Create("Color", "Black");
-                    var dealAttribute2 = DealAttributeModel.Create("Color", "Blue");
-                    var dealAttribute3 = DealAttributeModel.Create("Color", "Red");
-                    var dealAttribute4 = DealAttributeModel.Create("Size", "S");
-                    var dealAttribute5 = DealAttributeModel.Create("Size", "M");
-                    var dealAttribute6 = DealAttributeModel.Create("Size", "L");
+                    var dealAttribute1 = DealAttributeModel.Create("Color", "Black", 0);
+                    var dealAttribute2 = DealAttributeModel.Create("Color", "Blue", 1);
+                    var dealAttribute3 = DealAttributeModel.Create("Color", "Red", 2);
+                    var dealAttribute4 = DealAttributeModel.Create("Size", "S", 0);
+                    var dealAttribute5 = DealAttributeModel.Create("Size", "M", 1);
+                    var dealAttribute6 = DealAttributeModel.Create("Size", "L", 2);
 
                     dealOption.AddAttribute(dealAttribute1);
                     dealOption.AddAttribute(dealAttribute2);
@@ -245,7 +245,7 @@ namespace DealsWhat.Application.WebApi.Models
                 }
 
                 var randomCategory = categories[random.Next(0, categories.Count)];
-                 var randomMerchant = merchants[random.Next(0, merchants.Count)];
+                var randomMerchant = merchants[random.Next(0, merchants.Count)];
 
                 var shortTitle = string.Format("Sukiyaki Buffet Lunch at IOI Mall Puchong {0}{1}", randomCategory.Name,
                     i.ToString());

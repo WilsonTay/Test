@@ -57,7 +57,7 @@ namespace DealsWhat.Domain.Model
             }
 
             order.Status = OrderStatus.Unpaid;
-            order.Key = Guid.NewGuid().ToString();
+            order.Key = GenerateOrderId();
             order.DateCreated = DateTime.UtcNow;
 
             order.TotalSpecialPrice =
@@ -73,6 +73,18 @@ namespace DealsWhat.Domain.Model
                     .Aggregate(0.0d, (c1, c2) => { return c1 + c2; });
 
             return order;
+        }
+
+        private static string GenerateOrderId()
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            var result = new string(
+                Enumerable.Repeat(chars, 18)
+                          .Select(s => s[random.Next(s.Length)])
+                          .ToArray());
+
+            return result;
         }
     }
 

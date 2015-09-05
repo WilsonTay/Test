@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="AddressModel.cs" />
     <Compile Include="CartItemModel.cs" />
+    <Compile Include="CouponModel.cs" />
+    <Compile Include="CouponStatus.cs" />
     <Compile Include="DealAttributeModel.cs" />
     <Compile Include="DealImageModel.cs" />
     <Compile Include="DealModel.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="IAggregateRoot.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="MerchantModel.cs" />
+    <Compile Include="MerchantOrderlineModel.cs" />
     <Compile Include="NewCartItemModel.cs" />
     <Compile Include="OrderlineModel.cs" />
     <Compile Include="OrderModel.cs" />

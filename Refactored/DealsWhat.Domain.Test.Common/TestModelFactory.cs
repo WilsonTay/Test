@@ -227,11 +227,12 @@ namespace DealsWhat.Domain.Test.Common
             return dealOption;
         }
 
-        public static DealAttributeModel CreateDealAttribute(string name = "", string value = "")
+        public static DealAttributeModel CreateDealAttribute(string name = "", string value = "", int order = -1)
         {
             return DealAttributeModel.Create(
                 name.Equals("") ? fixture.Create<string>() : name,
-                value.Equals("") ? fixture.Create<string>() : value);
+                value.Equals("") ? fixture.Create<string>() : value,
+                order == -1 ? fixture.Create<int>() : order);
         }
     }
 }
