@@ -43,5 +43,15 @@ namespace DealsWhat.Domain.Test.Common
         {
             throw new NotImplementedException();
         }
+
+        public IOrderlineRepository CreateOrderlineRepository()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRepository<MerchantModel> CreateMerchantRepository()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -22,7 +22,36 @@ namespace DealsWhat.Domain.Services
             var orderlineRepo = unitOfWorkFactory.CreateUnitOfWork().CreateOrderlineRepository();
             var orderlines = orderlineRepo.FindByMerchant(query.MerchantId);
 
+            if (!string.IsNullOrEmpty(query.DealId))
+            {
+                return orderlines.Where(o => o.Orderline.Deal.Key == query.DealId);
+            }
+
             return orderlines;
+        }
+
+        public OrderlineModel RedeemCoupon(CouponRedemption redemption)
+        {
+            var uow = unitOfWorkFactory.CreateUnitOfWork();
+            var orderlineRepo = uow.CreateOrderlineRepository();
+            var orderlineWithCoupon = orderlineRepo.FindOrderlineWithCoupon(redemption.Value);
+
+            var coupon = orderlineWithCoupon.Coupons.First(a => a.Value.Equals(redemption.Value));
+            coupon.SetRedeemed();
+
+            orderlineRepo.Save();
+
+            return orderlineWithCoupon;
+        }
+    }
+
+    public class CouponRedemption
+    {
+        public string Value { get; private set; }
+
+        public CouponRedemption(string value)
+        {
+            this.Value = value;
         }
     }
 }

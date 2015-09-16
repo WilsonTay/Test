@@ -44,6 +44,12 @@ namespace DealsWhat.Infrastructure.DataAccess
                 .HasMany<OrderModel>(a => a.Orders)
                 .WithRequired();
 
+            modelBuilder.Entity<CouponModel>().HasKey(a => a.Key);
+
+            modelBuilder.Entity<OrderlineModel>()
+                .HasMany<CouponModel>(a => a.Coupons)
+                .WithOptional();
+
             modelBuilder.Entity<OrderModel>().HasKey(a => a.Key)
                 .HasMany<OrderlineModel>(a => a.Orderlines)
                 .WithRequired();

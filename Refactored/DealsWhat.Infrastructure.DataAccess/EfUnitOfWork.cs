@@ -42,6 +42,9 @@ namespace DealsWhat.Infrastructure.DataAccess
             return new EFOrderlineRepository(this.dbContext);
         }
 
-  
+        public IRepository<MerchantModel> CreateMerchantRepository()
+        {
+            return new EFMerchantRepository(this.dbContext);
+        }
     }
 }

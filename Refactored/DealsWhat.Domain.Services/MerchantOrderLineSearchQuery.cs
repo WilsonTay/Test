@@ -9,5 +9,7 @@ namespace DealsWhat.Domain.Services
     public class MerchantOrderLineSearchQuery
     {
         public string MerchantId { get; set; }
+
+        public string DealId { get; set; }
     }
 }

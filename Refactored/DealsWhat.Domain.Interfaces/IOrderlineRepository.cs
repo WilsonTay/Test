@@ -10,5 +10,7 @@ namespace DealsWhat.Domain.Interfaces
     public interface IOrderlineRepository : IRepository<OrderlineModel>
     {
         IEnumerable<MerchantOrderlineModel> FindByMerchant(string merchantId);
+
+        OrderlineModel FindOrderlineWithCoupon(string couponValue);
     }
 }

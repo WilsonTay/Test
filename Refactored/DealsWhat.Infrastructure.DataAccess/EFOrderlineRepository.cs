@@ -30,29 +30,50 @@ namespace DealsWhat.Infrastructure.DataAccess
                 .First(m => m.Key == merchantId);
             var merchantDealIds = merchant.Deals.Select(m => m.Key).ToList();
 
-            var orders = this.dbContext.Orders
-                  .Where(o => o.Orderlines.Any(ol => merchantDealIds.Contains(ol.Deal.Key)))
-                  .Include("Orderlines.Deal.Images")
-                  .Include("Orderlines.Dealoption")
-                  .Include("Orderlines.AttributeValues")
-                  .Include("BillingAddress")
+            var users = this.dbContext
+                .Users.Where(user => user.Orders
+                  .Any(o => o.Orderlines.Any(ol => merchantDealIds.Contains(ol.Deal.Key))))
+                  .Include("Orders.Orderlines.Deal.Images")
+                  .Include("Orders.Orderlines.Dealoption")
+                  .Include("Orders.Orderlines.AttributeValues")
+                  .Include("Orders.Orderlines.Coupons")
+                  .Include("Orders.BillingAddress")
                   .ToList();
 
             var merchantOrderlines = new List<MerchantOrderlineModel>();
-            foreach (var order in orders)
+            foreach (var user in users)
             {
-                foreach (var orderline in order.Orderlines)
+                foreach (var order in user.Orders)
                 {
-                    if (!merchantDealIds.Contains(orderline.Deal.Key))
+                    foreach (var orderline in order.Orderlines)
                     {
-                        continue;
+                        if (!merchantDealIds.Contains(orderline.Deal.Key))
+                        {
+                            continue;
+                        }
+
+                        var merchantOrderline = MerchantOrderlineModel.Create(orderline, order.BillingAddress, order.DateCreated, user.EmailAddress);
+
+                        merchantOrderlines.Add(merchantOrderline);
                     }
-
-                    var merchantOrderline = MerchantOrderlineModel.Create(orderline, order.BillingAddress, order.DateCreated);
-
-                    merchantOrderlines.Add(merchantOrderline);
                 }
             }
+
+            //var merchantOrderlines = new List<MerchantOrderlineModel>();
+            //foreach (var order in orders)
+            //{
+            //    foreach (var orderline in order.Orderlines)
+            //    {
+            //        if (!merchantDealIds.Contains(orderline.Deal.Key))
+            //        {
+            //            continue;
+            //        }
+
+            //        var merchantOrderline = MerchantOrderlineModel.Create(orderline, order.BillingAddress, order.DateCreated, order.User.EmailAddress);
+
+            //        merchantOrderlines.Add(merchantOrderline);
+            //    }
+            //}
 
             return merchantOrderlines;
             //Console.WriteLine(merchantOrderlines);
@@ -66,6 +87,20 @@ namespace DealsWhat.Infrastructure.DataAccess
             //    .ToList();
 
             //return orderLines;
+        }
+
+        public OrderlineModel FindOrderlineWithCoupon(string couponValue)
+        {
+            var orderline = this.dbContext
+                .Set<OrderlineModel>()
+                .Include("Deal")
+                .Include("Deal.Images")
+                .Include("Coupons")
+                .Include("DealOption")
+                .Include("AttributeValues")
+                .FirstOrDefault(a => a.Coupons.Any(c => c.Value == couponValue));
+
+            return orderline;
         }
 
         public OrderlineModel FindByKey(string key)
@@ -82,7 +117,7 @@ namespace DealsWhat.Infrastructure.DataAccess
 
         public void Save()
         {
-            throw new NotImplementedException();
+            this.dbContext.SaveChanges();
         }
 
         public void Update(OrderlineModel model)

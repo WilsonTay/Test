@@ -60,6 +60,7 @@ namespace DealsWhat.Infrastructure.DataAccess
                 .Include("Orders.Orderlines.Deal")
                 .Include("Orders.Orderlines.Deal.Images")
                 .Include("Orders.Orderlines.DealOption")
+                .Include("Orders.Orderlines.Coupons")
                 .Include("Orders.BillingAddress")
                 .Include("BillingAddress")
                 .FirstOrDefault(u => u.Email == emailAddress);

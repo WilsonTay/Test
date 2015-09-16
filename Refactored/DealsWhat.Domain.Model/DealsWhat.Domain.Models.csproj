@@ -54,6 +54,8 @@
     <Compile Include="DealCategoryModel.cs" />
     <Compile Include="DealOptionModel.cs" />
     <Compile Include="DealStatus.cs" />
+    <Compile Include="DealType.cs" />
+    <Compile Include="Exceptions\CouponAlreadyRedeemedException.cs" />
     <Compile Include="IAggregateRoot.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="MerchantModel.cs" />

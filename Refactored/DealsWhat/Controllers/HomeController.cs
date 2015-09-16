@@ -15,9 +15,9 @@ namespace DealsWhat.Controllers
             {
                 var model = new IndexViewModel();
                 //model.FeaturedDeals = context.Deals.Include("Merchant").Include("Pictures").Where(d => d.IsFeatured).Take(3).ToList();
-                model.NewDeals = context.Deals.Include("Merchant").Include("Pictures").OrderByDescending(d => d.DateAdded).Take(16).ToList();
-                model.PopularDeals = new PopularDealsViewModel(context.Deals.Include("Pictures").OrderByDescending(d => d.DateAdded).Take(16).ToList());
-                model.Categories = context.DealCategories.ToList();
+                //model.NewDeals = context.Deals.Include("Merchant").Include("Pictures").OrderByDescending(d => d.DateAdded).Take(16).ToList();
+                //model.PopularDeals = new PopularDealsViewModel(context.Deals.Include("Pictures").OrderByDescending(d => d.DateAdded).Take(16).ToList());
+                //model.Categories = context.DealCategories.ToList();
 
                 return View(model);
             }

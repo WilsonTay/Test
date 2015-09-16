@@ -17,5 +17,6 @@ namespace DealsWhat.Domain.Interfaces
         IRepository<OrderModel> CreateOrderRepository();
 
         IOrderlineRepository CreateOrderlineRepository();
+        IRepository<MerchantModel> CreateMerchantRepository();
     }
 }

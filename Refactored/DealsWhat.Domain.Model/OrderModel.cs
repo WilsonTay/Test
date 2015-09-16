@@ -11,6 +11,7 @@ namespace DealsWhat.Domain.Model
         public AddressModel BillingAddress { get; set; }
 
         public IUserModel User { get; set; }
+
         public DateTime DateCreated { get; private set; }
 
         public OrderStatus Status { get; private set; }
@@ -31,11 +32,25 @@ namespace DealsWhat.Domain.Model
         public void SetOrderPaid()
         {
             Status = OrderStatus.Paid;
+
+            foreach (var orderline in this.Orderlines)
+            {
+                orderline.GenerateCouponIfNecessary();
+            }
         }
 
         public void SetOrderDelivered()
         {
             Status = OrderStatus.Delivered;
+        }
+
+        /// <summary>
+        /// For sample data to generate different dates.
+        /// </summary>
+        /// <param name="dt"></param>
+        public void SetDateCreated(DateTime dt)
+        {
+            this.DateCreated = dt;
         }
 
         public static OrderModel Create(IUserModel userModel, IEnumerable<CartItemModel> cartItems)
@@ -75,10 +90,12 @@ namespace DealsWhat.Domain.Model
             return order;
         }
 
+        private static Random random = new Random();
+
         private static string GenerateOrderId()
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
+            //var random = new Random();
             var result = new string(
                 Enumerable.Repeat(chars, 18)
                           .Select(s => s[random.Next(s.Length)])

@@ -38,6 +38,11 @@ namespace DealsWhat.Domain.Services
                 }
 
                 deals = category.Deals;
+            } else if (query.MerchantId != null)
+            {
+                var merchant = unitOfWork.CreateMerchantRepository().FindByKey(query.MerchantId);
+
+                deals = merchant.Deals;
             }
             else
             {

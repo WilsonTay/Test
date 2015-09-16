@@ -10,6 +10,7 @@ namespace DealsWhat.Application.WebApi.Models
 {
     public class SampleData
     {
+        private static Random random = new Random();
         public static void Seed(DealsWhatDbContext context)
         {
 
@@ -21,13 +22,66 @@ namespace DealsWhat.Application.WebApi.Models
             // CreateDealComments(context, deals, users);
             CreateDealImages(context, deals);
 
-            context.SaveChanges();
+            try
+            {
+                for (int i = 0; i < 500; i++)
+                {
+                    var randomNumber = random.Next(0, users.Count);
+                    var randomUser = users[randomNumber];
+                    var carts = new List<CartItemModel>();
+                    for (int c = 0; c < 3; c++)
+                    {
+                        var randomDealNumber = random.Next(0, deals.Count);
+                        var randomDeal = deals[randomDealNumber];
+
+                        var randomDealOptionNumber = random.Next(0, randomDeal.Options.Count);
+                        var randomDealOption = randomDeal.Options.ElementAt(randomDealOptionNumber);
+
+                        var attrs = new List<DealAttributeModel>();
+                        var attrGrouping = randomDealOption.Attributes.GroupBy(a => a.Name);
+                        foreach (var group in attrGrouping)
+                        {
+                            var randomValueNumber = random.Next(0, group.ToList().Count);
+                            var randomValue = group.ToList()[randomValueNumber];
+
+                            attrs.Add(randomValue);
+                        }
+                        var cartItem = CartItemModel.Create(randomDeal, randomDealOption, attrs);
+                        carts.Add(cartItem);
+                    }
+
+                    var order = OrderModel.Create(randomUser, carts);
+                    order.SetOrderPaid();
+
+                    var randomDate = random.Next(0, 31);
+                    var date = DateTime.Now.AddDays(randomDate*-1);
+                    order.SetDateCreated(date);
+
+                    randomUser.Orders.Add(order);
+
+                    foreach (var orderline in order.Orderlines)
+                    {
+                        var randomCouponCount = random.Next(0, orderline.Coupons.Count);
+                        var randomCoupon = orderline.Coupons.ElementAt(randomCouponCount);
+
+                        randomCoupon.SetRedeemed();
+                    }
+                }
+
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+
         }
 
         private static void CreateDealOptions(DealsWhatDbContext context, List<DealModel> deals)
         {
             var random = new Random();
-            var randomNumber = random.Next(0, 5);
+            var randomNumber = random.Next(1, 5);
 
             foreach (var deal in deals)
             {
@@ -82,6 +136,15 @@ namespace DealsWhat.Application.WebApi.Models
                     Email = string.Format("User{0}", i),
                     UserName = string.Format("User{0}", i)
                 };
+
+                var address = new AddressModel();
+                address.City = "Petaling Jaya";
+                address.Country = "Malaysia";
+                address.Line1 = "A021 Taman Sentosa";
+                address.Line2 = "Jalan A11/2 Klang Lama";
+                address.PostCode = "24141";
+                address.State = "Selangor";
+                user.SetBillingAddress(address);
                 // var applicationUser = new ApplicationUser(user);
 
                 //var user = new ApplicationUser
@@ -253,7 +316,10 @@ namespace DealsWhat.Application.WebApi.Models
                 var canonicalUrl = string.Format("url-for-product-{0}", i);
                 var longTitle = "[41% Off] Sukishi: Sukiyaki Buffet Lunch at IOI Mall Puchong for RM24.90";
 
-                var deal = DealModel.Create(shortTitle, shortDescription, longTitle, description, fineprint, highlight);
+                var bit = new Random().Next(0, 1);
+                var dealType = bit == 0 ? DealType.Coupon : DealType.Product;
+
+                var deal = DealModel.Create(shortTitle, shortDescription, longTitle, description, fineprint, highlight, dealType);
                 deal.SetPrice(10, 5.5);
                 deal.SetStatus(DealStatus.Published);
                 //var deal = new DealModel

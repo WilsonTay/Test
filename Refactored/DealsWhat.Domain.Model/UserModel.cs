@@ -19,6 +19,7 @@ namespace DealsWhat.Domain.Model
         void RemoveFromCart(CartItemModel cartItem);
 
         AddressModel ContactAddress { get; }
+
         AddressModel BillingAddress { get; }
 
         string FirstName { get; }

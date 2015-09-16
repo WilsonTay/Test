@@ -14,13 +14,6 @@ using DealsWhat.Domain.Services;
 
 namespace DealsWhat.Application.WebApi.Controllers
 {
-    public class FrontEndCategory
-    {
-        public string Name { get; set; }
-        public string Icon { get; set; }
-        public string Id { get; set; }
-    }
-
     //[Authorize]
     public class FrontEndDealsController : ApiController
     {
@@ -58,7 +51,7 @@ namespace DealsWhat.Application.WebApi.Controllers
                     }
                 });
 
-            AutoMapper.Mapper.CreateMap<DealCategoryModel, FrontEndCategory>()
+            AutoMapper.Mapper.CreateMap<DealCategoryModel, FrontEndCategoryViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Key.ToString()))
                  .ForMember(dest => dest.Icon, opt => opt.MapFrom(src => src.Icon.ToString()))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.ToString()));
@@ -92,6 +85,7 @@ namespace DealsWhat.Application.WebApi.Controllers
 
             var searchTerm = query.FirstOrDefault(k => k.Key.Equals("search", StringComparison.OrdinalIgnoreCase));
             var categoryId = query.FirstOrDefault(k => k.Key.Equals("categoryid", StringComparison.OrdinalIgnoreCase));
+            var merchantId = query.FirstOrDefault(k => k.Key.Equals("merchantId", StringComparison.OrdinalIgnoreCase));
 
             // Category id, search term, sorted by, all
             if (KeyHasValue(categoryId))
@@ -102,6 +96,11 @@ namespace DealsWhat.Application.WebApi.Controllers
             if (KeyHasValue(searchTerm))
             {
                 searchQuery.SearchTerm = searchTerm.Value;
+            }
+
+            if (KeyHasValue(merchantId))
+            {
+                searchQuery.MerchantId = merchantId.Value;
             }
 
             //TODO: Combine search term and category.
@@ -161,11 +160,11 @@ namespace DealsWhat.Application.WebApi.Controllers
 
         [HttpGet]
         [Route("api/categories")]
-        public IEnumerable<FrontEndCategory> GetCategories()
+        public IEnumerable<FrontEndCategoryViewModel> GetCategories()
         {
             var categories = this.dealService.GetAllCategories();
 
-            var frontEndCategories = categories.Select(a => Mapper.Map<FrontEndCategory>(a)).ToList();
+            var frontEndCategories = categories.Select(a => Mapper.Map<FrontEndCategoryViewModel>(a)).ToList();
 
             return frontEndCategories;
         }

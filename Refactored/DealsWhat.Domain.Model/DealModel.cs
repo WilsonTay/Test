@@ -11,6 +11,7 @@ namespace DealsWhat.Domain.Model
         private readonly IList<DealOptionModel> options;
         private readonly IList<DealImageModel> images;
 
+        public DealType DealType { get; internal set; }
         public string ShortTitle { get; internal set; }
         public string LongTitle { get; internal set; }
         public string ShortDescription { get; internal set; }
@@ -52,7 +53,8 @@ namespace DealsWhat.Domain.Model
             string longTitle,
             string longDescription,
             string finePrint,
-            string highlight)
+            string highlight,
+            DealType dealType)
         {
             var deal = new DealModel
             {
@@ -70,6 +72,7 @@ namespace DealsWhat.Domain.Model
                 SpecialPrice = 0,
                 Status = DealStatus.Draft,
                 Key = Guid.NewGuid().ToString(),
+                DealType = dealType
             };
 
             deal.CanonicalUrl = GenerateCanonicalUrl(deal);

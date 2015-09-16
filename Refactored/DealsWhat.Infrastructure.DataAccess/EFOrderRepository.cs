@@ -30,6 +30,10 @@ namespace DealsWhat.Infrastructure.DataAccess
                 var entity = this.dbContext.Set<OrderModel>()
                     //.Include("User")
                     .Include("Orderlines")
+                    .Include("Orderlines.Deal")
+                    .Include("Orderlines.DealOption")
+                    .Include("Orderlines.AttributeValues")
+                    .Include("Orderlines.Coupons")
                     .FirstOrDefault(a => a.Key == key);
 
                 return entity;

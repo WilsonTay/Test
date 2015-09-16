@@ -18,7 +18,13 @@ namespace DealsWhat.Domain.Model
 
         public DealOptionModel DealOption { get; private set; }
 
-        public IEnumerable<CouponModel> Coupons { get; private set; }
+        public ICollection<CouponModel> Coupons
+        {
+            get
+            {
+                return coupons;
+            }
+        }
 
         public ICollection<DealAttributeModel> AttributeValues
         {
@@ -30,15 +36,12 @@ namespace DealsWhat.Domain.Model
 
         private readonly List<DealAttributeModel> attributeValues;
 
+        private readonly List<CouponModel> coupons;
+
         private OrderlineModel()
         {
             attributeValues = new List<DealAttributeModel>();
-            Coupons = new List<CouponModel>();
-        }
-
-        public void AddCoupon(CouponModel coupon)
-        {
-          
+            coupons = new List<CouponModel>();
         }
 
         public static OrderlineModel Create(
@@ -60,7 +63,29 @@ namespace DealsWhat.Domain.Model
             orderLine.RegularPrice = cartItem.DealOption.RegularPrice * cartItem.Quantity;
             orderLine.Quantity = cartItem.Quantity;
 
+
             return orderLine;
+        }
+
+        public void GenerateCouponIfNecessary()
+        {
+            if (Deal.DealType == DealType.Coupon)
+            {
+                if (coupons.Any())
+                {
+                    throw new InvalidOperationException("Coupons have already been generated.");
+                }
+
+                // TODO: COUPON.
+                for (int i = 0; i < Quantity; i++)
+                {
+                    var couponValue = Guid.NewGuid().ToString();
+                    var coupon = CouponModel.Create(couponValue);
+
+                    coupons.Add(coupon);
+                }
+            }
+
         }
 
         public string Key { get; internal set; }

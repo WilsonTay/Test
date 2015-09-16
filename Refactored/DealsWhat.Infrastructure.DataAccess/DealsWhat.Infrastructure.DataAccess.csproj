@@ -74,6 +74,7 @@
     <Compile Include="ApplicationUser.cs" />
     <Compile Include="EFDealCategoryRepository.cs" />
     <Compile Include="EFDealRepository.cs" />
+    <Compile Include="EFMerchantRepository.cs" />
     <Compile Include="EFOrderlineRepository.cs" />
     <Compile Include="EFOrderRepository.cs" />
     <Compile Include="EfUnitOfWork.cs" />

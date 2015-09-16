@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DealsWhat.Domain.Model.Exceptions;
 
 namespace DealsWhat.Domain.Model
 {
@@ -33,6 +34,11 @@ namespace DealsWhat.Domain.Model
 
         public void SetRedeemed()
         {
+            if (this.Status == CouponStatus.Redeemed)
+            {
+                throw new CouponAlreadyRedeemedException();
+            }
+
             this.Status = CouponStatus.Redeemed;
             this.DateRedeemed = DateTime.Now;
         }

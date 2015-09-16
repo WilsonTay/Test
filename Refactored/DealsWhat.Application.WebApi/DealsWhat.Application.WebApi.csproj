@@ -15,7 +15,7 @@
     <AssemblyName>DealsWhat.Application.WebApi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -272,17 +272,25 @@
     <Compile Include="Mappings\OrderlineMappings.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AddressViewModel.cs" />
     <Compile Include="Models\CartItemAttribute.cs" />
     <Compile Include="Models\CartItemViewModel.cs" />
+    <Compile Include="Models\CouponViewModel.cs" />
     <Compile Include="Models\FrontDealSpecificDealOption.cs" />
+    <Compile Include="Models\FrontEndCategoryViewModel.cs" />
     <Compile Include="Models\FrontEndDeal.cs" />
     <Compile Include="Models\FrontEndSpecificDeal.cs" />
     <Compile Include="Models\FrontEndSpecificDealAttribute.cs" />
+    <Compile Include="Models\MerchantOrderlineViewModel.cs" />
     <Compile Include="Models\NewCartItemViewModel.cs" />
+    <Compile Include="Models\OrderlineViewModel.cs" />
+    <Compile Include="Models\OrderPaidViewModel.cs" />
+    <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\PathHelper.cs" />
     <Compile Include="Models\SampleData.cs" />
     <Compile Include="Models\SingleUpdateCartItemViewModel.cs" />
     <Compile Include="Models\UpdateCartItemViewModel.cs" />
+    <Compile Include="Models\UpdateUserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -299,6 +307,45 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\DealImages\0.jpg" />
+    <Content Include="Images\DealImages\0_thumb.jpg" />
+    <Content Include="Images\DealImages\1.jpg" />
+    <Content Include="Images\DealImages\10.jpg" />
+    <Content Include="Images\DealImages\10_thumb.jpg" />
+    <Content Include="Images\DealImages\11.jpg" />
+    <Content Include="Images\DealImages\11_thumb.jpg" />
+    <Content Include="Images\DealImages\12.jpg" />
+    <Content Include="Images\DealImages\12_thumb.jpg" />
+    <Content Include="Images\DealImages\13.jpg" />
+    <Content Include="Images\DealImages\13_thumb.jpg" />
+    <Content Include="Images\DealImages\14.jpg" />
+    <Content Include="Images\DealImages\14_thumb.jpg" />
+    <Content Include="Images\DealImages\15.jpg" />
+    <Content Include="Images\DealImages\15_thumb.jpg" />
+    <Content Include="Images\DealImages\16.jpg" />
+    <Content Include="Images\DealImages\16_thumb.jpg" />
+    <Content Include="Images\DealImages\17.jpg" />
+    <Content Include="Images\DealImages\17_thumb.jpg" />
+    <Content Include="Images\DealImages\18.jpg" />
+    <Content Include="Images\DealImages\18_thumb.jpg" />
+    <Content Include="Images\DealImages\1_thumb.jpg" />
+    <Content Include="Images\DealImages\2.jpg" />
+    <Content Include="Images\DealImages\2_thumb.jpg" />
+    <Content Include="Images\DealImages\3.jpg" />
+    <Content Include="Images\DealImages\3_thumb.jpg" />
+    <Content Include="Images\DealImages\4.jpg" />
+    <Content Include="Images\DealImages\4_thumb.jpg" />
+    <Content Include="Images\DealImages\5.jpg" />
+    <Content Include="Images\DealImages\5_thumb.jpg" />
+    <Content Include="Images\DealImages\6.jpg" />
+    <Content Include="Images\DealImages\683bd58a-9501-4ffd-88b4-3c9fefb6b0cc-Windows_8_Wallpapers.jpg" />
+    <Content Include="Images\DealImages\6_thumb.jpg" />
+    <Content Include="Images\DealImages\7.jpg" />
+    <Content Include="Images\DealImages\7_thumb.jpg" />
+    <Content Include="Images\DealImages\8.jpg" />
+    <Content Include="Images\DealImages\8_thumb.jpg" />
+    <Content Include="Images\DealImages\9.jpg" />
+    <Content Include="Images\DealImages\9_thumb.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -406,7 +453,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>39874</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:39874/</IISUrl>
+          <IISUrl>http://localhost/DealsWhat.Application.WebApi</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
