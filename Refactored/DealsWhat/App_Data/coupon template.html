@@ -1,0 +1,38 @@
+<html>
+<head>
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+</head>
+
+<body style="padding: 25px 50px">
+	<div class="center-align"><img width="75px" src="{{LogoImage}}" /></div>
+ <div class="card-panel">
+ 	 <div class="row">
+      <div class="col s9">
+      	<p class="caption">{{ShortDescription}}</p>
+<p class="grey-text">Voucher value: RM {{SpecialPrice}}</p>
+      </div>
+      <div class="col s3"><img class="responsive-img" src="{{DealImage}}"/></div>
+    </div>
+      <span class="blue-text text-darken-2">Redeem before {{EndDate}}</span>
+    </div>
+
+<div class="row">
+<h4>Fineprint</h4>
+<div class="col s9">
+<ul class="light">
+	{{FinePrint}}
+</ul>
+</div>
+<div class="right-align col s3">
+<h5>For Merchants</h5>
+{{Barcode}}
+	</div>
+</div>
+
+</body>
+
+</html>

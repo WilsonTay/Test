@@ -34,7 +34,7 @@
                         <span>Total</span><span id="order-total">RM 0.00</span>
                     </li>
                 </ul>
-          
+
                 <form method="post" action="@Url.Action("CheckOutPost", "Order")">
                     <input id="order-id" name="OrderId" type="hidden" />
                     <input id="btn-submit-payment" type="submit" value="Pay Now" class="btn btn-primary" />
@@ -52,7 +52,7 @@
     <script>
         var currentUrl = '@Url.Content("~")';
         var orderData = {};
-        var dealBaseUrl = '@Url.Action("Index","Deal")/';
+        var dealBaseUrl = '@Url.Action("Index", "Deal")/';
 
         $(document).ready(function () {
             loadCart();
@@ -165,7 +165,7 @@
         function buildOrderlineDom(orderLines) {
 
             var table = '<table class="table cart-table"><thead>' +
-                '<tr> <th>Item</th><th>Name</th><th style="width:100px">QTY</th><th style="width:100px">Price</th><th></th></tr></thead>' +
+                '<tr> <th>Item</th><th>Name</th><th style="width:100px">QTY</th><th style="width:100px">Price</th><th>Coupons</th></tr></thead>' +
                 '<tbody class="cart-item-tbody"><tr><td>';
 
 
@@ -186,8 +186,10 @@
                     '<td class="coupons"></td>' +
                     '</tr>';
 
-                $.each(orderLine.Coupons, function (index, coupon) {                 
-                    loadCouponQr(orderLine.Id,coupon);              
+                var id = 1;
+                $.each(orderLine.Coupons, function (index, coupon) {
+                    loadCouponQr(orderLine.Id, coupon, id);
+                    id++;
                 });
 
                 table += dom;
@@ -198,27 +200,39 @@
             return table;
         }
 
-        function loadCouponQr(orderlineId, coupon) {
+        function loadCouponQr(orderlineId, coupon, id) {
             var couponValue = coupon.Value;
             var status = coupon.Status;
 
-            $.ajax({
-                url: currentUrl + "api/redemption/" + couponValue,
-                method: 'get',
-                success: function (response) {
-                    var append = function () {
-                        var couponDom = $('#accordion tr[data-orderline-id=' + orderlineId + ']');
-                        console.log(couponDom);
-                        $(couponDom).append(response);
-                        $(couponDom).append(status);
-                    }
+            var append = function () {
+                var url = currentUrl + "api/redemption/" + couponValue;
+                var couponDom = $('#accordion tr[data-orderline-id=' + orderlineId + '] td.coupons');
+                var html = '<a href="' + url + '">Download #' + id + '</a><br/>';
 
-                    setTimeout(append, 1);
-                },
-                complete: function () {
-                    console.log('done');
-                }
-            });
+                $(couponDom).append(html);
+                console.log(html);
+            }
+
+            setTimeout(append, 500);
+            // $(couponDom).append(status);
+
+            //$.ajax({
+            //    url: currentUrl + "api/redemption/" + couponValue,
+            //    method: 'get',
+            //    success: function (response) {
+            //        var append = function () {
+            //            var couponDom = $('#accordion tr[data-orderline-id=' + orderlineId + ']');
+            //            console.log(couponDom);
+            //            $(couponDom).append(response);
+            //            $(couponDom).append(status);
+            //        }
+
+            //        setTimeout(append, 1);
+            //    },
+            //    complete: function () {
+            //        console.log('done');
+            //    }
+            //});
         }
 
         function buildOrderStatusDom(orderId) {

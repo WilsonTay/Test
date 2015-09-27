@@ -258,8 +258,8 @@ namespace DealsWhat.Controllers
             model.Remark = "";
             model.Lang = "";
             model.Signature = GenerateSignature(model.RefNo, model.Amount);
-            model.ResponseURL = baseUrl + Url.Action("Payment");
-            model.BackendURL = baseUrl + Url.Action("Payment");
+            model.ResponseURL = baseUrl + "/Order/Payment";
+            model.BackendURL = baseUrl + "/Order/Payment";
 
             return View(model);
         }

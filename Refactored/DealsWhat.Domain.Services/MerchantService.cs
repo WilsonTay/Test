@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DealsWhat.Domain.Model.Exceptions;
 
 namespace DealsWhat.Domain.Services
 {
@@ -30,6 +31,13 @@ namespace DealsWhat.Domain.Services
             return orderlines;
         }
 
+        public MerchantModel GetMerchantInfo(string emailAddress)
+        {
+            var merchantRepo = unitOfWorkFactory.CreateUnitOfWork().CreateMerchantRepository();
+
+            return merchantRepo.GetAll().FirstOrDefault(m => m.EmailAddress == emailAddress);
+        }
+
         public OrderlineModel RedeemCoupon(CouponRedemption redemption)
         {
             var uow = unitOfWorkFactory.CreateUnitOfWork();
@@ -37,6 +45,12 @@ namespace DealsWhat.Domain.Services
             var orderlineWithCoupon = orderlineRepo.FindOrderlineWithCoupon(redemption.Value);
 
             var coupon = orderlineWithCoupon.Coupons.First(a => a.Value.Equals(redemption.Value));
+
+            if (coupon == null)
+            {
+                throw new CouponNotFoundException();
+            }
+
             coupon.SetRedeemed();
 
             orderlineRepo.Save();

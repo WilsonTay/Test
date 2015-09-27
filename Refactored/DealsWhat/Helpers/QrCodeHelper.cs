@@ -35,6 +35,8 @@ namespace DealsWhat.Helpers
                 bitmap.Save(stream, ImageFormat.Gif);
 
                 var img = new TagBuilder("img");
+                //img.Attributes.Add("height", height.ToString());
+                //img.Attributes.Add("width", width.ToString());
                 //img.MergeAttribute("alt", "your alt tag");
                 img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}",
                     Convert.ToBase64String(stream.ToArray())));

@@ -264,11 +264,15 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\FrontEndDealsController.cs" />
     <Compile Include="Controllers\MerchantController.cs" />
+    <Compile Include="Models\CouponOrderlineViewModel.cs" />
+    <Compile Include="Models\MerchantInfoViewModel.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Models\RedemptionViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappings\MerchantMappings.cs" />
     <Compile Include="Mappings\OrderlineMappings.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />

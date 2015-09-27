@@ -21,7 +21,12 @@ namespace DealsWhat.Infrastructure.DataAccess
 
         public IEnumerable<MerchantModel> GetAll()
         {
-            throw new NotImplementedException();
+            var merchant = this.dbContext.Set<MerchantModel>()
+                .Include("Deals.Options.Attributes")
+                .Include("Deals.Images")
+                .ToList();
+
+            return merchant;
         }
 
         public void Update(MerchantModel model)

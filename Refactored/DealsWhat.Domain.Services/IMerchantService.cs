@@ -12,5 +12,7 @@ namespace DealsWhat.Domain.Services
         IEnumerable<MerchantOrderlineModel> SearchOrderlines(MerchantOrderLineSearchQuery query);
 
         OrderlineModel RedeemCoupon(CouponRedemption redemption);
+
+        MerchantModel GetMerchantInfo(string emailAddress);
     }
 }

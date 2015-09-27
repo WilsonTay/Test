@@ -24,12 +24,34 @@ namespace DealsWhat.Application.WebApi.Controllers
             OrderlineMappings.CreateCouponMapping();
             OrderlineMappings.CreateMerchantOrderlineMapping();
             OrderlineMappings.CreateOrderlineMapping();
+            MerchantMappings.CreateMerchantInfoMapping();
         }
 
         // GET api/<controller>
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        [HttpGet]
+        [Route("api/merchant/info")]
+        public HttpResponseMessage GetMerchantInfo()
+        {
+            var emailAddress = User.Identity.Name;
+            var merchantModel = this.merchantService.GetMerchantInfo(emailAddress);
+
+            if (merchantModel == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            var vm = AutoMapper.Mapper.Map<MerchantInfoViewModel>(merchantModel);
+            var json = JsonConvert.SerializeObject(vm);
+
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StringContent(json);
+
+            return response;
         }
 
         // GET api/<controller>/5
@@ -65,11 +87,23 @@ namespace DealsWhat.Application.WebApi.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+            catch (CouponNotFoundException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(JsonConvert.SerializeObject(vm));
 
             return response;
+        }
+
+        [AllowAnonymous]
+        [HttpOptions]
+        [Route("api/merchant/info")]
+        public HttpResponseMessage MerchantInfoOptions()
+        {
+            return new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
         }
 
         [AllowAnonymous]
@@ -94,10 +128,5 @@ namespace DealsWhat.Application.WebApi.Controllers
         public void Delete(int id)
         {
         }
-    }
-
-    public class RedemptionViewModel
-    {
-        public string Value { get; set; }
     }
 }
