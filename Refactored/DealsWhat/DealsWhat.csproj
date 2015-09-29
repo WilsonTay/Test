@@ -112,10 +112,6 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NReco.PdfGenerator, Version=1.1.9.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
-      <HintPath>..\packages\NReco.PdfGenerator.1.1.9.0\lib\net20\NReco.PdfGenerator.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -268,17 +264,21 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Aggregator\DealsAggregator.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Models\CheckOutToIPayViewModel.cs" />
     <Compile Include="Controllers\ContactUsController.cs" />
     <Compile Include="Controllers\DealApiController.cs" />
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\GeneralTermsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Models\NewPaymentViewModel.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrdersApiController.cs" />
+    <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Controllers\PrivacyPolicyController.cs" />
     <Compile Include="Controllers\RedemptionApiController.cs" />
     <Compile Include="Controllers\ReturnPolicyController.cs" />
+    <Compile Include="Models\UserInfoViewModel.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -715,12 +715,6 @@
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PdfGenerator\PdfGenerator.csproj">
-      <Project>{1302fab5-83fc-42eb-a069-736bd6ab7d24}</Project>
-      <Name>PdfGenerator</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

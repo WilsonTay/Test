@@ -31,8 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DealsWhat", "DealsWhat\Deal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DealsWhat.Domain.Core.Tests", "DealsWhat.Domain.Core.Tests\DealsWhat.Domain.Core.Tests.csproj", "{42ED8852-257E-452A-888E-B4B244732DA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfGenerator", "PdfGenerator\PdfGenerator.csproj", "{1302FAB5-83FC-42EB-A069-736BD6AB7D24}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,12 +116,6 @@ Global
 		{42ED8852-257E-452A-888E-B4B244732DA9}.Production|Any CPU.Build.0 = Release|Any CPU
 		{42ED8852-257E-452A-888E-B4B244732DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42ED8852-257E-452A-888E-B4B244732DA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1302FAB5-83FC-42EB-A069-736BD6AB7D24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1302FAB5-83FC-42EB-A069-736BD6AB7D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1302FAB5-83FC-42EB-A069-736BD6AB7D24}.Production|Any CPU.ActiveCfg = Release|Any CPU
-		{1302FAB5-83FC-42EB-A069-736BD6AB7D24}.Production|Any CPU.Build.0 = Release|Any CPU
-		{1302FAB5-83FC-42EB-A069-736BD6AB7D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1302FAB5-83FC-42EB-A069-736BD6AB7D24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

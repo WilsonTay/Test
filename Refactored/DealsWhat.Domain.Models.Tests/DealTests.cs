@@ -42,7 +42,8 @@ namespace DealsWhat.Domain.Models.Tests
                 longTitle,
                 longDescription,
                 finePrint,
-                highlight);
+                highlight,
+                DealType.Product);
 
             deal.ShortTitle.Should().Be(shortTitle);
             deal.ShortDescription.Should().Be(shortDescription);

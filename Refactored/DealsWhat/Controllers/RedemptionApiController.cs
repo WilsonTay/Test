@@ -17,7 +17,6 @@ using System.Web.Routing;
 using DealsWhat.Models;
 using Microsoft.ServiceBus;
 using Newtonsoft.Json;
-using PdfGenerator;
 
 namespace DealsWhat.Controllers
 {
@@ -76,7 +75,7 @@ namespace DealsWhat.Controllers
                 .Replace("{{EndDate}}", vm.EndTime.ToLongDateString())
                 .Replace("{{ShortDescription}}", vm.DealOption)
                 .Replace("{{DealImage}}", vm.DealImageUrl)
-                .Replace("{{LogoImage}}", VirtualPathUtility.ToAbsolute("~/Images/dealswhat.png"))
+                .Replace("{{LogoImage}}", ConfigurationManager.AppSettings["BaseUrl"] + "Images/dealswhat.png")
                 .Replace("{{Barcode}}", base64.ToHtmlString());
 
             //var basePath = HttpContext.Current.Server.MapPath("~");

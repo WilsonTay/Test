@@ -55,6 +55,7 @@
     <Compile Include="DealOptionModel.cs" />
     <Compile Include="DealStatus.cs" />
     <Compile Include="DealType.cs" />
+    <Compile Include="Exceptions\CouponAlreadyGeneratedException.cs" />
     <Compile Include="Exceptions\CouponAlreadyRedeemedException.cs" />
     <Compile Include="Exceptions\CouponNotFoundException.cs" />
     <Compile Include="IAggregateRoot.cs" />

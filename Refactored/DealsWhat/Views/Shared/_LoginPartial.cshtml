@@ -50,10 +50,10 @@
             @using (Html.BeginForm("ExternalLogin", "Account", new {ReturnUrl = ViewBag.ReturnUrl}))
             {
                 @Html.AntiForgeryToken()
-                <button name="provider" type="submit" value="facebook" class="btn-bootstrap btn-block btn-social btn-facebook" style="width: 200px">
+                @*<button name="provider" type="submit" value="facebook" class="btn-bootstrap btn-block btn-social btn-facebook" style="width: 200px">
                     <i class="fa fa-facebook"></i>
                     <div align="right">Login with Facebook</div>
-                </button>
+                </button>*@
             }
         </li>
     </ul>

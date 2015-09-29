@@ -46,7 +46,8 @@ namespace DealsWhat.Domain.Test.Common
             string finePrint = "",
             string highlight = "",
             string canonicalUrl = "",
-            string id = "")
+            string id = "",
+            DealType dealType = DealType.Product)
         {
             var deal = DealModel.Create(
                 shortTitle.Equals("") ? fixture.Create<string>() : shortTitle,
@@ -54,7 +55,8 @@ namespace DealsWhat.Domain.Test.Common
                 longTitle.Equals("") ? fixture.Create<string>() : longTitle,
                 longDescription.Equals("") ? fixture.Create<string>() : longDescription,
                 finePrint.Equals("") ? fixture.Create<string>() : finePrint,
-                highlight.Equals("") ? fixture.Create<string>() : highlight);
+                highlight.Equals("") ? fixture.Create<string>() : highlight,
+                dealType);
 
             deal.Key = string.IsNullOrEmpty(id) ? fixture.Create<string>() : id;
 

@@ -106,7 +106,11 @@ namespace DealsWhat.Application.WebApi.Controllers
             //TODO: Combine search term and category.
 
             var convertedSearchResults = dealService.SearchDeals(searchQuery)
-                .Select(d => AutoMapper.Mapper.Map<FrontEndDeal>(d))
+                .Select(d => {
+                    var mapped = AutoMapper.Mapper.Map<FrontEndDeal>(d);
+
+                    return mapped;
+                })
                 .ToList();
 
             foreach (var result in convertedSearchResults)

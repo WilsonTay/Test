@@ -17,41 +17,6 @@ using Newtonsoft.Json;
 
 namespace DealsWhat.Controllers
 {
-    public class CheckOutToIPayViewModel
-    {
-        public string MerchantCode { get; set; }
-        public string RefNo { get; set; }
-        public string Amount { get; set; }
-        public string Currency { get; set; }
-        public string ProdDesc { get; set; }
-        public string UserName { get; set; }
-        public string UserEmail { get; set; }
-        public string UserContact { get; set; }
-        public string Remark { get; set; }
-        public string Lang { get; set; }
-        public string Signature { get; set; }
-        public string ResponseURL { get; set; }
-        public string BackendURL { get; set; }
-
-        public string PaymentId { get; set; }
-    }
-    public class OrderViewModel
-    {
-        public string Id { get; set; }
-        public double TotalSpecialPrice { get; set; }
-    }
-    public class UserInfoViewModel
-    {
-        public string Email { get; set; }
-
-
-    }
-
-    public class NewPaymentViewModel
-    {
-        public string OrderId { get; set; }
-    }
-
     public class OrderController : Controller
     {
         //private string merchantCode = "M07850";
@@ -93,6 +58,44 @@ namespace DealsWhat.Controllers
             //}
 
             return View("");
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult PaymentBackend()
+        {
+            var merchantCode = Request["MerchantCode"];
+            var paymentId = Request["PaymentId"];
+            var refNo = Request["RefNo"];
+
+            var amount = Request["Amount"];
+            var currency = Request["Currency"];
+            var signature = Request["Signature"];
+
+            var remark = Request["Remark"];
+            var transId = Request["TransId"];
+            var authCode = Request["AuthCode"];
+
+            var status = Request["Status"];
+            var errDesc = Request["ErrDesc"];
+
+            if (status.Equals("1"))
+            {
+                var token = "";
+                var orderId = refNo;
+
+                var orderRequest = WebRequest.Create(orderPaidUrl + "?id=" + orderId);
+                orderRequest.Headers.Add("Authorization", "Bearer " + token);
+                orderRequest.Method = "post";
+                orderRequest.ContentLength = 0;
+                var newOrderResponse = (HttpWebResponse)orderRequest.GetResponse();
+
+                // TODO: Set order paid.
+                return Content("RECEIVEOK");
+            }
+            else
+            {
+                return Content("RECEIVENOTOK");
+            }
         }
 
         [System.Web.Mvc.HttpPost]
@@ -232,7 +235,7 @@ namespace DealsWhat.Controllers
             //}
 
             //var response = request.GetResponse();
-        
+
             //var responseStream = response.GetResponseStream();
 
             var IpayViewModel = new CheckOutToIPayViewModel
@@ -240,7 +243,7 @@ namespace DealsWhat.Controllers
                 RefNo = orderId,
                 Amount = totalAmount.ToString("0.00"),
                 ProdDesc = productDescription,
-                UserName =  username,
+                UserName = username,
                 UserContact = phoneNumber,
                 UserEmail = username
             };
@@ -259,7 +262,7 @@ namespace DealsWhat.Controllers
             model.Lang = "";
             model.Signature = GenerateSignature(model.RefNo, model.Amount);
             model.ResponseURL = baseUrl + "/Order/Payment";
-            model.BackendURL = baseUrl + "/Order/Payment";
+            model.BackendURL = baseUrl + "/Order/PaymentBackend";
 
             return View(model);
         }

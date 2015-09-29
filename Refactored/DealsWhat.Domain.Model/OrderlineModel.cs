@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DealsWhat.Domain.Model.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,7 +74,7 @@ namespace DealsWhat.Domain.Model
             {
                 if (coupons.Any())
                 {
-                    throw new InvalidOperationException("Coupons have already been generated.");
+                    throw new CouponAlreadyGeneratedException("Coupons have already been generated.");
                 }
 
                 // TODO: COUPON.
