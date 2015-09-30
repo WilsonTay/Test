@@ -21,6 +21,7 @@ using DealsWhat.Domain.Interfaces;
 using DealsWhat.Domain.Model;
 using DealsWhat.Domain.Services;
 using DealsWhat.Infrastructure.DataAccess;
+using log4net;
 
 namespace DealsWhat.Application.WebApi.Controllers
 {
@@ -31,6 +32,7 @@ namespace DealsWhat.Application.WebApi.Controllers
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
         private IUserService userService;
+
 
         public AccountController(IUserService userService)
         {

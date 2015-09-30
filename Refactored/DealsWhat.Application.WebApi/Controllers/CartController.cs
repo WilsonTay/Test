@@ -12,12 +12,15 @@ using DealsWhat.Domain.Interfaces;
 using DealsWhat.Domain.Interfaces.Helpers;
 using DealsWhat.Domain.Model;
 using DealsWhat.Domain.Services;
+using log4net;
+using Newtonsoft.Json;
 
 namespace DealsWhat.Application.WebApi.Controllers
 {
     [Authorize]
     public class CartController : ApiController
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(CartController));
         private readonly ICartService cartService;
 
         public CartController(ICartService cartService)
@@ -95,19 +98,23 @@ namespace DealsWhat.Application.WebApi.Controllers
             var emailAddress = User.Identity.Name;
             var newCartModel = AutoMapper.Mapper.Map<NewCartItemModel>(value);
 
+            logger.InfoFormat("Adding cart item for {0}. JSON: {1}", emailAddress, JsonConvert.SerializeObject(value));
             cartService.AddCartItem(emailAddress, newCartModel);
+            logger.InfoFormat("Successfully added cart item for {0}", emailAddress);
         }
 
         public void Put([FromBody] IEnumerable<SingleUpdateCartItemViewModel> updateCartItems)
         {
             var emailAddress = User.Identity.Name;
 
+            logger.InfoFormat("Updating cart item for {0}. JSON: {1}", emailAddress, JsonConvert.SerializeObject(updateCartItems));
             foreach (var cartItem in updateCartItems)
             {
                 var updateCartItemModel = AutoMapper.Mapper.Map<UpdateCartItemModel>(cartItem);
 
                 cartService.UpdateCartItem(emailAddress, updateCartItemModel);
             }
+            logger.InfoFormat("Done updating cart item for {0}.", emailAddress);
         }
 
         // DELETE api/<controller>/5
@@ -115,7 +122,9 @@ namespace DealsWhat.Application.WebApi.Controllers
         {
             var emailAddress = User.Identity.Name;
 
+            logger.InfoFormat("Deleting cart item id {0} for {1}.", id, emailAddress);
             cartService.RemoveCartItem(emailAddress, id);
+            logger.InfoFormat("Successfully deleted cart item for {0}.", emailAddress);
         }
 
         [AllowAnonymous]

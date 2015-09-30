@@ -38,7 +38,8 @@ namespace DealsWhat.Domain.Services
                 }
 
                 deals = category.Deals;
-            } else if (query.MerchantId != null)
+            }
+            else if (query.MerchantId != null)
             {
                 var merchant = unitOfWork.CreateMerchantRepository().FindByKey(query.MerchantId);
 
@@ -47,6 +48,11 @@ namespace DealsWhat.Domain.Services
             else
             {
                 deals = unitOfWork.CreateDealRepository().GetAll();
+            }
+
+            if (query.ExcludeExpired)
+            {
+                deals = deals.Where(d => d.EndTime.CompareTo(DateTime.UtcNow) > 0);
             }
 
             if (!string.IsNullOrEmpty(query.SearchTerm))

@@ -1,7 +1,6 @@
 ﻿using AttributeRouting.Web.Http;
 using DealsWhat.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.IO;
@@ -20,28 +19,6 @@ using Newtonsoft.Json;
 
 namespace DealsWhat.Controllers
 {
-    public class CouponOrderlineViewModel
-    {
-        public string DealOption { get; set; }
-        public double RegularPrice { get; set; }
-
-        public string FinePrint { get; set; }
-
-        public DateTime EndTime { get; set; }
-
-        public string DealImageUrl { get; set; }
-
-        public string Id { get; set; }
-
-        public string DealUrl { get; set; }
-        public Dictionary<string, string> DealAttributes { get; set; }
-
-        public CouponOrderlineViewModel()
-        {
-            DealAttributes = new Dictionary<string, string>();
-        }
-    }
-
     public class RedemptionApiController : ApiController
     {
 

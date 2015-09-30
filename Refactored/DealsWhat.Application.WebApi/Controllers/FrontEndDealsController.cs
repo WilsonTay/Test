@@ -86,6 +86,7 @@ namespace DealsWhat.Application.WebApi.Controllers
             var searchTerm = query.FirstOrDefault(k => k.Key.Equals("search", StringComparison.OrdinalIgnoreCase));
             var categoryId = query.FirstOrDefault(k => k.Key.Equals("categoryid", StringComparison.OrdinalIgnoreCase));
             var merchantId = query.FirstOrDefault(k => k.Key.Equals("merchantId", StringComparison.OrdinalIgnoreCase));
+            var excludeExpired = query.FirstOrDefault(k => k.Key.Equals("excludeExpired", StringComparison.OrdinalIgnoreCase));
 
             // Category id, search term, sorted by, all
             if (KeyHasValue(categoryId))
@@ -101,6 +102,11 @@ namespace DealsWhat.Application.WebApi.Controllers
             if (KeyHasValue(merchantId))
             {
                 searchQuery.MerchantId = merchantId.Value;
+            }
+
+            if (KeyHasValue(excludeExpired))
+            {
+                searchQuery.ExcludeExpired = excludeExpired.Value.Equals("1");
             }
 
             //TODO: Combine search term and category.

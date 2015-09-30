@@ -8,11 +8,13 @@ using System.Text;
 using System.Web.Http;
 using System.Web.Http.Results;
 using DealsWhat.Domain.Interfaces;
+using log4net;
 
 namespace DealsWhat.Application.WebApi.Controllers
 {
     public class PaymentController : ApiController
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(PaymentController));
         private readonly IUnitOfWork unitOfWork;
         private string merchantCode = "M07850";
         private string merchantKey = "X13J179r2K";

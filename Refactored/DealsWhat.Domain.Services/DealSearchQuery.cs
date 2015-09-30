@@ -13,5 +13,7 @@ namespace DealsWhat.Domain.Services
         public string CategoryId { get; set; }
 
         public string MerchantId { get; set; }
+
+        public bool ExcludeExpired { get; set; }
     }
 }

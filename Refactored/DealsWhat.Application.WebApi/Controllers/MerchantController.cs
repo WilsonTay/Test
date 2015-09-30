@@ -9,13 +9,15 @@ using System.Web.Http;
 using DealsWhat.Application.WebApi.Models;
 using DealsWhat.Domain.Model;
 using DealsWhat.Domain.Model.Exceptions;
+using log4net;
 using Newtonsoft.Json;
 
 namespace DealsWhat.Application.WebApi.Controllers
 {
     public class MerchantController : ApiController
     {
-        IMerchantService merchantService;
+        private readonly IMerchantService merchantService;
+        private static readonly ILog logger = LogManager.GetLogger(typeof(MerchantController));
 
         public MerchantController(IMerchantService merchantService)
         {
@@ -79,16 +81,21 @@ namespace DealsWhat.Application.WebApi.Controllers
 
             try
             {
+                logger.InfoFormat("Redeeming coupon value {0}.", model.Value);
                 var couponRedemption = new CouponRedemption(model.Value);
                 var orderline = this.merchantService.RedeemCoupon(couponRedemption);
+
+                logger.InfoFormat("Successfully redeemed coupon value {0}. Resulting orderline JSON: {1}", model.Value, JsonConvert.SerializeObject(orderline));
                 vm = AutoMapper.Mapper.Map<OrderlineModel, OrderlineViewModel>(orderline);
             }
             catch (CouponAlreadyRedeemedException ex)
             {
+                logger.WarnFormat("Coupon value {0} is already redeemed.", model.Value);
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
             catch (CouponNotFoundException ex)
             {
+                logger.WarnFormat("Coupon value {0} is not found.", model.Value);
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
 

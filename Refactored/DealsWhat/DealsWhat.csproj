@@ -264,6 +264,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Aggregator\DealsAggregator.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Models\CouponOrderlineViewModel.cs" />
     <Compile Include="Models\CheckOutToIPayViewModel.cs" />
     <Compile Include="Controllers\ContactUsController.cs" />
     <Compile Include="Controllers\DealApiController.cs" />
@@ -714,6 +715,7 @@
     <Content Include="Views\Order\CheckOut.cshtml" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -139,7 +139,7 @@
 
         function loadDeals(query, parameter) {
             $.ajax({
-                url: baseUrl + "api/deals?" + query + "=" + parameter + "&sort=dateposted",
+                url: baseUrl + "api/deals?" + query + "=" + parameter + "&sort=dateposted&excludeExpired=1",
                 dataType: 'json',
                 cache: false,
                 beforeSend: function () {
