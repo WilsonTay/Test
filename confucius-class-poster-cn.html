@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海内外线上《论语》精学班</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: #f5f0e8;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .poster {
+            width: 800px;
+            background: #fffdf7;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #8B0000, #C41E3A);
+            color: #fff;
+            text-align: center;
+            padding: 40px 30px 30px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: #fffdf7;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        }
+
+        .header-cn {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Subtitle */
+        .subtitle {
+            text-align: center;
+            padding: 30px 30px 10px;
+        }
+
+        .subtitle-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #D4AF37, #F0D060);
+            color: #5a3e00;
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        /* Classes Container */
+        .classes {
+            display: flex;
+            gap: 20px;
+            padding: 20px 30px;
+        }
+
+        .class-card {
+            flex: 1;
+            border-radius: 14px;
+            padding: 28px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-card.morning {
+            background: linear-gradient(160deg, #FFF8E7, #FFF0CC);
+            border: 2px solid #E8C547;
+        }
+
+        .class-card.evening {
+            background: linear-gradient(160deg, #EEF0FF, #DDE2FF);
+            border: 2px solid #7B8CDE;
+        }
+
+        .class-title {
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        .morning .class-title { color: #8B6914; }
+        .evening .class-title { color: #3D4A8C; }
+
+        .phase-badge {
+            display: inline-block;
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .morning .phase-badge {
+            background: #E8C547;
+            color: #5a3e00;
+        }
+
+        .evening .phase-badge {
+            background: #7B8CDE;
+            color: #fff;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .info-icon {
+            width: 22px;
+            margin-right: 10px;
+            text-align: center;
+            flex-shrink: 0;
+            font-size: 16px;
+            margin-top: 2px;
+        }
+
+        .info-label {
+            font-weight: 700;
+            min-width: 55px;
+            color: #888;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(0,0,0,0.08);
+            margin: 16px 0;
+        }
+
+        .contact-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* Fee Section */
+        .fee-section {
+            background: linear-gradient(135deg, #8B0000, #C41E3A);
+            margin: 10px 30px 0;
+            border-radius: 14px;
+            padding: 24px 30px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .fee-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            letter-spacing: 3px;
+        }
+
+        .fee-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .fee-option {
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 16px 30px;
+            min-width: 200px;
+        }
+
+        .fee-amount {
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .fee-desc {
+            font-size: 14px;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        /* QR Section */
+        .qr-section {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            padding: 30px;
+        }
+
+        .qr-item {
+            text-align: center;
+        }
+
+        .qr-item img {
+            width: 180px;
+            height: 180px;
+            border-radius: 12px;
+            border: 3px solid #eee;
+            object-fit: contain;
+            background: #fff;
+            padding: 8px;
+        }
+
+        .qr-label {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #555;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 10px 30px 30px;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .ornament {
+            font-size: 24px;
+            letter-spacing: 8px;
+            margin-bottom: 8px;
+            color: #D4AF37;
+        }
+
+        .footer-quote {
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-cn">海内外线上《论语》精学班</div>
+        </div>
+
+        <!-- Subtitle -->
+        <div class="subtitle">
+            <div class="subtitle-badge">三期学完一本《论语》</div>
+        </div>
+
+        <!-- Class Cards -->
+        <div class="classes">
+            <!-- Morning Class -->
+            <div class="class-card morning">
+                <div class="class-title">早 课</div>
+                <div class="phase-badge">第一阶段 · 21 堂课</div>
+
+                <div class="info-row">
+                    <span class="info-icon">📅</span>
+                    <span class="info-label">日期：</span>
+                    <span class="info-value">2026年3月19日 — 4月9日</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">🕐</span>
+                    <span class="info-label">时间：</span>
+                    <span class="info-value">早上 6:00 — 7:00</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">📆</span>
+                    <span class="info-label">上课：</span>
+                    <span class="info-value">周一至周四</span>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="info-row">
+                    <span class="info-icon">👤</span>
+                    <span class="info-label">咨询：</span>
+                    <span class="info-value">Candy Tan 陈美均</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">📞</span>
+                    <span class="info-label">电话：</span>
+                    <span class="info-value">+6016-2067117</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">💬</span>
+                    <span class="info-label">微信：</span>
+                    <span class="info-value">Quietpathdaily</span>
+                </div>
+            </div>
+
+            <!-- Evening Class -->
+            <div class="class-card evening">
+                <div class="class-title">晚 课</div>
+                <div class="phase-badge">第二阶段 · 11 堂课</div>
+
+                <div class="info-row">
+                    <span class="info-icon">📅</span>
+                    <span class="info-label">日期：</span>
+                    <span class="info-value">2026年4月7日 — 5月11日</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">🕐</span>
+                    <span class="info-label">时间：</span>
+                    <span class="info-value">晚上 9:00 — 10:20</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">📆</span>
+                    <span class="info-label">上课：</span>
+                    <span class="info-value">每周一和周四</span>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="info-row">
+                    <span class="info-icon">👤</span>
+                    <span class="info-label">咨询：</span>
+                    <span class="info-value">Chloe Lim 林倚芳</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">📞</span>
+                    <span class="info-label">电话：</span>
+                    <span class="info-value">+6012-3990309</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">💬</span>
+                    <span class="info-label">微信：</span>
+                    <span class="info-value">chloelim903</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fee Section -->
+        <div class="fee-section">
+            <div class="fee-title">费 用</div>
+            <div class="fee-options">
+                <div class="fee-option">
+                    <div class="fee-amount">RM 180</div>
+                    <div class="fee-desc">单期</div>
+                </div>
+                <div class="fee-option">
+                    <div class="fee-amount">RM 530</div>
+                    <div class="fee-desc">三期</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Codes -->
+        <div class="qr-section">
+            <div class="qr-item">
+                <img src="registration-qr.png" alt="报名二维码">
+                <div class="qr-label">报名二维码</div>
+            </div>
+            <div class="qr-item">
+                <img src="payment-qr.png" alt="付款二维码">
+                <div class="qr-label">马来银行付款二维码</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="ornament">☰ ☰ ☰</div>
+            <div class="footer-quote">学而时习之，不亦说乎</div>
+        </div>
+    </div>
+</body>
+</html>
