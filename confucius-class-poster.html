@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confucius Online Class 论语精学班</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Playfair+Display:wght@700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: #f5f0e8;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 800px;
+            background: #fffdf7;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #8B0000, #C41E3A);
+            color: #fff;
+            text-align: center;
+            padding: 40px 30px 30px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: #fffdf7;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        }
+
+        .header-cn {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header-en {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+
+        /* Subtitle */
+        .subtitle {
+            text-align: center;
+            padding: 30px 30px 10px;
+        }
+
+        .subtitle-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #D4AF37, #F0D060);
+            color: #5a3e00;
+            padding: 10px 28px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .subtitle-badge-cn {
+            display: block;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        /* Classes Container */
+        .classes {
+            display: flex;
+            gap: 20px;
+            padding: 20px 30px;
+        }
+
+        .class-card {
+            flex: 1;
+            border-radius: 14px;
+            padding: 28px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-card.morning {
+            background: linear-gradient(160deg, #FFF8E7, #FFF0CC);
+            border: 2px solid #E8C547;
+        }
+
+        .class-card.evening {
+            background: linear-gradient(160deg, #EEF0FF, #DDE2FF);
+            border: 2px solid #7B8CDE;
+        }
+
+        .class-title {
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .morning .class-title { color: #8B6914; }
+        .evening .class-title { color: #3D4A8C; }
+
+        .class-title-en {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+            opacity: 0.7;
+        }
+
+        .morning .class-title-en { color: #8B6914; }
+        .evening .class-title-en { color: #3D4A8C; }
+
+        .phase-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .morning .phase-badge {
+            background: #E8C547;
+            color: #5a3e00;
+        }
+
+        .evening .phase-badge {
+            background: #7B8CDE;
+            color: #fff;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-icon {
+            width: 20px;
+            margin-right: 10px;
+            text-align: center;
+            flex-shrink: 0;
+            font-size: 16px;
+            margin-top: 1px;
+        }
+
+        .info-label {
+            font-weight: 700;
+            min-width: 50px;
+            color: #555;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .info-value .cn {
+            display: block;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(0,0,0,0.08);
+            margin: 14px 0;
+        }
+
+        .contact-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .contact-name .cn {
+            font-weight: 500;
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* Fee Section */
+        .fee-section {
+            background: linear-gradient(135deg, #8B0000, #C41E3A);
+            margin: 10px 30px 0;
+            border-radius: 14px;
+            padding: 24px 30px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .fee-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+        }
+
+        .fee-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .fee-option {
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 16px 30px;
+            min-width: 180px;
+        }
+
+        .fee-amount {
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .fee-desc {
+            font-size: 13px;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        /* QR Section */
+        .qr-section {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            padding: 30px;
+        }
+
+        .qr-item {
+            text-align: center;
+        }
+
+        .qr-item img {
+            width: 180px;
+            height: 180px;
+            border-radius: 12px;
+            border: 3px solid #eee;
+            object-fit: contain;
+            background: #fff;
+            padding: 8px;
+        }
+
+        .qr-label {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #555;
+        }
+
+        .qr-label .cn {
+            display: block;
+            font-size: 13px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 0 30px 30px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .ornament {
+            font-size: 24px;
+            letter-spacing: 8px;
+            margin-bottom: 8px;
+            color: #D4AF37;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-cn">海内外线上《论语》精学班</div>
+            <div class="header-en">Confucius Analects Online Class</div>
+        </div>
+
+        <!-- Subtitle -->
+        <div class="subtitle">
+            <div class="subtitle-badge">
+                It takes 3 sessions to complete the Analects of Confucius
+                <span class="subtitle-badge-cn">三期学完一本《论语》</span>
+            </div>
+        </div>
+
+        <!-- Class Cards -->
+        <div class="classes">
+            <!-- Morning Class -->
+            <div class="class-card morning">
+                <div class="class-title">早课</div>
+                <div class="class-title-en">Morning Class</div>
+                <div class="phase-badge">Phase 1 · 第一阶段 · 21 Classes</div>
+
+                <div class="info-row">
+                    <span class="info-icon">📅</span>
+                    <span class="info-value">
+                        19.03.2026 — 09.04.2026
+                        <span class="cn">日期</span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">🕐</span>
+                    <span class="info-value">
+                        6:00 AM — 7:00 AM
+                        <span class="cn">时间</span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">📆</span>
+                    <span class="info-value">
+                        Monday to Thursday
+                        <span class="cn">周一到周四</span>
+                    </span>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="info-row">
+                    <span class="info-icon">👤</span>
+                    <span class="info-value">
+                        <span class="contact-name">Candy Tan <span class="cn">陈美均</span></span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">📞</span>
+                    <span class="info-value">+6016-2067117</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">💬</span>
+                    <span class="info-value">WeChat: Quietpathdaily</span>
+                </div>
+            </div>
+
+            <!-- Evening Class -->
+            <div class="class-card evening">
+                <div class="class-title">晚课</div>
+                <div class="class-title-en">Evening Class</div>
+                <div class="phase-badge">Phase 2 · 第二阶段 · 11 Classes</div>
+
+                <div class="info-row">
+                    <span class="info-icon">📅</span>
+                    <span class="info-value">
+                        07.04.2026 — 11.05.2026
+                        <span class="cn">日期</span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">🕐</span>
+                    <span class="info-value">
+                        9:00 PM — 10:20 PM
+                        <span class="cn">时间</span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">📆</span>
+                    <span class="info-value">
+                        Every Monday &amp; Thursday
+                        <span class="cn">每周一和周四</span>
+                    </span>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="info-row">
+                    <span class="info-icon">👤</span>
+                    <span class="info-value">
+                        <span class="contact-name">Chloe Lim <span class="cn">林倚芳</span></span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">📞</span>
+                    <span class="info-value">+6012-3990309</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-icon">💬</span>
+                    <span class="info-value">WeChat: chloelim903</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fee Section -->
+        <div class="fee-section">
+            <div class="fee-title">费用 FEE</div>
+            <div class="fee-options">
+                <div class="fee-option">
+                    <div class="fee-amount">RM 180</div>
+                    <div class="fee-desc">1 Session / 单期</div>
+                </div>
+                <div class="fee-option">
+                    <div class="fee-amount">RM 530</div>
+                    <div class="fee-desc">3 Sessions / 三期</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Codes -->
+        <div class="qr-section">
+            <div class="qr-item">
+                <img src="registration-qr.png" alt="Registration QR Code">
+                <div class="qr-label">
+                    Registration
+                    <span class="cn">报名 QR</span>
+                </div>
+            </div>
+            <div class="qr-item">
+                <img src="payment-qr.png" alt="Maybank Payment QR Code">
+                <div class="qr-label">
+                    Maybank Payment
+                    <span class="cn">马来付款 QR</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="ornament">☰ ☰ ☰</div>
+            学而时习之，不亦说乎 — Is it not a pleasure to learn and practice what you have learned?
+        </div>
+    </div>
+</body>
+</html>
